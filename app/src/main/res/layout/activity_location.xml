@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    android:background="#FFFFFF">
+
+    <!-- 1. Hình ảnh bản đồ tròn -->
+    <ImageView
+        android:id="@+id/imgLocationIllustration"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/location_map_circle"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="50dp"/>
+
+    <!-- 2. Nút Access Location -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAccessLocation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="ACCESS LOCATION"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/bg_orange_button"
+        android:drawableEnd="@drawable/ic_location_white"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:drawablePadding="10dp" />
+
+    <!-- 3. Đoạn văn bản ghi chú bên dưới -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="DFOOD WILL ACCESS YOUR LOCATION\nONLY WHILE USING THE APP"
+        android:textAlignment="center"
+        android:textColor="#828282"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp" />
+
+</LinearLayout>
