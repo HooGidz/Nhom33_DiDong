@@ -58,7 +58,7 @@
             android:name=".controller.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.MainProfile"
+            android:name=".controller.Add_Cart"
             android:exported="true" >
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
