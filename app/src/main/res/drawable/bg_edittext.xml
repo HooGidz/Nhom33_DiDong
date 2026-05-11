@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu nền của ô nhập liệu (màu xám nhạt như trong ảnh) -->
+    <solid android:color="#F4F7F9" />
+
+    <!-- Độ bo tròn của góc (12dp giúp góc trông mềm mại) -->
+    <corners android:radius="25dp" />
+
+    <!-- Bạn có thể thêm đường viền nếu muốn (tùy chọn) -->
+    <!-- <stroke android:width="1dp" android:color="#E0E0E0" /> -->
+
+    <!-- Khoảng cách giữa nội dung và viền -->
+    <padding
+        android:left="16dp"
+        android:right="16dp"
+        android:top="12dp"
+        android:bottom="12dp" />
+</shape>
