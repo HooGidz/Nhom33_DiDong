@@ -37,7 +37,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sửa hồ sơ"
+            android:text="Sửa Hồ Sơ"
             android:textColor="#1E293B"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -92,7 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Họ Tên"
+                android:text="HỌ TÊN"
                 android:textColor="#64748B"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -138,7 +138,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số điện thoại"
+                android:text="SỐ ĐIỆN THOẠI"
                 android:textColor="#64748B"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -161,7 +161,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tiểu sử"
+                android:text="TIỂU SỬ"
                 android:textColor="#64748B"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -184,13 +184,13 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="70dp"
                 android:backgroundTint="#FF7A30"
-                android:text="Lưu"
+                android:text="LƯU"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="15dp" />
 
         </LinearLayout>
 

@@ -35,7 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DELIVER TO"
+                    android:text="GIAO HÀNG ĐẾN"
                     android:textColor="#FF7A30"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Halal Lab office ▼"
+                    android:text="Nghệ An ▼"
                     android:textColor="#000000"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hey Halal, Good Afternoon!"
+            android:text="Chào Hoang, Chúc buổi chiều tốt lành!"
             android:textSize="18sp"
             android:layout_marginTop="20dp"/>
 
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginTop="20dp"
-            android:hint="Search dishes, restaurants"
+            android:hint="Tìm kiếm món ăn, nhà hàng,..."
             android:background="@drawable/search_bar_bg"
             android:drawableStart="@android:drawable/ic_menu_search"
             android:drawablePadding="10dp"
@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Categories"
+                android:text="TẤT CẢ DANH MỤC"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#32343E" />
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="See All >"
+                android:text="Xem tất cả >"
                 android:textColor="#666666" />
         </RelativeLayout>
 
@@ -137,7 +137,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Open Restaurants"
+                android:text="NHÀ HÀNG ĐANG MỞ CỬA"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#32343E" />
@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="See All >"
+                android:text="Xem tất cả >"
                 android:textColor="#666666" />
         </RelativeLayout>
 
@@ -187,7 +187,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rose Garden Restaurant"
+                        android:text="Pizza Hut"
                         android:textColor="#181C2E"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -196,7 +196,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Burger - Chicken - Riche - Wings"
+                        android:text="Burger - Gà - Riche - Wings"
                         android:textColor="#A0A5BA"
                         android:textSize="14sp" />
 
@@ -231,7 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="Free" />
+                            android:text="Miễn phí" />
 
                         <ImageView
                             android:layout_width="16dp"
@@ -245,7 +245,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="20 min" />
+                            android:text="20 phút" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

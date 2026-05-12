@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Payment"
+        android:text="Thanh toán"
         android:textColor="#3D4552"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -248,14 +248,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="TOTAL: "
+                android:text="TỔNG TIỀN: "
                 android:textColor="#7D848D"
                 android:textSize="16sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="$96"
+                android:text="302.900 VNĐ"
                 android:textColor="#1B1E28"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -266,7 +266,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="#FF7029"
-            android:text="PAY &amp; CONFIRM"
+            android:text="THANH TOÁN &amp; XÁC NHẬN"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             app:cornerRadius="16dp" />

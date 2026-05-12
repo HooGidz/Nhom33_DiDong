@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Pizza Calzone European"
+                android:text="Pizza Calzone kiểu Âu"
                 android:textColor="#181C2E"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Prosciutto e funghi is a pizza variety that is topped with tomato sauce."
+                android:text="Prosciutto e funghi là một loại pizza được phủ sốt cà chua.."
                 android:textColor="#828282"
                 app:layout_constraintTop_toBottomOf="@id/tvMainTitle" />
 
@@ -96,14 +96,36 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvDescription">
 
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_star" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" 4.7" android:textStyle="bold" android:textColor="#000" android:layout_marginEnd="20dp"/>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_star" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 4.7"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:layout_marginEnd="20dp"/>
 
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_delivery" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" Free" android:layout_marginEnd="20dp"/>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_delivery" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Miễn phí"
+                    android:layout_marginEnd="20dp"/>
 
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_clock" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" 20 min" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_clock" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 20 phút" />
             </LinearLayout>
 
             <!-- Chọn Size -->
@@ -112,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="SIZE:"
+                android:text="Kích thước:"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutInfo" />
@@ -124,9 +146,26 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvSizeLabel">
-                <TextView android:layout_width="55dp" android:layout_height="55dp" android:background="@drawable/bg_circle_back" android:gravity="center" android:text="10\" />
-                <TextView android:layout_width="55dp" android:layout_height="55dp" android:layout_marginHorizontal="15dp" android:background="@drawable/bg_orange_button" android:gravity="center" android:text="14\" android:textColor="#FFF" />
-                <TextView android:layout_width="55dp" android:layout_height="55dp" android:background="@drawable/bg_circle_back" android:gravity="center" android:text="16\" />
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_back"
+                    android:gravity="center"
+                    android:text="10'" />
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/bg_orange_button"
+                    android:gravity="center"
+                    android:text="14'"
+                    android:textColor="#FFF" />
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_back"
+                    android:gravity="center"
+                    android:text="16'" />
             </LinearLayout>
 
             <!-- KHUNG ĐEN 2: Ingredients -->
@@ -135,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="INGREDIENTS"
+                android:text="NGUYÊN LIỆU"
                 android:textSize="12sp"
                 android:textColor="#828282"
                 app:layout_constraintTop_toBottomOf="@id/layoutSize"
@@ -171,7 +210,7 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$32"
+            android:text="32.000 VNĐ"
             android:textColor="#181C2E"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -192,7 +231,8 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_minus" app:tint="#FFF" />
+                android:src="@drawable/ic_minus"
+                app:tint="#FFF" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -76,7 +76,7 @@
                 android:id="@+id/tvAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$500.00"
+                android:text="5.342.000 VNĐ"
                 android:textColor="#FFFFFF"
                 android:textSize="38sp"
                 android:textStyle="bold"

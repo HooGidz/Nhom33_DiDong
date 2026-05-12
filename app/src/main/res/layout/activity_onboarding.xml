@@ -18,7 +18,7 @@
         android:layout_height="65dp"
         android:layout_margin="30dp"
         android:backgroundTint="#FF7A30"
-        android:text="NEXT"
+        android:text="TIẾP TỤC"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toTopOf="@id/tvSkip" />
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="Skip"
+        android:text="BỎ QUA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
