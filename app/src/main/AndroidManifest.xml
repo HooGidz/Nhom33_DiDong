@@ -37,8 +37,20 @@
             android:name=".controller.DanhSachBurgerActivity"
             android:exported="false" />
         <activity
+            android:name=".controller.Cart"
+            android:exported="true" />
+        <activity
             android:name=".controller.LocationActivity"
             android:exported="false" />
+        <activity
+            android:name=".controller.Payment0"
+            android:exported="true" />
+        <activity
+            android:name=".controller.Payment"
+            android:exported="true" />
+        <activity
+            android:name=".controller.Add_Cart"
+            android:exported="true" />
         <activity
             android:name=".controller.SplashActivity"
             android:exported="true">
@@ -53,7 +65,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".controller.TrangChuActivity"
+            android:name=".controller.PaymentSuccessActivity"
             android:exported="false" />
         <activity
             android:name=".controller.SignUpActivity"
