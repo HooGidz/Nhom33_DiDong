@@ -31,13 +31,13 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-//        Button btn_add_to_cart = findViewById(R.id.btn_add_to_cart);
-//        btn_add_to_cart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    Intent intent = new Intent(DetailsActivity.this, Add_Cart.class);
-//                startActivity(intent);
-//            }
-//        });
+        Button btn_add_to_cart = findViewById(R.id.btn_add_to_cart);
+        btn_add_to_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(DetailsActivity.this, Cart.class);
+                startActivity(intent);
+            }
+        });
     }
 }

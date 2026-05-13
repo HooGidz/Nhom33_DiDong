@@ -3,6 +3,7 @@ package com.example.nhom33.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -25,6 +26,14 @@ public class TrangChuActivity extends AppCompatActivity {
             }
         });
 
-
+        ImageButton btn_Profile = findViewById(R.id.btn_Profile);
+        btn_Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrangChuActivity.this, MainProfile.class);
+                startActivity(intent);
+            }
+        });
     }
+
 }

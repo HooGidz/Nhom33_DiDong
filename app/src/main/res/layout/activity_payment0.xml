@@ -228,7 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:text="+ ADD NEW"
+        android:text="+ THÊM MỚI"
         android:textColor="#FF7029"
         app:cornerRadius="16dp"
         app:strokeColor="#E0E0E0"

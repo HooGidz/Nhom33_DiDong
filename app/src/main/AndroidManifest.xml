@@ -57,6 +57,46 @@
             android:name=".controller.DetailsActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".controller.Cart"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Payment"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Payment0"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Add_Cart"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.PaymentSuccessActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Main_track_order"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.MainProfile"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.AddressActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.EditProfile"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.MainAdProfile"
+            android:exported="true">
+        </activity>
 
 
 

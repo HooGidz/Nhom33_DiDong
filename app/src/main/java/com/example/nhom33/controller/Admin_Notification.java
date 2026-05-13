@@ -50,11 +50,11 @@ public class Admin_Notification extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
-        item_noti it1 = new item_noti(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Hoàng Giáp đã làm  dự án này và đang làm tiếp", "20 phút trước");
-        item_noti it2 = new item_noti(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it3 = new item_noti(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it4 = new item_noti(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it5 = new item_noti(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Hoàng Giáp đã làm xong", "20 phút trước");
+        item_noti it1 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm  dự án này và đang làm tiếp", "20 phút trước");
+        item_noti it2 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
+        item_noti it3 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
+        item_noti it4 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
+        item_noti it5 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
 
         itemList.add(it1);
         itemList.add(it2);

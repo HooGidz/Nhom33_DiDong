@@ -13,7 +13,7 @@
         android:layout_width="1000dp"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/map"
+        android:src="@drawable/ggmap"
         android:contentDescription="Map Background" />
 
     <LinearLayout
@@ -27,9 +27,8 @@
             android:id="@+id/btnBack"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/bg_circle_dark"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="@android:color/white"
+            android:background="@drawable/bg_white_card_top_rounded"
+            android:src="@drawable/icons8_back_24"
             android:contentDescription="Back Button" />
 
         <TextView
@@ -37,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="Track Order"
-            android:textColor="#333"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>

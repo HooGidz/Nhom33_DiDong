@@ -35,7 +35,7 @@ public class Add_Cart extends AppCompatActivity {
             public void onClick(View v) {
                // 3. Lệnh chuyển từ Activity hiện tại sang Activity Success
                // Lưu ý: Bạn cần tạo file PaymentSuccessActivity.java tương ứng với layout success
-               Intent intent = new Intent(Add_Cart.this, PaymentSuccessActivity.class);
+               Intent intent = new Intent(Add_Cart.this, Payment.class);
                 startActivity(intent);
             }
         });

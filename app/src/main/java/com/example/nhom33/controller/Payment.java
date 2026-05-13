@@ -25,7 +25,7 @@ public class Payment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 3. Tạo Intent để chuyển sang Activity mới (ví dụ: PaymentSuccessActivity)
-                Intent intent = new Intent(Payment.this, Add_Cart.class);
+                Intent intent = new Intent(Payment.this, PaymentSuccessActivity.class);
                 startActivity(intent);
             }
         });

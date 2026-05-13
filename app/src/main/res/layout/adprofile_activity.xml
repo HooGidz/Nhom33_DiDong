@@ -26,6 +26,8 @@
                 android:id="@+id/btnBack"
                 android:layout_width="45dp"
                 android:layout_height="47dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 app:cardBackgroundColor="#FFFFFF"

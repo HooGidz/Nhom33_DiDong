@@ -1,7 +1,11 @@
 package com.example.nhom33.controller;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -35,6 +39,14 @@ public class MainAdProfile extends AppCompatActivity {
 
     private void initViews() {
         rvMenu = findViewById(R.id.rvMenu);
+        
+        CardView btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void createData() {

@@ -26,7 +26,7 @@ public class Admin_MyFoodList extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<item_food> itemList;
-    Admin_FoodList_Adapter adminFoodListAdapter;
+    Admin_FoodList_Adapter myAdapter;
 
     ImageButton btn_back;
 
@@ -49,57 +49,55 @@ public class Admin_MyFoodList extends AppCompatActivity {
             }
         });
 
+        recyclerView = findViewById(R.id.recyclerView);
+        itemList = new ArrayList<>();
+        item_food it1 = new item_food(R.drawable.pizza_img, "Gà rán", "60.000 VND", "Bữa sáng");
+        item_food it2 = new item_food(R.drawable.pizza_img, "Bánh pizza", "120.000 VND", "Bữa tối");
+        item_food it3 = new item_food(R.drawable.pizza_img, "Cơm sườn", "60.000 VND", "Bữa trưa");
+        item_food it4 = new item_food(R.drawable.pizza_img, "Gà rán", "60.000 VND", "Bữa sáng");
 
+        itemList.add(it1);
+        itemList.add(it2);
+        itemList.add(it3);
+        itemList.add(it4);
 
-//        recyclerView = findViewById(R.id.recyclerView);
-//        itemList = new ArrayList<>();
-//        item_food it1 = new item_food(R.drawable.ic_launcher_background, "Gà rán", "60.000 VND", "Bữa sáng");
-//        item_food it2 = new item_food(R.drawable.ic_launcher_background, "Bánh pizza", "120.000 VND", "Bữa tối");
-//        item_food it3 = new item_food(R.drawable.ic_launcher_background, "Cơm sườn", "60.000 VND", "Bữa trưa");
-//        item_food it4 = new item_food(R.drawable.ic_launcher_background, "Gà rán", "60.000 VND", "Bữa sáng");
-//
-//        itemList.add(it1);
-//        itemList.add(it2);
-//        itemList.add(it3);
-//        itemList.add(it4);
-//
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        //myAdapter = new MyAdapter(itemList);
-//        recyclerView.setAdapter(myAdapter);
-
-        // Trong Activity của bạn
-        recyclerView = findViewById(R.id.recyclerView); // Uncommented
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = dbHelper.openDatabase();
+        myAdapter = new Admin_FoodList_Adapter(itemList);
+        recyclerView.setAdapter(myAdapter);
 
-        Cursor cursor = db.rawQuery("SELECT * FROM Foods", null);
-        List<item_food> list = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            do {
-                item_food item = new item_food();
-                int nameIndex = cursor.getColumnIndex("food_name");
-                int priceIndex = cursor.getColumnIndex("price");
-                int tagIndex = cursor.getColumnIndex("meal_type");
-                int imgIndex = cursor.getColumnIndex("image_url");
-
-                if (nameIndex != -1) item.setTxt_food(cursor.getString(nameIndex));
-                if (priceIndex != -1) item.setTxt_price(cursor.getString(priceIndex));
-                if (tagIndex != -1) item.setTxt_tag(cursor.getString(tagIndex));
-                if (imgIndex != -1) item.setImg_food(cursor.getInt(imgIndex));
-                list.add(item);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-// Sau đó truyền list này vào MyAdapter
-        Admin_FoodList_Adapter adapter = new Admin_FoodList_Adapter(list);
-        recyclerView.setAdapter(adapter);
+        // Trong Activity của bạn
+//        recyclerView = findViewById(R.id.recyclerView); // Uncommented
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        DatabaseHelper dbHelper = new DatabaseHelper(this);
+//        SQLiteDatabase db = dbHelper.openDatabase();
+//
+//        Cursor cursor = db.rawQuery("SELECT * FROM Foods", null);
+//        List<item_food> list = new ArrayList<>();
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                item_food item = new item_food();
+//                int nameIndex = cursor.getColumnIndex("food_name");
+//                int priceIndex = cursor.getColumnIndex("price");
+//                int tagIndex = cursor.getColumnIndex("meal_type");
+//                int imgIndex = cursor.getColumnIndex("image_url");
+//
+//                if (nameIndex != -1) item.setTxt_food(cursor.getString(nameIndex));
+//                if (priceIndex != -1) item.setTxt_price(cursor.getString(priceIndex));
+//                if (tagIndex != -1) item.setTxt_tag(cursor.getString(tagIndex));
+//                if (imgIndex != -1) item.setImg_food(cursor.getInt(imgIndex));
+//                list.add(item);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        db.close();
+//
+//// Sau đó truyền list này vào MyAdapter
+//        Admin_FoodList_Adapter adapter = new Admin_FoodList_Adapter(list);
+//        recyclerView.setAdapter(adapter);
     }
 }

@@ -76,7 +76,7 @@ public class Admin_Dashboard extends AppCompatActivity {
         btn_personal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin_Dashboard.this, Admin_Notification.class);
+                Intent intent = new Intent(Admin_Dashboard.this, MainAdProfile.class);
                 startActivity(intent);
             }
         });

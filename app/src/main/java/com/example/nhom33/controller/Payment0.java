@@ -1,5 +1,6 @@
 package com.example.nhom33.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,6 +9,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
+import com.google.android.material.button.MaterialButton;
 
 public class Payment0 extends AppCompatActivity {
     ImageButton btn_back;
@@ -21,6 +23,15 @@ public class Payment0 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        MaterialButton btnAddNew = findViewById(R.id.btnAddNew);
+        btnAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Payment0.this, Add_Cart.class);
+                startActivity(intent);
             }
         });
     }
