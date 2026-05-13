@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
+import com.example.nhom33.adapter.BurgerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

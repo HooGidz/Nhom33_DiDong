@@ -1,20 +1,13 @@
 package com.example.nhom33.controller;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.controller.Cart_Adapter;
+import com.example.nhom33.adapter.Cart_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.database.item_cart;
 

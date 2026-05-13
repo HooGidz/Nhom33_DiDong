@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.MyAdapter;
+import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.database.DatabaseHelper;
 import com.example.nhom33.database.item_food;
@@ -27,7 +26,7 @@ public class Admin_MyFoodList extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<item_food> itemList;
-    MyAdapter myAdapter;
+    Admin_FoodList_Adapter adminFoodListAdapter;
 
     ImageButton btn_back;
 
@@ -100,7 +99,7 @@ public class Admin_MyFoodList extends AppCompatActivity {
         db.close();
 
 // Sau đó truyền list này vào MyAdapter
-        MyAdapter adapter = new MyAdapter(list);
+        Admin_FoodList_Adapter adapter = new Admin_FoodList_Adapter(list);
         recyclerView.setAdapter(adapter);
     }
 }

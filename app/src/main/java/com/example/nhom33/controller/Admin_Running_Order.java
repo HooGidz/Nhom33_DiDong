@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.MyAdapter;
+import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.database.item_running_order;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class Admin_Running_Order extends AppCompatActivity{
     RecyclerView recyclerView;
     List<item_running_order> itemList;
-    MyAdapter myAdapter;
+    Admin_FoodList_Adapter adminFoodListAdapter;
     ImageButton btn_back;
 
     @Override
@@ -57,7 +57,7 @@ public class Admin_Running_Order extends AppCompatActivity{
         recyclerView.setLayoutManager(layoutManager);
 
         //myAdapter = new MyAdapter(itemList);
-        recyclerView.setAdapter(myAdapter);
+        recyclerView.setAdapter(adminFoodListAdapter);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.nhom33;
+package com.example.nhom33.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nhom33.R;
 import com.example.nhom33.database.item_food;
-import com.example.nhom33.database.item_noti;
-import com.example.nhom33.database.item_running_order;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+public class Admin_FoodList_Adapter extends RecyclerView.Adapter<Admin_FoodList_Adapter.MyViewHolder>{
 //    private List<item_noti> itemList;
 //    public MyAdapter(List<item_noti> itemList){
 //        this.itemList = itemList;
@@ -25,20 +24,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 //        this.itemList = itemList;
 //    }
     private List<item_food> itemList;
-    public MyAdapter(List<item_food> itemList){
+    public Admin_FoodList_Adapter(List<item_food> itemList){
         this.itemList = itemList;
     }
 
 
     @NonNull
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Admin_FoodList_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_item_myfood, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Admin_FoodList_Adapter.MyViewHolder holder, int position) {
 
 //        item_running_order item = itemList.get(position);
 //        holder.img_food.setImageResource(item.getImg_food());

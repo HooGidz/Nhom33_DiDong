@@ -1,4 +1,4 @@
-package com.example.nhom33.controller;
+package com.example.nhom33.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
+import com.example.nhom33.controller.Burger;
 
 import java.util.List;
 

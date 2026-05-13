@@ -3,7 +3,6 @@ package com.example.nhom33.controller;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.MyAdapter;
+import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.database.item_noti;
 
@@ -24,7 +23,7 @@ public class Admin_Notification extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<item_noti> itemList;
-    MyAdapter myAdapter;
+    Admin_FoodList_Adapter adminFoodListAdapter;
 
     ImageButton btn_back;
 
@@ -65,7 +64,7 @@ public class Admin_Notification extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         //myAdapter = new MyAdapter(itemList);
-        recyclerView.setAdapter(myAdapter);
+        recyclerView.setAdapter(adminFoodListAdapter);
 
     }
 }
