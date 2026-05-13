@@ -1,6 +1,9 @@
 package com.example.nhom33.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +17,28 @@ import com.example.nhom33.adapter.AddressAdapter;
 import com.example.nhom33.database.Address;
 
 public class AddressActivity extends AppCompatActivity {
+    View btnAddNew, btnBack;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.address_activiti);
 
         // 1. Tìm RecyclerView từ XML
         RecyclerView rvAddress = findViewById(R.id.rvAddress);
+        btnAddNew = findViewById(R.id.btnAddNew);
+        btnBack = findViewById(R.id.btnBack);
+        btnAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent = new Intent(AddressActivity.this, MapActivity.class);
+            startActivity(intent);
+        }});
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }});
 
         // 2. Chuẩn bị dữ liệu mẫu
         List<Address> data = new ArrayList<>();
@@ -33,4 +52,5 @@ public class AddressActivity extends AppCompatActivity {
         AddressAdapter adapter = new AddressAdapter(data);
         rvAddress.setAdapter(adapter);
     }
+
 }

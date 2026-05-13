@@ -2,6 +2,8 @@ package com.example.nhom33.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,11 +25,7 @@ import com.example.nhom33.database.Address;
 import com.example.nhom33.database.hisOrder;
 
 public class EditProfile extends AppCompatActivity {
-
-//    private RecyclerView recyclerView;
-//    private HisOrderAdapter orderAdapter;
-//    private List<hisOrder> orderList;
-//    private TabLayout tabLayout;
+    View btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +37,8 @@ public class EditProfile extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
     }
 
 

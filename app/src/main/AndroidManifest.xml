@@ -51,6 +51,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
         <activity
             android:name=".controller.TrangChuActivity"
             android:exported="false" />
@@ -58,7 +59,20 @@
             android:name=".controller.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.Admin_Dashboard"
+            android:name=".controller.MapActivity"
+            android:exported="true" />
+        <activity
+            android:name=".controller.AddressActivity"
+            android:exported="true" />
+        <activity
+            android:name=".controller.EditProfile"
+            android:exported="true" />
+        <activity
+            android:name=".controller.HisOrderMain"
+            android:exported="true" />
+
+        <activity
+            android:name=".controller.MainProfile"
             android:exported="true" >
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
