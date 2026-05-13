@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
+import com.example.nhom33.adapter.Admin_Noti_Adapter;
 import com.example.nhom33.database.item_noti;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Admin_Notification extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<item_noti> itemList;
-    Admin_FoodList_Adapter adminFoodListAdapter;
+    Admin_Noti_Adapter myAdapter;
 
     ImageButton btn_back;
 
@@ -63,8 +64,8 @@ public class Admin_Notification extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //myAdapter = new MyAdapter(itemList);
-        recyclerView.setAdapter(adminFoodListAdapter);
+        myAdapter = new Admin_Noti_Adapter(itemList);
+        recyclerView.setAdapter(myAdapter);
 
     }
 }

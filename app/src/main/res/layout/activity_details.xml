@@ -201,10 +201,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="170dp"
         android:background="#F8F9FA"
         android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/tvPrice"
@@ -216,7 +217,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -226,13 +228,16 @@
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
             <ImageButton
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_minus"
                 app:tint="#FFF" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -240,6 +245,7 @@
                 android:text="2"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
+
             <ImageButton
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -247,6 +253,17 @@
                 android:src="@android:drawable/ic_input_add"
                 app:tint="#FFF" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_to_cart"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:backgroundTint="#ff7622"
+            android:text="THÊM VÀO GIỎ"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

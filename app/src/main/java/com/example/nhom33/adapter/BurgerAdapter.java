@@ -1,5 +1,6 @@
 package com.example.nhom33.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
 import com.example.nhom33.controller.Burger;
+import com.example.nhom33.controller.DetailsActivity;
 
 import java.util.List;
 
@@ -38,6 +40,17 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerView
         holder.txtRest.setText(burger.getRestaurant());
         holder.txtPrice.setText(burger.getPrice());
         holder.imgFood.setImageResource(burger.getImageRes());
+
+        // Xử lý sự kiện click vào item để chuyển sang DetailsActivity
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
+                // Bạn có thể gửi thêm dữ liệu nếu cần, ví dụ:
+                // intent.putExtra("burger_name", burger.getName());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

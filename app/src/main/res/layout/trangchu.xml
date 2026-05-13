@@ -106,6 +106,8 @@
         </HorizontalScrollView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_food"
+            android:clickable="true"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:cardCornerRadius="35dp"

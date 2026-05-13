@@ -1,4 +1,4 @@
-package com.example.nhom33;
+package com.example.nhom33.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,14 +7,8 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.nhom33.controller.DanhSachBurgerActivity;
-import com.example.nhom33.controller.DetailsActivity;
-import com.example.nhom33.controller.SignUpActivity;
-import com.example.nhom33.controller.TrangChuActivity;
+import com.example.nhom33.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
-        Button btnSignUp = findViewById(R.id.btnGoToSignUp);
+        Button btnSignUp = findViewById(R.id.btnGoToAdmin);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(MainActivity.this, Admin_Dashboard.class);
                 startActivity(intent);
             }
         });
@@ -50,25 +44,25 @@ public class MainActivity extends AppCompatActivity {
 
         // 3. Xử lý nút chuyển đến Danh Sách Burger (MỚI)
         // Đảm bảo bạn đã thêm nút này vào activity_main.xml với id là btnGoToBurgerList
-        Button btnBurgerList = findViewById(R.id.btnGoToBurgerList);
-        btnBurgerList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển từ MainActivity sang DanhSachBurgerActivity
-                Intent intent = new Intent(MainActivity.this, DanhSachBurgerActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button btnBurgerList = findViewById(R.id.btnGoToBurgerList);
+//        btnBurgerList.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Chuyển từ MainActivity sang DanhSachBurgerActivity
+//                Intent intent = new Intent(MainActivity.this, DanhSachBurgerActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         // 4. Xử lý nút chuyển đến trang Chi tiết Pizza (Details)
         // Đảm bảo bạn đã thêm Button vào layout với ID là btnGoToDetails
-        Button btnDetails = findViewById(R.id.btnGoToDetails);
-        btnDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển từ MainActivity sang activity_details (DetailsActivity)
-                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button btnDetails = findViewById(R.id.btnGoToDetails);
+//        btnDetails.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Chuyển từ MainActivity sang activity_details (DetailsActivity)
+//                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 }
