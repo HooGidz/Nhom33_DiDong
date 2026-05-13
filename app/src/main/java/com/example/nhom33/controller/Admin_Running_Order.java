@@ -1,6 +1,7 @@
 package com.example.nhom33.controller;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class Admin_Running_Order extends AppCompatActivity{
     RecyclerView recyclerView;
     List<item_running_order> itemList;
     MyAdapter myAdapter;
+    ImageButton btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,10 @@ public class Admin_Running_Order extends AppCompatActivity{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(v -> finish());
+
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
         item_running_order it1 = new item_running_order(R.drawable.fb, "Gà rán", "ID: 45344", "60.000 VND");

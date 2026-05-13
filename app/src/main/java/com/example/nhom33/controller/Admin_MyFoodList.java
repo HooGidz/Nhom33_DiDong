@@ -3,6 +3,9 @@ package com.example.nhom33.controller;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +29,8 @@ public class Admin_MyFoodList extends AppCompatActivity {
     List<item_food> itemList;
     MyAdapter myAdapter;
 
+    ImageButton btn_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,16 @@ public class Admin_MyFoodList extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
 
 //        recyclerView = findViewById(R.id.recyclerView);
 //        itemList = new ArrayList<>();

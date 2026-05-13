@@ -1,6 +1,8 @@
 package com.example.nhom33.controller;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +26,8 @@ public class Admin_Notification extends AppCompatActivity {
     List<item_noti> itemList;
     MyAdapter myAdapter;
 
+    ImageButton btn_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,15 @@ public class Admin_Notification extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
