@@ -12,10 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.adapter.Admin_Noti_Adapter;
-import com.example.nhom33.database.item_noti;
+import com.example.nhom33.db.item_noti;
 
 import java.util.ArrayList;
 import java.util.List;

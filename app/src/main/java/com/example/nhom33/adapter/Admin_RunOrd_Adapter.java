@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
-import com.example.nhom33.database.item_running_order;
+import com.example.nhom33.db.item_running_order;
 
 import java.util.List;
 

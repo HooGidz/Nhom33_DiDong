@@ -1,4 +1,4 @@
-package com.example.nhom33.database;
+package com.example.nhom33.db;
 
 public class item_noti {
     int img_user, img_food;

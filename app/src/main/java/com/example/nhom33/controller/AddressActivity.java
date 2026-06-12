@@ -3,7 +3,6 @@ package com.example.nhom33.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import com.example.nhom33.R;
 import com.example.nhom33.adapter.AddressAdapter;
-import com.example.nhom33.database.Address;
+import com.example.nhom33.db.Address;
 
 public class AddressActivity extends AppCompatActivity {
     View btnAddNew, btnBack;

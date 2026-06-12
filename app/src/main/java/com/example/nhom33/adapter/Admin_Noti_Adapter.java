@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
-import com.example.nhom33.database.item_noti;
+import com.example.nhom33.db.item_noti;
 
 import java.util.List;
 

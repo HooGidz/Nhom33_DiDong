@@ -11,10 +11,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.adapter.Admin_FoodList_Adapter;
 import com.example.nhom33.R;
 import com.example.nhom33.adapter.Admin_RunOrd_Adapter;
-import com.example.nhom33.database.item_running_order;
+import com.example.nhom33.db.item_running_order;
 
 import java.util.ArrayList;
 import java.util.List;

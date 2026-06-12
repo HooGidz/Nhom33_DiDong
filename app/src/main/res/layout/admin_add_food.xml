@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:id="@+id/main">
+
+    <LinearLayout
+        android:id="@+id/layout_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="nút quay lại"
+            android:background="@drawable/bg_button_back"
+            android:src="@drawable/icons8_back_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="17dp"
+            android:text="Thêm mới món ăn"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_form"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/layout_back"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Tên món -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên món ăn:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_food_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ví dụ: Burger Phô Mai"
+                android:inputType="textCapWords" />
+
+            <!-- Chọn danh mục -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Chọn danh mục:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/spinner_category_id"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <!-- Mô tả -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Mô tả món ăn:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mô tả ngắn gọn về món ăn"
+                android:gravity="top"
+                android:minLines="2"
+                android:inputType="textMultiLine" />
+
+            <!-- Giá -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Giá bán (VNĐ):"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ví dụ: 50000"
+                android:inputType="numberDecimal" />
+
+            <!-- Giá Sale -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Giá khuyến mãi (nếu có):"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_price_sale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ví dụ: 45000"
+                android:inputType="numberDecimal" />
+
+            <!-- Link ảnh -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Đường dẫn hình ảnh (URL):"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_image_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="https://example.com/image.jpg"
+                android:inputType="textUri" />
+
+            <!-- Loại bữa ăn -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Loại bữa ăn:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/edt_meal_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ví dụ: Sáng, Trưa, Tối, hoặc Cả ngày" />
+
+            <!-- Trạng thái -->
+            <CheckBox
+                android:id="@+id/chk_is_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Đang phục vụ (Có sẵn)"
+                android:textSize="16sp"
+                android:checked="true" />
+
+            <!-- Nút Thêm -->
+            <Button
+                android:id="@+id/btn_add_food"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="THÊM MÓN ĂN"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:backgroundTint="#FF5722"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

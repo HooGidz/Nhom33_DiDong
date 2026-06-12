@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
-import com.example.nhom33.database.item_food;
+import com.example.nhom33.db.item_food;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public class Admin_FoodList_Adapter extends RecyclerView.Adapter<Admin_FoodList_
     private List<item_food> itemList;
     public Admin_FoodList_Adapter(List<item_food> itemList){
         this.itemList = itemList;
+        notifyDataSetChanged();
     }
 
 

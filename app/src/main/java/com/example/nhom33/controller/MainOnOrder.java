@@ -13,10 +13,8 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.nhom33.adapter.HisOrderAdapter;
 import com.example.nhom33.adapter.OnOrderAdapter;
-import com.example.nhom33.database.OnOrder;
-import com.example.nhom33.database.hisOrder;
+import com.example.nhom33.db.OnOrder;
 
 public class MainOnOrder extends AppCompatActivity {
     private RecyclerView recyclerView;

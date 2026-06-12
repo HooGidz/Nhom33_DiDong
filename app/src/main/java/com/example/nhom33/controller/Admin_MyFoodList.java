@@ -1,10 +1,10 @@
 package com.example.nhom33.controller;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.adapter.Admin_FoodList_Adapter;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
-import com.example.nhom33.database.DatabaseHelper;
-import com.example.nhom33.database.item_food;
+import com.example.nhom33.db.item_food;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +52,6 @@ public class Admin_MyFoodList extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
-        item_food it1 = new item_food(R.drawable.pizza_img, "Gà rán", "60.000 VND", "Bữa sáng");
-        item_food it2 = new item_food(R.drawable.pizza_img, "Bánh pizza", "120.000 VND", "Bữa tối");
-        item_food it3 = new item_food(R.drawable.pizza_img, "Cơm sườn", "60.000 VND", "Bữa trưa");
-        item_food it4 = new item_food(R.drawable.pizza_img, "Gà rán", "60.000 VND", "Bữa sáng");
-
-        itemList.add(it1);
-        itemList.add(it2);
-        itemList.add(it3);
-        itemList.add(it4);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -67,37 +59,57 @@ public class Admin_MyFoodList extends AppCompatActivity {
         myAdapter = new Admin_FoodList_Adapter(itemList);
         recyclerView.setAdapter(myAdapter);
 
-        // Trong Activity của bạn
-//        recyclerView = findViewById(R.id.recyclerView); // Uncommented
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        DatabaseHelper dbHelper = new DatabaseHelper(this);
-//        SQLiteDatabase db = dbHelper.openDatabase();
-//
-//        Cursor cursor = db.rawQuery("SELECT * FROM Foods", null);
-//        List<item_food> list = new ArrayList<>();
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                item_food item = new item_food();
-//                int nameIndex = cursor.getColumnIndex("food_name");
-//                int priceIndex = cursor.getColumnIndex("price");
-//                int tagIndex = cursor.getColumnIndex("meal_type");
-//                int imgIndex = cursor.getColumnIndex("image_url");
-//
-//                if (nameIndex != -1) item.setTxt_food(cursor.getString(nameIndex));
-//                if (priceIndex != -1) item.setTxt_price(cursor.getString(priceIndex));
-//                if (tagIndex != -1) item.setTxt_tag(cursor.getString(tagIndex));
-//                if (imgIndex != -1) item.setImg_food(cursor.getInt(imgIndex));
-//                list.add(item);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//
-//// Sau đó truyền list này vào MyAdapter
-//        Admin_FoodList_Adapter adapter = new Admin_FoodList_Adapter(list);
-//        recyclerView.setAdapter(adapter);
+        // Fetch dữ liệu từ Room Database
+        loadFoodsFromDatabase();
+    }
+
+    private void loadFoodsFromDatabase() {
+        // Lấy dữ liệu từ database trên background thread
+        new Thread(() -> {
+            try {
+                FoodDB db = FoodDB.getInstance(this);
+                List<FoodsEntity> foodsEntities = db.foodsDAO().getAllFoods();
+
+                // Log kiểm tra
+                Log.d("Admin_MyFoodList", "Số lượng foods lấy được: " + foodsEntities.size());
+                for (FoodsEntity entity : foodsEntities) {
+                    Log.d("Admin_MyFoodList", "Food: " + entity.getFoodName() + " - Price: " + entity.getPrice());
+                }
+
+                // Chuyển đổi danh sách FoodsEntity sang item_food
+                List<item_food> foods = new ArrayList<>();
+                for (FoodsEntity entity : foodsEntities) {
+                    String priceFormatted = String.format("%.0f VND", entity.getPrice());
+                    item_food item = new item_food(
+                            R.drawable.pizza_img, // Drawable mặc định (có thể cập nhật dựa trên imageUrl)
+                            entity.getFoodName(),
+                            priceFormatted,
+                            entity.getMealType()
+                    );
+                    foods.add(item);
+                }
+
+                // Cập nhật RecyclerView trên UI thread
+                runOnUiThread(() -> {
+                    itemList.clear();
+                    itemList.addAll(foods);
+                    myAdapter.notifyDataSetChanged();
+
+                    // Hiện Toast thông báo
+                    Toast.makeText(Admin_MyFoodList.this,
+                            "Đã tải " + foods.size() + " món ăn",
+                            Toast.LENGTH_SHORT).show();
+
+                    Log.d("Admin_MyFoodList", "RecyclerView đã cập nhật với " + foods.size() + " items");
+                });
+            } catch (Exception e) {
+                Log.e("Admin_MyFoodList", "Lỗi khi tải dữ liệu: " + e.getMessage(), e);
+                runOnUiThread(() -> {
+                    Toast.makeText(Admin_MyFoodList.this,
+                            "Lỗi: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
+            }
+        }).start();
     }
 }

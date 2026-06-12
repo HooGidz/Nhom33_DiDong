@@ -14,7 +14,7 @@ import com.example.nhom33.R;
 
 import java.util.List;
 
-import com.example.nhom33.database.hisOrder;
+import com.example.nhom33.db.hisOrder;
 
 public class HisOrderAdapter extends RecyclerView.Adapter<HisOrderAdapter.HisOrderViewHolder> {
     private Context context;

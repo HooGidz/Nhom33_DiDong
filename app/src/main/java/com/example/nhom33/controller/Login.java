@@ -11,10 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
 
-    // Khai báo các thành phần giao diện
+    private FirebaseAuth mAuth;
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
     private TextView txtSignUp;
@@ -22,39 +23,58 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Kết nối file XML (View) vào Activity này
         setContentView(R.layout.login);
 
-        // Ánh xạ ID từ XML sang Java
+        mAuth = FirebaseAuth.getInstance();
+
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
         txtSignUp = findViewById(R.id.txtSignUp);
 
-        // Xử lý sự kiện khi nhấn nút Login
         btnLogin.setOnClickListener(v -> {
-            String email = edtEmail.getText().toString();
-            String password = edtPassword.getText().toString();
-
-            // Logic kiểm tra đăng nhập (đây là phần của Controller)
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
-            }
+            loginUser();
         });
+        Intent intent = getIntent();
+        if (intent!=null) {
+            Bundle ex = intent.getExtras();
+            if (ex!=null){
+                edtEmail.setText(ex.getString("email"));
+                edtPassword.setText(ex.getString("password"));
+            }}
 
-
-        // Xử lý sự kiện khi nhấn vào chữ ĐĂNG KÝ
         txtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Chuyển từ Login sang SignUpActivity
                 Intent intent = new Intent(Login.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    private void loginUser() {
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPassword.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Login.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            //return;
+        }
+
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(Login.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    } else {
+//                        Toast.makeText(Login.this, "Đăng nhập thất bại: " + task.getException().getMessage(),
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//                });
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "201050728265",
+    "project_id": "nhom-33",
+    "storage_bucket": "nhom-33.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201050728265:android:128a66d9c0ba36938b9c98",
+        "android_client_info": {
+          "package_name": "com.example.nhom33"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPRR1ejue9Y8baH-wPifry_Ze60pIESFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

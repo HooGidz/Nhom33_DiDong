@@ -8,15 +8,8 @@ import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nhom33.adapter.Cart_Adapter;
 import com.example.nhom33.R;
-import com.example.nhom33.database.item_cart;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Add_Cart extends AppCompatActivity {
     ImageButton btn_back;

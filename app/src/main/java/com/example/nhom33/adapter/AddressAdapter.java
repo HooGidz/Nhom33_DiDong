@@ -12,7 +12,7 @@ import com.example.nhom33.R;
 
 import java.util.List;
 
-import com.example.nhom33.database.Address;
+import com.example.nhom33.db.Address;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> {
 

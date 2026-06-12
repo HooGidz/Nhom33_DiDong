@@ -1,7 +1,6 @@
 package com.example.nhom33.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,7 @@ import com.example.nhom33.R;
 
 import java.util.List;
 
-import com.example.nhom33.database.OnOrder;
-import com.example.nhom33.database.hisOrder;
+import com.example.nhom33.db.OnOrder;
 
 public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderViewHolder> {
     private Context context;

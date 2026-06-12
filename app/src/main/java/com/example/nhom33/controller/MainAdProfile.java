@@ -2,7 +2,6 @@ package com.example.nhom33.controller;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.nhom33.R;
-import com.example.nhom33.database.AdProfile;
+import com.example.nhom33.db.AdProfile;
 import com.example.nhom33.adapter.AdProfileAdapter;
 
 public class MainAdProfile extends AppCompatActivity {

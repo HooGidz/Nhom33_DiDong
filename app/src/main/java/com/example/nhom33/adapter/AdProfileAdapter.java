@@ -14,7 +14,7 @@ import com.example.nhom33.R;
 
 import java.util.List;
 
-import com.example.nhom33.database.AdProfile;
+import com.example.nhom33.db.AdProfile;
 
 public class AdProfileAdapter extends RecyclerView.Adapter<AdProfileAdapter.ProfileViewHolder> {
 

@@ -1,6 +1,4 @@
-package com.example.nhom33.database;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.nhom33.db;
 
 public class item_running_order {
     int img_food;
