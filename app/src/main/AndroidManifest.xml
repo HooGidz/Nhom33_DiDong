@@ -119,6 +119,14 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".controller.Admin_All_Category"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Admin_Edit_Category"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".controller.Admin_Notification"
             android:exported="true">
         </activity>

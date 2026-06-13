@@ -1,5 +1,6 @@
 package com.example.nhom33.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -59,7 +60,10 @@ public class Admin_Add_Category extends AppCompatActivity {
             FoodDB.getInstance(this).categoriesDAO().insertCategory(category);
 
             Toast.makeText(this, "Thêm danh mục thành công!", Toast.LENGTH_SHORT).show();
-            finish(); // Quay lại màn hình trước
+            Intent intent = new Intent(Admin_Add_Category.this, Admin_All_Category.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
 
         } catch (Exception e) {
             Toast.makeText(this, "Lỗi khi thêm: " + e.getMessage(), Toast.LENGTH_LONG).show();

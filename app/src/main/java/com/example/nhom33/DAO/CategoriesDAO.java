@@ -1,8 +1,10 @@
 package com.example.nhom33.DAO;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.nhom33.DataEntity.CategoriesEntity;
 
@@ -18,4 +20,10 @@ public interface CategoriesDAO {
 
     @Insert
     void insertCategory(CategoriesEntity category);
+
+    @Update
+    void updateCategory(CategoriesEntity category);
+
+    @Delete
+    void deleteCategory(CategoriesEntity category);
 }

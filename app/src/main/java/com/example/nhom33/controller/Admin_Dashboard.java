@@ -96,7 +96,7 @@ public class Admin_Dashboard extends AppCompatActivity {
                     } else if (id == R.id.nav_food_list) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_MyFoodList.class));
                     } else if (id == R.id.nav_all_category) {
-                        startActivity(new Intent(Admin_Dashboard.this, Admin_Add_Category.class));
+                        startActivity(new Intent(Admin_Dashboard.this, Admin_All_Category.class));
                     } else if (id == R.id.nav_notifications) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_Notification.class));
                     } else if (id == R.id.nav_profile) {

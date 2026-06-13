@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fb"
+                android:contentDescription="Hình ảnh danh mục" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txt_category_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Tên danh mục"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/layout_actions"
+            app:layout_constraintStart_toEndOf="@+id/card_img"
+            app:layout_constraintTop_toTopOf="@+id/card_img" />
+
+        <TextView
+            android:id="@+id/txt_category_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Mô tả danh mục"
+            android:textColor="#7a7c84"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/layout_actions"
+            app:layout_constraintStart_toStartOf="@+id/txt_category_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_category_name" />
+
+        <LinearLayout
+            android:id="@+id/layout_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_edit_category"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Sửa"
+                android:src="@drawable/icons8_edit_24"
+                app:tint="#FF5722" />
+
+            <ImageButton
+                android:id="@+id/btn_delete_category"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Xóa"
+                android:src="@drawable/icons8_remove_24"
+                app:tint="#F44336" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

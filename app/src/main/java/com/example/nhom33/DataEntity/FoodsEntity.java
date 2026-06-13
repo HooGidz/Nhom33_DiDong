@@ -1,53 +1,50 @@
-package com.example.nhom33.DataEntity; // Thay đổi package cho đúng với thư mục thực tế của bạn
+package com.example.nhom33.DataEntity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
 @Entity(
         tableName = "Foods",
         foreignKeys = @ForeignKey(
-                entity = CategoriesEntity.class, // Tên lớp Entity của bảng Categories của bạn
+                entity = CategoriesEntity.class,
                 parentColumns = "category_id",
                 childColumns = "category_id",
-                onDelete = ForeignKey.CASCADE // Tự động xóa món ăn nếu danh mục bị xóa (hoặc dùng NO_ACTION)
+                onDelete = ForeignKey.CASCADE
         )
 )
 public class FoodsEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "food_id")
-    private int foodId; // Kiểu int để đảm bảo notNull = true khớp với hệ thống
+    private int foodId;
 
     @ColumnInfo(name = "category_id")
-    private int categoryId; // Kiểu int để đảm bảo notNull = true khớp with hệ thống
+    private int categoryId;
 
-    @NonNull // Trường này bắt buộc phải có vì SQL khai báo NOT NULL
+    @NonNull
     @ColumnInfo(name = "food_name")
     private String foodName;
 
     @ColumnInfo(name = "description")
-    private String description; // Cho phép null
+    private String description;
 
     @ColumnInfo(name = "price")
-    private double price; // REAL trong SQLite tương ứng với double trong Java
+    private double price;
 
-    //@Ignore
-    private Double priceSale; // Sử dụng Double (viết hoa) vì trường này có thể NULL
+    @ColumnInfo(name = "price_sale")
+    private Double priceSale;
 
     @ColumnInfo(name = "image_url")
-    private String imageUrl; // Cho phép null
+    private String imageUrl;
 
-    //@Ignore
-    private int isAvailable; // Thay vì boolean, dùng int (0 hoặc 1) để khớp hoàn toàn với INTEGER của SQLite
+    @ColumnInfo(name = "is_available")
+    private int isAvailable;
 
     @ColumnInfo(name = "meal_type")
-    private String mealType; // Chứa các giá trị 'Sáng', 'Trưa', 'Tối', 'Cả ngày'
-
-    // ==================== CONSTRUCTOR ====================
+    private String mealType;
 
     public FoodsEntity() {
     }
@@ -63,78 +60,31 @@ public class FoodsEntity {
         this.mealType = mealType;
     }
 
-    // ==================== GETTER VÀ SETTER ====================
+    public int getFoodId() { return foodId; }
+    public void setFoodId(int foodId) { this.foodId = foodId; }
 
-    public int getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(int foodId) {
-        this.foodId = foodId;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
+    public int getCategoryId() { return categoryId; }
+    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
 
     @NonNull
-    public String getFoodName() {
-        return foodName;
-    }
+    public String getFoodName() { return foodName; }
+    public void setFoodName(@NonNull String foodName) { this.foodName = foodName; }
 
-    public void setFoodName(@NonNull String foodName) {
-        this.foodName = foodName;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getDescription() {
-        return description;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Double getPriceSale() { return priceSale; }
+    public void setPriceSale(Double priceSale) { this.priceSale = priceSale; }
 
-    public double getPrice() {
-        return price;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public int getIsAvailable() { return isAvailable; }
+    public void setIsAvailable(int isAvailable) { this.isAvailable = isAvailable; }
 
-    public Double getPriceSale() {
-        return priceSale;
-    }
-
-    public void setPriceSale(Double priceSale) {
-        this.priceSale = priceSale;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public int getIsAvailable() {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(int isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public String getMealType() {
-        return mealType;
-    }
-
-    public void setMealType(String mealType) {
-        this.mealType = mealType;
-    }
+    public String getMealType() { return mealType; }
+    public void setMealType(String mealType) { this.mealType = mealType; }
 }
