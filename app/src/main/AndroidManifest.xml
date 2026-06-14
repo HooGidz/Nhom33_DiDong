@@ -130,6 +130,14 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".controller.Admin_All_Order"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".controller.Admin_Edit_Order"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".controller.Admin_Notification"
             android:exported="true">
         </activity>

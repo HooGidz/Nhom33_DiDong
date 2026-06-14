@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="90dp"
-                    android:text="Đơn hàng đang giao"
+                    android:text="Đơn hàng chờ xác nhận"
                     android:textColor="#7a7c84"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -129,6 +129,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_delivery_orders"
                 android:layout_width="185dp"
                 android:layout_height="138dp"
                 app:cardCornerRadius="25dp"
@@ -149,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="90dp"
-                    android:text="Đơn hàng chờ xác nhận"
+                    android:text="Đơn hàng đang giao"
                     android:textColor="#7a7c84"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -317,6 +318,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@drawable/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

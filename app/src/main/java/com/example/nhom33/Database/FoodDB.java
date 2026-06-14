@@ -12,6 +12,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.nhom33.DAO.CategoriesDAO;
 import com.example.nhom33.DAO.FoodsDAO;
 import com.example.nhom33.DAO.NotificationDAO;
+import com.example.nhom33.DAO.OrderDetailsDAO;
+import com.example.nhom33.DAO.OrdersDAO;
+import com.example.nhom33.DAO.UsersDAO;
 import com.example.nhom33.DataEntity.CartEntity;
 import com.example.nhom33.DataEntity.CategoriesEntity;
 import com.example.nhom33.DataEntity.CouponsEntity;
@@ -40,7 +43,7 @@ import java.util.concurrent.Executors;
         ProductReviewEntity.class,
         NotificationEntity.class,
         SearchHistoryEntity.class
-}, version = 10) // Bump version to 10 after renaming Notifications table so DB rebuilds
+}, version = 11) // Nâng version lên 11 để database cập nhật lại dữ liệu mẫu
 public abstract class FoodDB extends RoomDatabase {
     private static final String DB_NAME = "ql_doan33.db";
     private static FoodDB instance;
@@ -60,6 +63,9 @@ public abstract class FoodDB extends RoomDatabase {
     public abstract FoodsDAO foodsDAO();
     public abstract CategoriesDAO categoriesDAO();
     public abstract NotificationDAO notificationDAO();
+    public abstract OrdersDAO ordersDAO();
+    public abstract OrderDetailsDAO orderDetailsDAO();
+    public abstract UsersDAO usersDAO();
 
     private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
@@ -115,19 +121,19 @@ public abstract class FoodDB extends RoomDatabase {
 
                     // 8. Chèn Orders
                     db.execSQL("INSERT INTO Orders (customer_id, order_date, total_amount, status, delivery_address) VALUES " +
-                            "(1, datetime('now'), 159000, 'Completed', 'Vinh, Nghệ An'), " +
-                            "(2, datetime('now'), 55000, 'Delivering', 'Hà Nội'), " +
-                            "(3, datetime('now'), 89000, 'Pending', 'Đà Nẵng'), " +
-                            "(1, datetime('now'), 35000, 'Cancelled', 'Vinh, Nghệ An'), " +
-                            "(1, datetime('now'), 55000, 'Delivering', 'Hà Nội');");
+                            "(1, datetime('now'), 159000, 'Hoàn thành', 'Vinh, Nghệ An'), " +
+                            "(2, datetime('now'), 55000, 'Đang giao hàng', 'Hà Nội'), " +
+                            "(3, datetime('now'), 89000, 'Chờ xác nhận', 'Đà Nẵng'), " +
+                            "(1, datetime('now'), 35000, 'Đã huỷ', 'Vinh, Nghệ An'), " +
+                            "(1, datetime('now'), 55000, 'Đang giao hàng', 'Hà Nội');");
 
                     // 9. Chèn OrderDetails
                     db.execSQL("INSERT INTO OrderDetails (order_id, food_id, quantity, price_at_time) VALUES " +
                             "(1, 1, 1, 159000), " +
-                            "(1, 1, 1, 159000), " +
+                            "(2, 2, 1, 55000), " +
                             "(3, 3, 1, 89000), " +
                             "(4, 4, 1, 35000), " +
-                            "(2, 2, 1, 55000);");
+                            "(5, 2, 1, 55000);"); // Đã bổ sung chi tiết cho đơn hàng ID 5
 
                     // 10. Chèn ProductReview
                     db.execSQL("INSERT INTO ProductReview (user_id, food_id, order_id, rating, comment, image_url, review_date) VALUES " +

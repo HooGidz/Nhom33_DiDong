@@ -7,7 +7,7 @@
             android:title="Trang chủ" />
         <item
             android:id="@+id/nav_order"
-            android:icon="@drawable/icon_dashboard"
+            android:icon="@drawable/icons8_order_24"
             android:title="Đơn hàng" />
         <item
             android:id="@+id/nav_food_list"
@@ -15,11 +15,11 @@
             android:title="Danh sách món ăn" />
         <item
             android:id="@+id/nav_all_category"
-            android:icon="@drawable/icons_add_24"
+            android:icon="@drawable/icons8_category_24"
             android:title="Danh mục món ăn" />
         <item
             android:id="@+id/nav_all_productreview"
-            android:icon="@drawable/icons_add_24"
+            android:icon="@drawable/icons8_review_24"
             android:title="Đánh giá khách hàng" />
         <item
             android:id="@+id/nav_notifications"

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:strokeColor="#F0F0F0"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Mã đơn hàng -->
+        <TextView
+            android:id="@+id/txt_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#DH-2024-001"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Ngày đặt -->
+        <TextView
+            android:id="@+id/txt_order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15/10/2023 14:30"
+            android:textColor="#757575"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_order_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_order_id" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#EEEEEE"
+            app:layout_constraintTop_toBottomOf="@id/txt_order_id" />
+
+        <!-- Tên khách hàng -->
+        <ImageView
+            android:id="@+id/img_user_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/icons8_person_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:tint="#757575" />
+
+        <TextView
+            android:id="@+id/txt_customer_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Nguyễn Văn A"
+            android:textColor="#212121"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/img_user_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_user_icon"
+            app:layout_constraintTop_toTopOf="@id/img_user_icon" />
+
+        <!-- Tổng tiền -->
+        <TextView
+            android:id="@+id/label_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Tổng tiền:"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_customer_name" />
+
+        <TextView
+            android:id="@+id/txt_order_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="150.000 VNĐ"
+            android:textColor="#FF7622"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/label_total"
+            app:layout_constraintStart_toEndOf="@id/label_total"
+            app:layout_constraintTop_toTopOf="@id/label_total" />
+
+        <!-- Phương thức thanh toán -->
+
+        <!-- Trạng thái -->
+        <TextView
+            android:id="@+id/txt_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_button_back"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Chờ xác nhận"
+            android:textColor="#FF7622"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_total" />
+
+        <!-- Nút chi tiết -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_detail"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:paddingVertical="6dp"
+            android:text="Chi tiết"
+            android:textColor="#FF7622"
+            android:textSize="12sp"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txt_order_status"
+            app:strokeColor="#FF7622" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

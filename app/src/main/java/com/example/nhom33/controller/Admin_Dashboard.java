@@ -26,7 +26,7 @@ public class Admin_Dashboard extends AppCompatActivity {
 
     ImageButton btn_menu, btn_add, btn_notification, btn_personal, btn_dashboard;
     MaterialButton btn_MenuHome;
-    MaterialCardView card_running_orders;
+    MaterialCardView card_running_orders, card_delivery_orders, card_review;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
@@ -55,6 +55,7 @@ public class Admin_Dashboard extends AppCompatActivity {
         btn_personal = findViewById(R.id.btn_personal);
         btn_dashboard = findViewById(R.id.btn_dashboard);
         card_running_orders = findViewById(R.id.card_running_orders);
+        card_delivery_orders = findViewById(R.id.card_delivery_orders);
 
         // Đăng ký OnBackPressedCallback để xử lý nút Back thay cho onBackPressed()
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -92,7 +93,7 @@ public class Admin_Dashboard extends AppCompatActivity {
                     if (id == R.id.nav_home) {
                         drawerLayout.closeDrawer(GravityCompat.START);
                     } else if (id == R.id.nav_order) {
-                        startActivity(new Intent(Admin_Dashboard.this, Admin_Running_Order.class));
+                        startActivity(new Intent(Admin_Dashboard.this, Admin_All_Order.class));
                     } else if (id == R.id.nav_food_list) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_MyFoodList.class));
                     } else if (id == R.id.nav_all_category) {
@@ -117,7 +118,18 @@ public class Admin_Dashboard extends AppCompatActivity {
             card_running_orders.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Admin_Dashboard.this, Admin_Running_Order.class);
+                    Intent intent = new Intent(Admin_Dashboard.this, Admin_All_Order.class);
+                    intent.putExtra("FILTER_STATUS", "Chờ xác nhận");
+                    startActivity(intent);
+                }
+            });
+        }
+        if (card_delivery_orders != null) {
+            card_delivery_orders.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Admin_Dashboard.this, Admin_All_Order.class);
+                    intent.putExtra("FILTER_STATUS", "Đang giao hàng");
                     startActivity(intent);
                 }
             });
