@@ -25,7 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 public class Admin_Dashboard extends AppCompatActivity {
 
     ImageButton btn_menu, btn_add, btn_notification, btn_personal, btn_dashboard;
-    MaterialButton btn_MenuHome;
+    MaterialButton btn_MenuHome, btnXemTatCaReview;
     MaterialCardView card_running_orders, card_delivery_orders, card_review;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -56,6 +56,8 @@ public class Admin_Dashboard extends AppCompatActivity {
         btn_dashboard = findViewById(R.id.btn_dashboard);
         card_running_orders = findViewById(R.id.card_running_orders);
         card_delivery_orders = findViewById(R.id.card_delivery_orders);
+        card_review = findViewById(R.id.card_review);
+        btnXemTatCaReview = findViewById(R.id.btnXemTatCaReview);
 
         // Đăng ký OnBackPressedCallback để xử lý nút Back thay cho onBackPressed()
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -98,6 +100,8 @@ public class Admin_Dashboard extends AppCompatActivity {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_MyFoodList.class));
                     } else if (id == R.id.nav_all_category) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_All_Category.class));
+                    } else if (id == R.id.nav_all_productreview) {
+                        startActivity(new Intent(Admin_Dashboard.this, ReviewActivity.class));
                     } else if (id == R.id.nav_notifications) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_Notification.class));
                     } else if (id == R.id.nav_profile) {
@@ -131,6 +135,26 @@ public class Admin_Dashboard extends AppCompatActivity {
                     Intent intent = new Intent(Admin_Dashboard.this, Admin_All_Order.class);
                     intent.putExtra("FILTER_STATUS", "Đang giao hàng");
                     startActivity(intent);
+                }
+            });
+        }
+
+        // Sự kiện click để vào trang Review từ CardView
+        if (card_review != null) {
+            card_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(Admin_Dashboard.this, ReviewActivity.class));
+                }
+            });
+        }
+
+        // Sự kiện click để vào trang Review từ nút "Xem tất cả"
+        if (btnXemTatCaReview != null) {
+            btnXemTatCaReview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(Admin_Dashboard.this, ReviewActivity.class));
                 }
             });
         }

@@ -14,6 +14,7 @@ import com.example.nhom33.DAO.FoodsDAO;
 import com.example.nhom33.DAO.NotificationDAO;
 import com.example.nhom33.DAO.OrderDetailsDAO;
 import com.example.nhom33.DAO.OrdersDAO;
+import com.example.nhom33.DAO.ProductReviewDao;
 import com.example.nhom33.DAO.UsersDAO;
 import com.example.nhom33.DataEntity.CartEntity;
 import com.example.nhom33.DataEntity.CategoriesEntity;
@@ -66,6 +67,7 @@ public abstract class FoodDB extends RoomDatabase {
     public abstract OrdersDAO ordersDAO();
     public abstract OrderDetailsDAO orderDetailsDAO();
     public abstract UsersDAO usersDAO();
+    public abstract ProductReviewDao productReviewDAO();
 
     private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
