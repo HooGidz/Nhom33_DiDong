@@ -1,43 +1,57 @@
 package com.example.nhom33.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.OrdersEntity;
+import com.example.nhom33.DAO.OrderDetailsDAO;
+import com.example.nhom33.adapter.OnOrderAdapter;
+import com.example.nhom33.db.OnOrder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.nhom33.adapter.OnOrderAdapter;
-import com.example.nhom33.db.OnOrder;
+import java.util.Locale;
 
 public class MainOnOrder extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OnOrderAdapter orderAdapter;
     private List<OnOrder> orderList;
     private TabLayout tabLayout;
+    private View btn_back; // Changed from MaterialButton to View to avoid ClassCastException
+    private FoodDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hisorder_activity);
 
-        // 1. Ánh xạ View
+        db = FoodDB.getInstance(this);
+        
         recyclerView = findViewById(R.id.recyclerView);
         tabLayout = findViewById(R.id.tabLayout);
+        btn_back = findViewById(R.id.btn_back);
+
+        if (btn_back != null) {
+            btn_back.setOnClickListener(v -> finish());
+        }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 1) { // Bấm sang Lịch sử
+                if (tab.getPosition() == 1) { 
                     Intent intent = new Intent(MainOnOrder.this, HisOrderMain.class);
                     startActivity(intent);
-                    overridePendingTransition(0, 0); // Không hiệu ứng để mượt hơn
+                    overridePendingTransition(0, 0);
                     finish();
                 }
             }
@@ -46,50 +60,58 @@ public class MainOnOrder extends AppCompatActivity {
         });
 
         tabLayout.post(() -> {
-            TabLayout.Tab tab = tabLayout.getTabAt(0); // Đang giao là index 0
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
             if (tab != null) tab.select();
         });
 
-        // 3. Thiết lập RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Tạo danh sách dữ liệu mẫu theo Model mới đã tách TextView
         orderList = new ArrayList<>();
-        prepareData();
-
-        // 4. Gán Adapter
+        
+        loadOngoingOrdersFromDB();
+        
         orderAdapter = new OnOrderAdapter(this, orderList);
         recyclerView.setAdapter(orderAdapter);
     }
 
-    private void prepareData() {
-        // Dữ liệu mẫu 1: Pizza Hut - Completed
-        orderList.add(new OnOrder("Food",
-                "Pizza Hut",
-                "#162432",
-                "$35.25",
-                "03 Items",
-                R.mipmap.ic_launcher // Thay bằng ảnh thật của bạn trong drawable
-        ));
+    private void loadOngoingOrdersFromDB() {
+        // Lấy userId từ SharedPreferences đã lưu khi đăng nhập
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
 
-        // Dữ liệu mẫu 2: McDonald's - Completed
-        orderList.add(new OnOrder(
-                "Food",
-                "McDonald's",
-                "#242432",
-                "$40.15",
-                "02 Items",
-                R.mipmap.ic_launcher
-        ));
+        if (userId == -1) {
+            return; // Chưa đăng nhập
+        }
 
-        // Dữ liệu mẫu 3: Starbucks - Canceled
-        orderList.add(new OnOrder(
-                "Drink",
-                "Starbucks",
-                "#240112",
-                "$10.20",
-                "01 Items",
-                R.mipmap.ic_launcher
-        ));
+        List<OrdersEntity> orders = db.ordersDAO().getOngoingOrdersByUserId(userId);
+        
+        for (OrdersEntity order : orders) {
+            List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(order.getOrderId());
+            
+            String category = "N/A";
+            String displayName = "Đơn hàng trống";
+            int totalQty = 0;
+
+            if (details != null && !details.isEmpty()) {
+                category = details.get(0).category_name;
+                displayName = details.get(0).food_name;
+                if (details.size() > 1) {
+                    displayName += " + " + (details.size() - 1) + " món khác";
+                }
+                for (OrderDetailsDAO.OrderDetailWithFood d : details) {
+                    totalQty += d.quantity;
+                }
+            }
+
+            orderList.add(new OnOrder(
+                    category, 
+                    displayName, 
+                    "#" + order.getOrderId(),
+                    String.format(Locale.getDefault(), "%,.0f VNĐ", order.getTotalAmount()),
+                    totalQty + " món", 
+                    order.getStatus(), 
+                    order.getOrderDate(),
+                    R.mipmap.ic_launcher
+            ));
+        }
     }
 }

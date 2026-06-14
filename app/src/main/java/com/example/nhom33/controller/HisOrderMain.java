@@ -1,46 +1,54 @@
 package com.example.nhom33.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.OrdersEntity;
+import com.example.nhom33.DAO.OrderDetailsDAO;
+import com.example.nhom33.adapter.HisOrderAdapter;
+import com.example.nhom33.db.hisOrder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.nhom33.adapter.HisOrderAdapter;
-import com.example.nhom33.db.hisOrder;
+import java.util.Locale;
 
 public class HisOrderMain extends AppCompatActivity {
-        private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private HisOrderAdapter orderAdapter;
     private List<hisOrder> orderList;
     private TabLayout tabLayout;
+    private View btn_back; // Đổi thành View để tránh ClassCastException với MaterialCardView trong XML
+    private FoodDB db;
 
     @Override
-
-
-
-
-/// /////////////////////////////////////////////////////////
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hisorder_activity);
 
-        // 1. Ánh xạ View
+        db = FoodDB.getInstance(this);
+
         recyclerView = findViewById(R.id.recyclerView);
         tabLayout = findViewById(R.id.tabLayout);
+        btn_back = findViewById(R.id.btn_back);
 
-        // 2. Thiết lập Listener TRƯỚC khi chọn Tab mặc định
+        if (btn_back != null) {
+            btn_back.setOnClickListener(v -> finish());
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) { // Bấm sang Đang giao
+                if (tab.getPosition() == 0) {
                     Intent intent = new Intent(HisOrderMain.this, MainOnOrder.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
@@ -52,55 +60,60 @@ public class HisOrderMain extends AppCompatActivity {
         });
 
         tabLayout.post(() -> {
-            TabLayout.Tab tab = tabLayout.getTabAt(1); // Lịch sử là index 1
+            TabLayout.Tab tab = tabLayout.getTabAt(1);
             if (tab != null) tab.select();
         });
 
-        // 3. Thiết lập RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Tạo danh sách dữ liệu mẫu theo Model mới đã tách TextView
         orderList = new ArrayList<>();
-        prepareData();
+        
+        loadHistoryDataFromDB();
 
-        // 4. Gán Adapter
         orderAdapter = new HisOrderAdapter(this, orderList);
         recyclerView.setAdapter(orderAdapter);
     }
 
-    private void prepareData() {
-        // Dữ liệu mẫu 1: Pizza Hut - Completed
-        orderList.add(new hisOrder("Food", "Completed",
-                "Pizza Hut",
-                "#162432",
-                "$35.25",
-                "29 JAN, 12:30",
-                "03 Items",
-                R.mipmap.ic_launcher // Thay bằng ảnh thật của bạn trong drawable
-        ));
+    private void loadHistoryDataFromDB() {
+        // Lấy userId thực tế từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        int currentUserId = sharedPreferences.getInt("userId", -1);
 
-        // Dữ liệu mẫu 2: McDonald's - Completed
-        orderList.add(new hisOrder(
-                "Food",
-                "Completed",
-                "McDonald's",
-                "#242432",
-                "$40.15",
-                "30 JAN, 12:30",
-                "02 Items",
-                R.mipmap.ic_launcher
-        ));
+        if (currentUserId == -1) {
+            return; // Chưa đăng nhập hoặc không tìm thấy ID
+        }
 
-        // Dữ liệu mẫu 3: Starbucks - Canceled
-        orderList.add(new hisOrder(
-                "Drink",
-                "Canceled",
-                "Starbucks",
-                "#240112",
-                "$10.20",
-                "30 JAN, 12:30",
-                "01 Items",
-                R.mipmap.ic_launcher
-        ));
+        // Lấy TẤT CẢ đơn hàng của user này (không phân biệt trạng thái)
+        List<OrdersEntity> entities = db.ordersDAO().getOrdersByUserId(currentUserId);
+        
+        for (OrdersEntity entity : entities) {
+            // Lấy chi tiết liên kết để có Danh mục và Tên món
+            List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(entity.getOrderId());
+            
+            String category = "N/A";
+            String displayName = "Đơn hàng trống";
+            int totalItems = 0;
+
+            if (details != null && !details.isEmpty()) {
+                category = details.get(0).category_name;
+                displayName = details.get(0).food_name;
+                if (details.size() > 1) {
+                    displayName += " + " + (details.size() - 1) + " món khác";
+                }
+                for (OrderDetailsDAO.OrderDetailWithFood d : details) {
+                    totalItems += d.quantity;
+                }
+            }
+
+            orderList.add(new hisOrder(
+                    category, 
+                    entity.getStatus(),
+                    displayName, 
+                    "#" + entity.getOrderId(),
+                    String.format(Locale.getDefault(), "%,.0f VNĐ", entity.getTotalAmount()),
+                    entity.getOrderDate(),
+                    totalItems + " món",
+                    R.mipmap.ic_launcher
+            ));
+        }
     }
 }

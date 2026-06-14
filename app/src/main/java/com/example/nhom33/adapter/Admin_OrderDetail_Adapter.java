@@ -32,7 +32,13 @@ public class Admin_OrderDetail_Adapter extends RecyclerView.Adapter<Admin_OrderD
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderDetailsDAO.OrderDetailWithFood detail = detailsList.get(position);
-        holder.txtFoodName.setText(detail.food_name);
+        
+        // Hiển thị: [Danh mục] Tên món ăn
+        String displayName = String.format("[%s] %s", 
+                detail.category_name != null ? detail.category_name : "N/A", 
+                detail.food_name);
+        
+        holder.txtFoodName.setText(displayName);
         holder.txtQuantity.setText(String.format(Locale.getDefault(), "x%d", detail.quantity));
         holder.txtPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", detail.price_at_time));
     }

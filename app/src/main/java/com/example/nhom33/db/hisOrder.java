@@ -9,8 +9,8 @@ public class hisOrder {
     private String dateTime;
     private String itemCount;
     private int imageResId;
-    public hisOrder(String category, String status, String storeName, String orderId, String price, String dateTime, String itemCount, int imageResId)
-    {
+
+    public hisOrder(String category, String status, String storeName, String orderId, String price, String dateTime, String itemCount, int imageResId) {
         this.category = category;
         this.status = status;
         this.storeName = storeName;
@@ -20,29 +20,13 @@ public class hisOrder {
         this.itemCount = itemCount;
         this.imageResId = imageResId;
     }
-    public String getCategory() {
-        return category;
-    }
-    public String getStatus() {
-        return status;
-    }
-    public String getStoreName() {
-        return storeName;
-    }
-    public String getOrderId() {
-        return orderId;
-    }
-    public String getPrice() {
-        return price;
-    }
-    public String getDateTime() {
-        return dateTime;
-    }
-    public String getItemCount() {
-        return itemCount;
-    }
-    public int getImageResId() {
-        return imageResId;
-    }
-}
 
+    public String getCategory() { return category; }
+    public String getStatus() { return status; }
+    public String getStoreName() { return storeName; }
+    public String getOrderId() { return orderId; }
+    public String getPrice() { return price; }
+    public String getDateTime() { return dateTime; }
+    public String getItemCount() { return itemCount; }
+    public int getImageResId() { return imageResId; }
+}

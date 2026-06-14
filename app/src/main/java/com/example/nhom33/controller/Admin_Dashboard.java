@@ -1,6 +1,8 @@
 package com.example.nhom33.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,7 +109,15 @@ public class Admin_Dashboard extends AppCompatActivity {
                     } else if (id == R.id.nav_profile) {
                         startActivity(new Intent(Admin_Dashboard.this, MainAdProfile.class));
                     } else if (id == R.id.nav_logout) {
+                        // Xử lý đăng xuất
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+                        sharedPreferences.edit().clear().apply();
+
                         Toast.makeText(Admin_Dashboard.this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                        
+                        Intent intent = new Intent(Admin_Dashboard.this, Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         finish();
                     }
                     if (drawerLayout != null) {

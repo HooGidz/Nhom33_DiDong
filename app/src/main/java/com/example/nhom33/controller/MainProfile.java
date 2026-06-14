@@ -3,8 +3,6 @@ package com.example.nhom33.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -12,17 +10,15 @@ import androidx.cardview.widget.CardView;
 import com.example.nhom33.R;
 
 public class MainProfile extends AppCompatActivity {
-    // 1. Đổi kiểu dữ liệu thành View (vì container là RelativeLayout)
-    View btnInfo, btnAddress;
+    View btnInfo, btnAddress, btnOrderHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
 
-        // 2. Sử dụng ID của container để vùng bấm được rộng hơn (cả dòng)
+        // Thông tin cá nhân
         btnInfo = findViewById(R.id.btn_info_container);
-
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,11 +27,22 @@ public class MainProfile extends AppCompatActivity {
             }
         });
 
+        // Địa chỉ
         btnAddress = findViewById(R.id.btn_address_container);
         btnAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainProfile.this, AddressActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Lịch sử giao hàng -> Chuyển sang MainOnOrder
+        btnOrderHistory = findViewById(R.id.btn_order_history_container);
+        btnOrderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainProfile.this, MainOnOrder.class);
                 startActivity(intent);
             }
         });
