@@ -26,28 +26,42 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/txt_notification"
+        android:id="@+id/txt_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="35dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="Hoàng Giáp đã làm xong"
+        android:text="Hệ thống bảo trì"
         android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/card_food"
         app:layout_constraintStart_toEndOf="@+id/card_user"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/card_user" />
+
+    <TextView
+        android:id="@+id/txt_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Ứng dụng sẽ bảo trì hệ thống nạp tiền vào lúc 23h00."
+        android:textColor="#444444"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_title"
+        app:layout_constraintStart_toStartOf="@+id/txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 
     <TextView
         android:id="@+id/txt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="20 phút trước"
-        app:layout_constraintStart_toStartOf="@+id/txt_notification"
-        app:layout_constraintTop_toBottomOf="@+id/txt_notification" />
+        android:layout_marginTop="4dp"
+        android:text="13/06/2026"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_content"
+        app:layout_constraintTop_toBottomOf="@+id/txt_content" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_food"
@@ -59,12 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/img_food"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

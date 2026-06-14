@@ -1,8 +1,10 @@
 package com.example.nhom33.controller;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
 import com.example.nhom33.adapter.Admin_Noti_Adapter;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.NotificationEntity;
 import com.example.nhom33.db.item_noti;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class Admin_Notification extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.admin_notfication);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -46,25 +51,66 @@ public class Admin_Notification extends AppCompatActivity {
             }
         });
 
-
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
-        item_noti it1 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm  dự án này và đang làm tiếp", "20 phút trước");
-        item_noti it2 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it3 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it4 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
-        item_noti it5 = new item_noti(R.drawable.ava_1, R.drawable.pizza_img, "Hoàng Giáp đã làm xong", "20 phút trước");
-
-        itemList.add(it1);
-        itemList.add(it2);
-        itemList.add(it3);
-        itemList.add(it4);
-        itemList.add(it5);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
         myAdapter = new Admin_Noti_Adapter(itemList);
         recyclerView.setAdapter(myAdapter);
 
+        // Fetch dữ liệu từ Room Database
+        loadNotificationsFromDB();
+    }
+
+    private void loadNotificationsFromDB() {
+        // Lấy dữ liệu từ database trên background thread
+        new Thread(() -> {
+            try {
+                FoodDB db = FoodDB.getInstance(this);
+                List<NotificationEntity> dbNotifications = db.notificationDAO().getAllNotifications();
+
+                // Log kiểm tra
+                Log.d("Admin_Notification", "Số lượng thông báo lấy được: " + dbNotifications.size());
+
+                // Chuyển đổi danh sách Notification (Entity) sang item_noti (UI Model)
+                List<item_noti> tempUIList = new ArrayList<>();
+                for (NotificationEntity noti : dbNotifications) {
+                    Log.d("Admin_Notification", "Noti: " + noti + " - Content: " + noti.getContent());
+
+                    String time = noti.getCreatedAt() != null ? noti.getCreatedAt() : "Vừa xong";
+
+                    item_noti item = new item_noti(
+                            R.drawable.ava_1,
+                            noti.getTitle(),
+                            noti.getContent(),
+                            time
+                    );
+                    tempUIList.add(item);
+                }
+
+                // Cập nhật RecyclerView trên UI thread
+                runOnUiThread(() -> {
+                    itemList.clear();
+                    itemList.addAll(tempUIList);
+                    myAdapter.notifyDataSetChanged();
+
+                    // Hiện Toast thông báo
+                    Toast.makeText(Admin_Notification.this,
+                            "Đã tải " + tempUIList.size() + " thông báo",
+                            Toast.LENGTH_SHORT).show();
+
+                    Log.d("Admin_Notification", "RecyclerView đã cập nhật với " + tempUIList.size() + " items");
+                });
+            } catch (Exception e) {
+                Log.e("Admin_Notification", "Lỗi khi tải dữ liệu: " + e.getMessage(), e);
+                runOnUiThread(() -> {
+                    Toast.makeText(Admin_Notification.this,
+                            "Lỗi: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
+            }
+        }).start();
     }
 }
