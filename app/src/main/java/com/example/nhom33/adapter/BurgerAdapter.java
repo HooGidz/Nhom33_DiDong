@@ -1,6 +1,8 @@
 package com.example.nhom33.adapter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,58 +11,77 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
-import com.example.nhom33.controller.Burger;
 import com.example.nhom33.controller.DetailsActivity;
 
 import java.util.List;
+import java.util.Locale;
 
 public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerViewHolder> {
 
-    // 1. Khai báo danh sách dữ liệu
-    private List<Burger> burgerList;
+    private List<FoodsEntity> foodList;
+    private Context context;
 
-    public BurgerAdapter(List<Burger> burgerList) {
-        this.burgerList = burgerList;
+    public BurgerAdapter(Context context, List<FoodsEntity> foodList) {
+        this.context = context;
+        this.foodList = foodList;
     }
 
     @NonNull
     @Override
     public BurgerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Kết nối với item_burger.xml
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_burger, parent, false);
         return new BurgerViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BurgerViewHolder holder, int position) {
-        // Đổ dữ liệu vào View
-        Burger burger = burgerList.get(position);
-        holder.txtName.setText(burger.getName());
-        holder.txtRest.setText(burger.getRestaurant());
-        holder.txtPrice.setText(burger.getPrice());
-        holder.imgFood.setImageResource(burger.getImageRes());
+        FoodsEntity food = foodList.get(position);
+        holder.txtName.setText(food.getFoodName());
+        holder.txtRest.setText(food.getDescription());
 
-        // Xử lý sự kiện click vào item để chuyển sang DetailsActivity
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
-                // Bạn có thể gửi thêm dữ liệu nếu cần, ví dụ:
-                // intent.putExtra("burger_name", burger.getName());
-                v.getContext().startActivity(intent);
-            }
+        // Xử lý hiển thị giá
+        if (food.getPriceSale() != null && food.getPriceSale() > 0) {
+            // Có giảm giá
+            holder.txtPriceSale.setVisibility(View.VISIBLE);
+            holder.txtPriceSale.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPriceSale()));
+            
+            // Giá gốc hiển thị nhỏ hơn và có gạch ngang
+            holder.txtPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPrice()));
+            holder.txtPrice.setPaintFlags(holder.txtPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.txtPrice.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
+        } else {
+            // Không giảm giá
+            holder.txtPriceSale.setVisibility(View.GONE);
+            holder.txtPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPrice()));
+            holder.txtPrice.setPaintFlags(holder.txtPrice.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.txtPrice.setTextColor(context.getResources().getColor(R.color.black)); // Đảm bảo màu sắc đúng
+        }
+
+        // Load ảnh từ drawable
+        String imgName = food.getImageUrl();
+        if (imgName != null && !imgName.isEmpty()) {
+            if (imgName.contains(".")) imgName = imgName.substring(0, imgName.lastIndexOf("."));
+            int resId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
+            if (resId != 0) holder.imgFood.setImageResource(resId);
+            else holder.imgFood.setImageResource(R.drawable.pizza_img);
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("FOOD_ID", food.getFoodId());
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return burgerList != null ? burgerList.size() : 0;
+        return foodList != null ? foodList.size() : 0;
     }
 
-    // 2. Class ViewHolder (Nằm bên TRONG BurgerAdapter)
     public static class BurgerViewHolder extends RecyclerView.ViewHolder {
-        TextView txtName, txtRest, txtPrice;
+        TextView txtName, txtRest, txtPrice, txtPriceSale;
         ImageView imgFood;
 
         public BurgerViewHolder(@NonNull View itemView) {
@@ -68,6 +89,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerView
             txtName = itemView.findViewById(R.id.txtName);
             txtRest = itemView.findViewById(R.id.txtRest);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+            txtPriceSale = itemView.findViewById(R.id.txtPriceSale);
             imgFood = itemView.findViewById(R.id.imgBurger);
         }
     }

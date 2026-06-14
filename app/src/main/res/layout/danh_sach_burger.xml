@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="#000000" />
 
-        <!-- Nút chọn loại Burger (Dùng background bo góc có sẵn) -->
+        <!-- Nút chọn loại Burger -->
         <LinearLayout
             android:id="@+id/lnCategorySelector"
             android:layout_width="wrap_content"
@@ -37,9 +37,10 @@
             app:layout_constraintTop_toTopOf="@id/btnBackBurgerList">
 
             <TextView
+                android:id="@+id/txt_title_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BURGER"
+                android:text="DANH MỤC"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -67,50 +68,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Burgers thịnh hành"
+            android:text="Món ăn thịnh hành"
             android:textColor="#32343E"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnBackBurgerList" />
 
-        <!-- Khu vực danh sách Burger (Tạm thời dùng Grid để bạn thấy layout) -->
+        <!-- Khu vực danh sách món ăn chính -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBurgerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/tvTitlePopular" />
 
-        <!-- Tiêu đề Open Restaurants -->
+        <!-- PHẦN MỚI: Món ăn đang giảm giá -->
         <TextView
-            android:id="@+id/tvTitleOpen"
+            android:id="@+id/tvTitleDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="Nhà hàng mở cửa"
+            android:text="Món ăn đang giảm giá"
             android:textColor="#32343E"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvBurgerList" />
 
-        <!-- Banner nhà hàng lớn -->
-        <androidx.cardview.widget.CardView
+        <!-- RecyclerView hiển thị món ăn giảm giá -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDiscountList"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleOpen"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/food" />
-        </androidx.cardview.widget.CardView>
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleDiscount"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

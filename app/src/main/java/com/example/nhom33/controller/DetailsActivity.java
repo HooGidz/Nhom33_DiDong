@@ -2,42 +2,79 @@ package com.example.nhom33.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nhom33.DataEntity.FoodsEntity;
+import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.R;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    private ImageView imgProduct;
+    private TextView tvMainTitle, tvDescription, tvPrice;
+    private FoodDB db;
+    private int foodId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Kết nối file Java này với giao diện activity_details.xml
         setContentView(R.layout.activity_details);
 
-        if (getIntent().hasExtra("name")) {
-            String name = getIntent().getStringExtra("name");
-            String price = getIntent().getStringExtra("price");
-            int image = getIntent().getIntExtra("image", 0);
+        // Khởi tạo View
+        imgProduct = findViewById(R.id.imgProduct);
+        tvMainTitle = findViewById(R.id.tvMainTitle);
+        tvDescription = findViewById(R.id.tvDescription);
+        tvPrice = findViewById(R.id.tvPrice);
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        Button btnAddToCart = findViewById(R.id.btn_add_to_cart);
+
+        db = FoodDB.getInstance(this);
+
+        // Lấy FOOD_ID từ Intent
+        foodId = getIntent().getIntExtra("FOOD_ID", -1);
+
+        if (foodId != -1) {
+            loadFoodDetails();
         }
 
-        ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
 
-        Button btn_add_to_cart = findViewById(R.id.btn_add_to_cart);
-        btn_add_to_cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent = new Intent(DetailsActivity.this, Cart.class);
-                startActivity(intent);
-            }
+        btnAddToCart.setOnClickListener(v -> {
+            // Logic thêm vào giỏ hàng (nếu bạn đã có class Cart hoặc Add_Cart)
+            // Intent intent = new Intent(DetailsActivity.this, Add_Cart.class);
+            // intent.putExtra("FOOD_ID", foodId);
+            // startActivity(intent);
         });
+    }
+
+    private void loadFoodDetails() {
+        new Thread(() -> {
+            FoodsEntity food = db.foodsDAO().getFoodById(foodId);
+            if (food != null) {
+                runOnUiThread(() -> {
+                    tvMainTitle.setText(food.getFoodName());
+                    tvDescription.setText(food.getDescription());
+                    tvPrice.setText(String.format("%,.0f VNĐ", food.getPrice()));
+
+                    // Load ảnh từ drawable
+                    String imgName = food.getImageUrl();
+                    if (imgName != null && !imgName.isEmpty()) {
+                        if (imgName.contains(".")) {
+                            imgName = imgName.substring(0, imgName.lastIndexOf("."));
+                        }
+                        int resId = getResources().getIdentifier(imgName, "drawable", getPackageName());
+                        if (resId != 0) {
+                            imgProduct.setImageResource(resId);
+                        } else {
+                            imgProduct.setImageResource(R.drawable.pizza_img); // Ảnh mặc định
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

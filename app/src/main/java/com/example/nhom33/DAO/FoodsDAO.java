@@ -19,6 +19,12 @@ public interface FoodsDAO {
     @Query("SELECT * FROM Foods WHERE food_id = :id")
     FoodsEntity getFoodById(int id);
 
+    @Query("SELECT * FROM Foods WHERE category_id = :categoryId")
+    List<FoodsEntity> getFoodsByCategoryId(int categoryId);
+
+    @Query("SELECT * FROM Foods WHERE price_sale IS NOT NULL AND price_sale > 0")
+    List<FoodsEntity> getDiscountedFoods();
+
     @Insert
     void insertFood(FoodsEntity food);
 
@@ -28,7 +34,6 @@ public interface FoodsDAO {
     @Delete
     void deleteFood(FoodsEntity food);
 
-    // Thêm hàm xóa theo ID để đảm bảo xóa chính xác và an toàn hơn
     @Query("DELETE FROM Foods WHERE food_id = :id")
     void deleteFoodById(int id);
 }
