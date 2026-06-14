@@ -46,9 +46,11 @@ public class FoodsEntity {
     @ColumnInfo(name = "meal_type")
     private String mealType;
 
+    // Hàm khởi tạo không tham số bắt buộc của Room
     public FoodsEntity() {
     }
 
+    // Hàm khởi tạo đầy đủ tham số
     public FoodsEntity(int categoryId, @NonNull String foodName, String description, double price, Double priceSale, String imageUrl, int isAvailable, String mealType) {
         this.categoryId = categoryId;
         this.foodName = foodName;
@@ -60,6 +62,7 @@ public class FoodsEntity {
         this.mealType = mealType;
     }
 
+    // --- TOÀN BỘ GETTER & SETTER CHUẨN ---
     public int getFoodId() { return foodId; }
     public void setFoodId(int foodId) { this.foodId = foodId; }
 

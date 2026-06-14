@@ -23,6 +23,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".controller.AdminEditFoodActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.LocationActivity"
             android:exported="true">
         </activity>

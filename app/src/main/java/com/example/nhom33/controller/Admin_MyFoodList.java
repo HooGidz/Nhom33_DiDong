@@ -28,7 +28,6 @@ public class Admin_MyFoodList extends AppCompatActivity {
     RecyclerView recyclerView;
     List<item_food> itemList;
     Admin_FoodList_Adapter myAdapter;
-
     ImageButton btn_back;
 
     @Override
@@ -36,6 +35,7 @@ public class Admin_MyFoodList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.admin_my_food_list);
+        
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -43,45 +43,44 @@ public class Admin_MyFoodList extends AppCompatActivity {
         });
 
         btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btn_back.setOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         myAdapter = new Admin_FoodList_Adapter(itemList);
         recyclerView.setAdapter(myAdapter);
 
-        // Fetch dữ liệu từ Room Database
         loadFoodsFromDatabase();
     }
 
     private void loadFoodsFromDatabase() {
-        // Lấy dữ liệu từ database trên background thread
         new Thread(() -> {
             try {
                 FoodDB db = FoodDB.getInstance(this);
                 List<FoodsEntity> foodsEntities = db.foodsDAO().getAllFoods();
 
-                // Log kiểm tra
-                Log.d("Admin_MyFoodList", "Số lượng foods lấy được: " + foodsEntities.size());
-                for (FoodsEntity entity : foodsEntities) {
-                    Log.d("Admin_MyFoodList", "Food: " + entity.getFoodName() + " - Price: " + entity.getPrice());
-                }
-
-                // Chuyển đổi danh sách FoodsEntity sang item_food
                 List<item_food> foods = new ArrayList<>();
                 for (FoodsEntity entity : foodsEntities) {
-                    String priceFormatted = String.format("%.0f VND", entity.getPrice());
+                    // Xử lý giá tiền định dạng VND
+                    String priceFormatted = String.format("%,.0f VND", entity.getPrice());
+                    
+                    // Lấy ID hình ảnh từ tên file (ví dụ "pizza_hs.png" -> bỏ đuôi .png -> tìm trong drawable)
+                    int resId = R.drawable.fb; // Ảnh mặc định nếu không tìm thấy
+                    String imgName = entity.getImageUrl();
+                    if (imgName != null && !imgName.isEmpty()) {
+                        // Bỏ phần mở rộng file nếu có (.png, .jpg)
+                        if (imgName.contains(".")) {
+                            imgName = imgName.substring(0, imgName.lastIndexOf("."));
+                        }
+                        int checkId = getResources().getIdentifier(imgName, "drawable", getPackageName());
+                        if (checkId != 0) resId = checkId;
+                    }
+
                     item_food item = new item_food(
-                            R.drawable.pizza_img, // Drawable mặc định (có thể cập nhật dựa trên imageUrl)
+                            entity.getFoodId(),
+                            resId,
                             entity.getFoodName(),
                             priceFormatted,
                             entity.getMealType()
@@ -89,26 +88,17 @@ public class Admin_MyFoodList extends AppCompatActivity {
                     foods.add(item);
                 }
 
-                // Cập nhật RecyclerView trên UI thread
                 runOnUiThread(() -> {
                     itemList.clear();
                     itemList.addAll(foods);
                     myAdapter.notifyDataSetChanged();
-
-                    // Hiện Toast thông báo
-                    Toast.makeText(Admin_MyFoodList.this,
-                            "Đã tải " + foods.size() + " món ăn",
-                            Toast.LENGTH_SHORT).show();
-
-                    Log.d("Admin_MyFoodList", "RecyclerView đã cập nhật với " + foods.size() + " items");
+                    
+                    if (foods.isEmpty()) {
+                        Toast.makeText(this, "Chưa có món ăn nào trong database", Toast.LENGTH_SHORT).show();
+                    }
                 });
             } catch (Exception e) {
-                Log.e("Admin_MyFoodList", "Lỗi khi tải dữ liệu: " + e.getMessage(), e);
-                runOnUiThread(() -> {
-                    Toast.makeText(Admin_MyFoodList.this,
-                            "Lỗi: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                });
+                Log.e("Admin_MyFoodList", "Lỗi: " + e.getMessage());
             }
         }).start();
     }
