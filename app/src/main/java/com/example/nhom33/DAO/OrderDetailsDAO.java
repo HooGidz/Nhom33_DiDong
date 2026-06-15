@@ -1,11 +1,18 @@
 package com.example.nhom33.DAO;
 
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.nhom33.DataEntity.OrderDetailsEntity;
+
 import java.util.List;
 
 @Dao
 public interface OrderDetailsDAO {
+    @Insert
+    void insertOrderDetail(OrderDetailsEntity detail);
+
     @Query("SELECT od.order_id, f.food_name, c.category_name, od.quantity, od.price_at_time " +
            "FROM OrderDetails od " +
            "JOIN Foods f ON od.food_id = f.food_id " +

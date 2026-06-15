@@ -9,6 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.nhom33.DAO.CartDAO;
 import com.example.nhom33.DAO.CategoriesDAO;
 import com.example.nhom33.DAO.FavoritesDAO;
 import com.example.nhom33.DAO.FoodsDAO;
@@ -69,6 +70,7 @@ public abstract class FoodDB extends RoomDatabase {
     public abstract OrderDetailsDAO orderDetailsDAO();
     public abstract UsersDAO usersDAO();
     public abstract ProductReviewDao productReviewDAO();
+    public abstract CartDAO cartDAO();
     public abstract FavoritesDAO favoritesDAO();
 
     private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {

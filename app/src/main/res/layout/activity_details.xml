@@ -23,7 +23,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_circle_back"
-                android:src="@drawable/baseline_arrow_back_ios_24"
+                android:src="@drawable/icons8_back_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -253,6 +253,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageButton
+                android:id="@+id/btnMinus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -260,14 +261,16 @@
                 app:tint="#FFF" />
 
             <TextView
+                android:id="@+id/tvQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                android:text="2"
+                android:text="1"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
 
             <ImageButton
+                android:id="@+id/btnPlus"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="?attr/selectableItemBackgroundBorderless"

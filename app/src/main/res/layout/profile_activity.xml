@@ -26,14 +26,12 @@
                 app:cardBackgroundColor="#EAECEF"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
-                <TextView
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="&lt;"
-                    android:textColor="#333333"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:padding="10dp"
+                    android:src="@drawable/icons8_back_24"
+                    app:tint="#333333" />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -45,28 +43,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_menu_more"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="#EAECEF"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingBottom="5dp"
-                    android:text="..."
-                    android:textColor="#333333"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.card.MaterialCardView>
-        </RelativeLayout>
+            </RelativeLayout>
 
         <!-- Phần Thông tin người dùng -->
         <LinearLayout
@@ -285,34 +262,6 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="20dp" android:layout_toEndOf="@id/icon7" android:text="Câu hỏi thường gặp" android:textColor="#444444" android:textSize="15sp" android:textStyle="bold" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:text="›" android:textColor="#CCCCCC" android:textSize="22sp" />
                 </RelativeLayout>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="60dp" android:background="#F0F0F0" />
-                <!-- Đánh giá của người dùng -->
-                <RelativeLayout
-                    android:id="@+id/btn_review_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"
-                    android:paddingHorizontal="15dp">
-                    <ImageView android:id="@+id/icon8" android:layout_width="24dp" android:layout_height="24dp" android:layout_centerVertical="true" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="#26A69A" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="20dp" android:layout_toEndOf="@id/icon8" android:text="Đánh giá của người dùng" android:textColor="#444444" android:textSize="15sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:text="›" android:textColor="#CCCCCC" android:textSize="22sp" />
-                </RelativeLayout>
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="60dp" android:background="#F0F0F0" />
-                <!-- Cài đặt -->
-                <RelativeLayout
-                    android:id="@+id/btn_settings_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"
-                    android:paddingHorizontal="15dp">
-                    <ImageView android:id="@+id/icon9" android:layout_width="24dp" android:layout_height="24dp" android:layout_centerVertical="true" android:src="@android:drawable/ic_menu_preferences" app:tint="#5C6BC0" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="20dp" android:layout_toEndOf="@id/icon9" android:text="Cài đặt" android:textColor="#444444" android:textSize="15sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:text="›" android:textColor="#CCCCCC" android:textSize="22sp" />
-                </RelativeLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -321,24 +270,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp">
 
             <RelativeLayout
-                android:id="@+id/btn_logout_container"
+                android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
                 android:paddingHorizontal="15dp">
-                <ImageView android:id="@+id/iconLogout" android:layout_width="24dp" android:layout_height="24dp" android:layout_centerVertical="true" android:src="@android:drawable/ic_lock_power_off" app:tint="#EF5350" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="20dp" android:layout_toEndOf="@id/iconLogout" android:text="Đăng xuất" android:textColor="#EF5350" android:textSize="15sp" android:textStyle="bold" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:text="›" android:textColor="#CCCCCC" android:textSize="22sp" />
+                <ImageView android:id="@+id/iconLogout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:src="@android:drawable/ic_lock_power_off"
+                    app:tint="#D32F2F" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/iconLogout"
+                    android:text="Đăng xuất"
+                    android:textColor="#D32F2F"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
-
     </LinearLayout>
 </ScrollView>

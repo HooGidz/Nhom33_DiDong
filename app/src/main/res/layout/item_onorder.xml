@@ -6,10 +6,9 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#EEEEEE"
-    app:strokeColor="#FFCCBC"
-    app:strokeWidth="1dp">
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#EEE5EE"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đồ ăn"
-                android:textColor="#FF7043"
+                android:textColor="#A0A5BA"
                 android:textSize="12sp"
                 android:textStyle="bold" />
             <TextView
@@ -34,39 +33,42 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="Đang giao"
-                android:textColor="#FF7043"
+                android:textColor="#FF7622"
                 android:textStyle="bold" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#FFCCBC"
-            android:layout_marginVertical="8dp" />
+            android:background="#F0F0F0"
+            android:layout_marginVertical="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp">
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#F6F6F6">
                 <ImageView
                     android:id="@+id/imgStore"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/ic_launcher"
+                    android:padding="8dp"/>
             </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -74,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pizza Hut"
-                    android:textColor="#222222"
+                    android:textColor="#181C2E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -82,15 +84,16 @@
                     android:id="@+id/tvDateTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:text="29 JAN, 12:30"
-                    android:textColor="#9E9E9E"
-                    android:textSize="11sp" />
+                    android:textColor="#A0A5BA"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
                     android:gravity="center_vertical">
 
                     <TextView
@@ -98,23 +101,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="150.000 VNĐ"
-                        android:textColor="#FF7043"
+                        android:textColor="#FF7622"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" | "
-                        android:layout_marginHorizontal="8dp"
-                        android:textColor="#FFCCBC" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="12dp"
+                        android:background="#D0D0D0"
+                        android:layout_marginHorizontal="10dp" />
 
                     <TextView
                         android:id="@+id/tvItemCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đang xử lý"
-                        android:textColor="#757575"
+                        android:textColor="#646982"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -124,41 +126,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="#162432"
-                android:textColor="#BDC3C7"
+                android:textColor="#A0A5BA"
                 android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnTrack"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:backgroundTint="#FF7043"
+                android:backgroundTint="#FF7622"
                 android:text="Theo dõi"
                 android:textAllCaps="false"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                app:cornerRadius="20dp" />
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
             <Space
-                android:layout_width="12dp"
+                android:layout_width="16dp"
                 android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:backgroundTint="#FEEAE6"
                 android:text="Huỷ đơn"
                 android:textAllCaps="false"
-                android:textSize="12sp"
-                android:textColor="#FF7043"
-                app:cornerRadius="20dp" />
+                android:textSize="14sp"
+                android:textColor="#FF7622"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

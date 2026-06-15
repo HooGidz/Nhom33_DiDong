@@ -1,18 +1,29 @@
 package com.example.nhom33.db;
 
 public class item_cart {
-    String name;
-    String quantity;
-    int price;
-    int image;
+    private int foodId;
+    private String name;
+    private String quantity;
+    private int price;
+    private int originalPrice;
+    private int image;
 
-    public item_cart(String name, String quantity, int price, int image) {
+    public item_cart(int foodId, String name, String quantity, int price, int originalPrice, int image) {
+        this.foodId = foodId;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.originalPrice = originalPrice;
         this.image = image;
     }
 
+    public int getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(int foodId) {
+        this.foodId = foodId;
+    }
 
     public String getName() {
         return name;
@@ -36,6 +47,14 @@ public class item_cart {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(int originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
     public int getImage() {

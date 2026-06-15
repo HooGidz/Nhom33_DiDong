@@ -30,7 +30,7 @@ public interface OrdersDAO {
     OrdersEntity getOrderById(int orderId);
 
     @Insert
-    void insertOrder(OrdersEntity order);
+    long insertOrder(OrdersEntity order);
 
     @Update
     void updateOrder(OrdersEntity order);

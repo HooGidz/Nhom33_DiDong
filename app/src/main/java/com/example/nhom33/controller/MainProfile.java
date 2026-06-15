@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.UsersEntity;
 
 public class MainProfile extends AppCompatActivity {
-    private View btnInfo, btnAddress, btnOrderHistory, btnFavorite;
+    private View btnInfo, btnAddress, btnOrderHistory, btnCart, btnLogout, btnFavorite;
     private TextView txtUsername, txtBio;
     private FoodDB db;
     private int userId;
@@ -37,17 +38,21 @@ public class MainProfile extends AppCompatActivity {
 
         // Thông tin cá nhân
         btnInfo = findViewById(R.id.btn_info_container);
-        btnInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(MainProfile.this, EditProfile.class);
-            startActivity(intent);
-        });
+        if (btnInfo != null) {
+            btnInfo.setOnClickListener(v -> {
+                Intent intent = new Intent(MainProfile.this, EditProfile.class);
+                startActivity(intent);
+            });
+        }
 
         // Địa chỉ
         btnAddress = findViewById(R.id.btn_address_container);
-        btnAddress.setOnClickListener(v -> {
-            Intent intent = new Intent(MainProfile.this, AddressActivity.class);
-            startActivity(intent);
-        });
+        if (btnAddress != null) {
+            btnAddress.setOnClickListener(v -> {
+                Intent intent = new Intent(MainProfile.this, AddressActivity.class);
+                startActivity(intent);
+            });
+        }
 
         // Yêu thích (Món ăn > 4 sao)
         btnFavorite = findViewById(R.id.btn_favorite_container);
@@ -59,21 +64,41 @@ public class MainProfile extends AppCompatActivity {
             });
         }
 
+        // Giỏ hàng
+        btnCart = findViewById(R.id.btn_cart_container);
+        if (btnCart != null) {
+            btnCart.setOnClickListener(v -> {
+                Intent intent = new Intent(MainProfile.this, Cart.class);
+                startActivity(intent);
+            });
+        }
+
         // Lịch sử giao hàng
         btnOrderHistory = findViewById(R.id.btn_order_history_container);
-        btnOrderHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(MainProfile.this, MainOnOrder.class);
-            startActivity(intent);
-        });
+        if (btnOrderHistory != null) {
+            btnOrderHistory.setOnClickListener(v -> {
+                Intent intent = new Intent(MainProfile.this, MainOnOrder.class);
+                startActivity(intent);
+            });
+        }
 
+        // Đăng xuất
+        btnLogout = findViewById(R.id.btn_logout);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> logoutUser());
+        }
+
+        // Nút quay lại
         CardView btn_back = findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(v -> finish());
+        if (btn_back != null) {
+            btn_back.setOnClickListener(v -> finish());
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Cập nhật lại tên nếu vừa mới sửa ở trang EditProfile
+        // Cập nhật lại thông tin nếu vừa mới sửa ở trang EditProfile
         loadUserProfile();
     }
 
@@ -83,8 +108,8 @@ public class MainProfile extends AppCompatActivity {
             if (userId != -1) {
                 user = db.usersDAO().getUserById(userId);
             }
-            
-            // Dự phòng nếu chưa đăng nhập hoặc session lỗi
+
+            // Dự phòng nếu chưa đăng nhập hoặc session lỗi (Lấy user mặc định id=1)
             if (user == null) {
                 user = db.usersDAO().getUserById(1);
             }
@@ -93,12 +118,28 @@ public class MainProfile extends AppCompatActivity {
                 final String name = user.getFullName();
                 final String address = user.getAddress();
                 runOnUiThread(() -> {
-                    txtUsername.setText(name);
-                    if (address != null && !address.isEmpty()) {
+                    if (txtUsername != null) txtUsername.setText(name);
+                    if (txtBio != null && address != null && !address.isEmpty()) {
                         txtBio.setText(address);
                     }
                 });
             }
         }).start();
+    }
+
+    private void logoutUser() {
+        // Xóa thông tin đăng nhập trong SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+
+        // Chuyển về màn hình đăng nhập và xóa stack các activity trước đó
+        Intent intent = new Intent(MainProfile.this, Login.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }
