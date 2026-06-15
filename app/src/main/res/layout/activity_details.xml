@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <!-- 1. Header & Pizza (Đã đảo ImageView xuống dưới để nổi lên trên) -->
+            <!-- 1. Header & Pizza -->
             <ImageButton
                 android:id="@+id/btnBack"
                 android:layout_width="45dp"
@@ -65,17 +65,38 @@
                 app:layout_constraintStart_toStartOf="@id/orangeBg"
                 app:layout_constraintTop_toTopOf="@id/orangeBg" />
 
-            <!-- 2. Thông tin tên món -->
-            <TextView
-                android:id="@+id/tvMainTitle"
+            <!-- 2. Thông tin tên món & Nút yêu thích -->
+            <RelativeLayout
+                android:id="@+id/layoutTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:text="Pizza Calzone kiểu Âu"
-                android:textColor="#181C2E"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/layoutShop" />
+                app:layout_constraintTop_toBottomOf="@id/layoutShop">
+
+                <TextView
+                    android:id="@+id/tvMainTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/btnFavorite"
+                    android:layout_marginEnd="10dp"
+                    android:text="Pizza Calzone kiểu Âu"
+                    android:textColor="#181C2E"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnFavorite"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_circle_back"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_heart"
+                    app:tint="#828282" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -84,7 +105,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Prosciutto e funghi là một loại pizza được phủ sốt cà chua.."
                 android:textColor="#828282"
-                app:layout_constraintTop_toBottomOf="@id/tvMainTitle" />
+                app:layout_constraintTop_toBottomOf="@id/layoutTitle" />
 
             <!-- KHUNG ĐEN 1: Rating, Shipping, Time -->
             <LinearLayout

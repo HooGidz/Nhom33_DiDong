@@ -25,6 +25,12 @@ public interface FoodsDAO {
     @Query("SELECT * FROM Foods WHERE price_sale IS NOT NULL AND price_sale > 0")
     List<FoodsEntity> getDiscountedFoods();
 
+    @Query("SELECT * FROM Foods WHERE food_name LIKE '%' || :query || '%'")
+    List<FoodsEntity> searchFoodsByName(String query);
+
+    @Query("SELECT f.* FROM Foods f INNER JOIN Favorites fav ON f.food_id = fav.food_id WHERE fav.user_id = :userId")
+    List<FoodsEntity> getFavoriteFoodsByUser(int userId);
+
     @Insert
     void insertFood(FoodsEntity food);
 

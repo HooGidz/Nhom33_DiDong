@@ -45,6 +45,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/imgArrowCategory"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="5dp"

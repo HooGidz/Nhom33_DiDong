@@ -2,6 +2,7 @@ package com.example.nhom33.DAO;
 
 import androidx.room.Dao;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.nhom33.DataEntity.UsersEntity;
 
@@ -12,4 +13,7 @@ public interface UsersDAO {
 
     @Query("SELECT * FROM Users WHERE email = :email AND password = :password LIMIT 1")
     UsersEntity getUserByEmailAndPassword(String email, String password);
+
+    @Update
+    void updateUser(UsersEntity user);
 }

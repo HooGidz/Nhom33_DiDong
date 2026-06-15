@@ -1,7 +1,11 @@
 package com.example.nhom33.controller;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,101 +14,115 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.nhom33.R;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.UsersEntity;
+
+import java.util.List;
 
 public class EditProfile extends AppCompatActivity {
-    View btnBack;
+    private View btnBack, btnSave;
+    private EditText etFullName, etEmail, etPhone, etAddress;
+    private FoodDB db;
+    private UsersEntity currentUser;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit_profile);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
+        // Khởi tạo Database
+        db = FoodDB.getInstance(this);
+
+        // Ánh xạ View
         btnBack = findViewById(R.id.btnBack);
+        btnSave = findViewById(R.id.btnSave);
+        etFullName = findViewById(R.id.etFullName);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etAddress = findViewById(R.id.etAddress);
+
+        // Lấy userId từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        userId = sharedPreferences.getInt("userId", -1);
+
+        loadUserData();
+
         btnBack.setOnClickListener(v -> finish());
+        btnSave.setOnClickListener(v -> saveUserData());
     }
 
+    private void loadUserData() {
+        new Thread(() -> {
+            if (userId != -1) {
+                currentUser = db.usersDAO().getUserById(userId);
+            }
+            
+            // Nếu vẫn không tìm thấy (do lỗi session), lấy tạm user đầu tiên trong máy để không bị trống
+            if (currentUser == null) {
+                // Đây là phương án dự phòng để tránh lỗi khi bạn đang phát triển
+                // Trong thực tế nên yêu cầu đăng nhập lại
+                currentUser = db.usersDAO().getUserById(1); 
+            }
 
+            if (currentUser != null) {
+                runOnUiThread(() -> {
+                    etFullName.setText(currentUser.getFullName());
+                    etEmail.setText(currentUser.getEmail());
+                    etPhone.setText(currentUser.getPhone());
+                    etAddress.setText(currentUser.getAddress());
+                });
+            } else {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Vui lòng đăng nhập lại để cập nhật hồ sơ", Toast.LENGTH_LONG).show();
+                });
+            }
+        }).start();
+    }
 
+    private void saveUserData() {
+        if (currentUser == null) {
+            Toast.makeText(this, "Không có dữ liệu người dùng để lưu", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-/// /////////////////////////////////////////////////////////
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.hisorder_activity);
-//
-//        // 1. Ánh xạ View
-//        recyclerView = findViewById(R.id.recyclerView);
-//        tabLayout = findViewById(R.id.tabLayout);
-//
-//        // 2. Thiết lập Listener TRƯỚC khi chọn Tab mặc định
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                if (tab.getPosition() == 0) { // Bấm sang Đang giao
-//                    Intent intent = new Intent(MainActivity.this, MainOnOrder.class);
-//                    startActivity(intent);
-//                    overridePendingTransition(0, 0);
-//                    finish();
-//                }
-//            }
-//            @Override public void onTabUnselected(TabLayout.Tab tab) {}
-//            @Override public void onTabReselected(TabLayout.Tab tab) {}
-//        });
-//
-//        tabLayout.post(() -> {
-//            TabLayout.Tab tab = tabLayout.getTabAt(1); // Lịch sử là index 1
-//            if (tab != null) tab.select();
-//        });
-//
-//        // 3. Thiết lập RecyclerView
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        // Tạo danh sách dữ liệu mẫu theo Model mới đã tách TextView
-//        orderList = new ArrayList<>();
-//        prepareData();
-//
-//        // 4. Gán Adapter
-//        orderAdapter = new HisOrderAdapter(this, orderList);
-//        recyclerView.setAdapter(orderAdapter);
-//    }
-//
-//    private void prepareData() {
-//        // Dữ liệu mẫu 1: Pizza Hut - Completed
-//        orderList.add(new hisOrder("Food", "Completed",
-//                "Pizza Hut",
-//                "#162432",
-//                "$35.25",
-//                "29 JAN, 12:30",
-//                "03 Items",
-//                R.mipmap.ic_launcher // Thay bằng ảnh thật của bạn trong drawable
-//        ));
-//
-//        // Dữ liệu mẫu 2: McDonald's - Completed
-//        orderList.add(new hisOrder(
-//                "Food",
-//                "Completed",
-//                "McDonald's",
-//                "#242432",
-//                "$40.15",
-//                "30 JAN, 12:30",
-//                "02 Items",
-//                R.mipmap.ic_launcher
-//        ));
-//
-//        // Dữ liệu mẫu 3: Starbucks - Canceled
-//        orderList.add(new hisOrder(
-//                "Drink",
-//                "Canceled",
-//                "Starbucks",
-//                "#240112",
-//                "$10.20",
-//                "30 JAN, 12:30",
-//                "01 Items",
-//                R.mipmap.ic_launcher
-//        ));
-//    }
+        String fullName = etFullName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        String address = etAddress.getText().toString().trim();
+
+        if (fullName.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Họ tên và Email không được để trống", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        currentUser.setFullName(fullName);
+        currentUser.setEmail(email);
+        currentUser.setPhone(phone);
+        currentUser.setAddress(address);
+
+        new Thread(() -> {
+            try {
+                db.usersDAO().updateUser(currentUser);
+                runOnUiThread(() -> {
+                    Toast.makeText(EditProfile.this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(EditProfile.this, "Lỗi khi cập nhật hồ sơ", Toast.LENGTH_SHORT).show();
+                });
+            }
+        }).start();
+    }
 }

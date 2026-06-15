@@ -64,6 +64,7 @@
             android:textSize="18sp" />
 
         <EditText
+            android:id="@+id/edtSearchHome"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginTop="20dp"
@@ -73,7 +74,8 @@
             android:drawableStart="@android:drawable/ic_menu_search"
             android:hint="Tìm kiếm món ăn, nhà hàng,..."
             android:inputType="text"
-            android:paddingStart="15dp" />
+            android:paddingStart="15dp"
+            android:imeOptions="actionSearch" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -117,7 +119,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/pizza_img" />

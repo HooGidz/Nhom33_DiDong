@@ -2,8 +2,12 @@ package com.example.nhom33.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -23,6 +27,7 @@ public class TrangChuActivity extends AppCompatActivity {
     private HomeCategoryAdapter categoryAdapter;
     private List<CategoriesEntity> categoryList = new ArrayList<>();
     private FoodDB db;
+    private EditText edtSearchHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,25 @@ public class TrangChuActivity extends AppCompatActivity {
 
         // Khởi tạo Database
         db = FoodDB.getInstance(this);
+
+        // Ánh xạ View tìm kiếm
+        edtSearchHome = findViewById(R.id.edtSearchHome);
+        if (edtSearchHome != null) {
+            edtSearchHome.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH || 
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                        String query = edtSearchHome.getText().toString().trim();
+                        if (!query.isEmpty()) {
+                            performSearch(query);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
 
         // Thiết lập RecyclerView danh mục
         recyclerViewCategories = findViewById(R.id.recyclerViewCategories);
@@ -72,6 +96,12 @@ public class TrangChuActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void performSearch(String query) {
+        Intent intent = new Intent(TrangChuActivity.this, DanhSachBurgerActivity.class);
+        intent.putExtra("SEARCH_QUERY", query);
+        startActivity(intent);
     }
 
     private void loadCategories() {

@@ -10,7 +10,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:padding="24dp">
 
         <com.google.android.material.card.MaterialCardView
@@ -64,6 +63,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <ImageView
+                    android:id="@+id/imgAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -72,6 +72,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnEditAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#FF7A30"
@@ -104,12 +105,14 @@
                 app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
                 <EditText
+                    android:id="@+id/etFullName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:paddingHorizontal="16dp"
                     android:textSize="14sp"
-                    android:textColor="#1E293B"/>
+                    android:textColor="#1E293B"
+                    android:hint="Nhập họ tên"/>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -127,12 +130,15 @@
                 app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
                 <EditText
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="16dp"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="#1E293B"
+                    android:hint="Nhập email"/>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -150,18 +156,21 @@
                 app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
                 <EditText
+                    android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:inputType="phone"
                     android:paddingHorizontal="16dp"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="#1E293B"
+                    android:hint="Nhập số điện thoại"/>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TIỂU SỬ"
+                android:text="ĐỊA CHỈ"
                 android:textColor="#64748B"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -173,12 +182,15 @@
                 app:cardCornerRadius="12dp"
                 android:layout_marginBottom="32dp">
                 <EditText
+                    android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:gravity="top"
                     android:padding="16dp"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:textColor="#1E293B"
+                    android:hint="Nhập địa chỉ"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
