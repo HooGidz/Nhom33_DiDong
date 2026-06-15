@@ -108,7 +108,7 @@ public abstract class FoodDB extends RoomDatabase {
                             "('Hệ thống bảo trì', 'Ứng dụng sẽ bảo trì hệ thống nạp tiền vào lúc 23h00.', '13/06/2026');");
                     // 5. Chèn Categories
                     db.execSQL("INSERT INTO Categories (category_name, description, image_url) VALUES " +
-                            "('Đồ ăn nhanh', 'Các món chế biến nhanh, tiện lợi', 'fastfood.png'), " +
+                            "('Đồ ăn nhanh', 'Các món chế biến nhanh, tiện lợi', 'ga_gion.png'), " +
                             "('Đồ uống', 'Nước giải khát, trà sữa, cà phê', 'drinks.png'), " +
                             "('Món Việt', 'Ẩm thực truyền thống Việt Nam', 'vietnamese.png'), " +
                             "('Tráng miệng', 'Bánh ngọt và trái cây', 'dessert.png');");

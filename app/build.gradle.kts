@@ -50,6 +50,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-auth")
 
+    // Sửa lỗi dependency Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
     implementation("androidx.recyclerview:recyclerview:1.4.0")
 
     implementation("androidx.room:room-runtime:2.8.4")

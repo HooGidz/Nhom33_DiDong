@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.CategoriesEntity;
 import com.example.nhom33.R;
 
@@ -43,9 +44,18 @@ public class Admin_Category_Adapter extends RecyclerView.Adapter<Admin_Category_
         holder.txtCategoryName.setText(category.getCategoryName());
         holder.txtDescription.setText(category.getDescription());
 
-        // Nếu có thư viện Glide/Picasso thì load ảnh từ category.getImageUrl()
-        // Tạm thời hiển thị ảnh mặc định
-        holder.imgCategory.setImageResource(R.drawable.fb);
+        // Sử dụng Glide để load ảnh từ thư mục assets/imgg_product/
+        String imageUrl = category.getImageUrl();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            String fullPath = "file:///android_asset/img_product/" + imageUrl;
+            Glide.with(holder.itemView.getContext())
+                    .load(fullPath)
+                    .placeholder(R.drawable.fb) // Ảnh thay thế khi đang load
+                    .error(R.drawable.fb)       // Ảnh hiển thị nếu lỗi
+                    .into(holder.imgCategory);
+        } else {
+            holder.imgCategory.setImageResource(R.drawable.fb);
+        }
 
         holder.btnEdit.setOnClickListener(v -> {
             if (listener != null) {

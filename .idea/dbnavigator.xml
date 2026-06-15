@@ -11,6 +11,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
+      <assistant-state connection-id="dc299b32-96e5-45df-8f49-fc0cfdfaeb83" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+        <tools />
+      </assistant-state>
       <assistant-state connection-id="dc299b32-96e5-45df-8f49-fc0cfdfaeb83" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="7E7F7F31DA1C4E2F94D359B988C1D9F3" availability="AVAILABLE" acknowledgement="ENGAGED" selected="true">
         <chats>
           <chat id="7E7F7F31DA1C4E2F94D359B988C1D9F3" title="" session-signature="" timestamp="1781235560692">
@@ -18,9 +21,6 @@
             <context provider="" profile="" model="" action="" interactive="true" />
           </chat>
         </chats>
-        <tools />
-      </assistant-state>
-      <assistant-state connection-id="dc299b32-96e5-45df-8f49-fc0cfdfaeb83" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
       </assistant-state>
     </assistants>
@@ -31,7 +31,7 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
@@ -46,9 +46,7 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="dc299b32-96e5-45df-8f49-fc0cfdfaeb83" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabasePrerequisiteManager">
     <prerequisites />
@@ -94,7 +92,7 @@
           <protocol value="" />
           <url-parameters />
           <files>
-            <file path="C:\Users\Hoang Giap\AndroidStudioProjects\NHOM33\app\src\main\assets\qldoan.db" schema="main" />
+            <file path="C:\Users\Hoang Giap\AndroidStudioProjects\NHOM33\app\src\main\assets\ql_doan33_db.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
@@ -204,7 +202,7 @@
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
+          <database-version value="3.5" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
