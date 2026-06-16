@@ -14,7 +14,7 @@ import com.example.nhom33.R;
 import com.example.nhom33.db.AdProfile;
 import com.example.nhom33.adapter.AdProfileAdapter;
 
-public class MainAdProfile extends AppCompatActivity {
+public class Admin_Profile extends AppCompatActivity {
 
     private RecyclerView rvMenu;
     private AdProfileAdapter adapter;
@@ -24,7 +24,7 @@ public class MainAdProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Đảm bảo tên file layout này khớp với file activity_main.xml bạn đã tạo
-        setContentView(R.layout.adprofile_activity);
+        setContentView(R.layout.admin_profile);
 
         // 1. Ánh xạ View
         initViews();

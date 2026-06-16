@@ -40,7 +40,7 @@ public class UserManagementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_management);
+        setContentView(R.layout.admin_user_list);
 
         rvUsers = findViewById(R.id.rvUsers);
         tabLayout = findViewById(R.id.tabLayout);

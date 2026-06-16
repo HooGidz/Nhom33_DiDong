@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Payment0 extends AppCompatActivity {
+public class User_edit_payment_infomation extends AppCompatActivity {
     private ImageButton btnBack;
     private EditText edtFullName, edtAddress, edtPhone;
     private TextView tvTotalItems, tvSubTotal, tvFinalTotal;
@@ -39,7 +39,7 @@ public class Payment0 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_payment0);
+        setContentView(R.layout.user_edit_payment_information);
 
         db = FoodDB.getInstance(this);
 
@@ -147,7 +147,7 @@ public class Payment0 extends AppCompatActivity {
                 Toast.makeText(this, "Đặt hàng thành công! Đơn hàng của bạn đang chờ xác nhận.", Toast.LENGTH_LONG).show();
 
                 // Chuyển sang trang đặt hàng thành công và xóa stack các màn hình trước đó
-                Intent intentSuccess = new Intent(Payment0.this, PaymentSuccessActivity.class);
+                Intent intentSuccess = new Intent(User_edit_payment_infomation.this, User_Payment_Success.class);
                 intentSuccess.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intentSuccess);
                 finish();

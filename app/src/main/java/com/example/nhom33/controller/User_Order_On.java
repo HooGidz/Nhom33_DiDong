@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainOnOrder extends AppCompatActivity {
+public class User_Order_On extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OnOrderAdapter orderAdapter;
     private List<OnOrder> orderList;
@@ -33,7 +33,7 @@ public class MainOnOrder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.hisorder_activity);
+        setContentView(R.layout.user_order_list);
 
         db = FoodDB.getInstance(this);
 
@@ -49,7 +49,7 @@ public class MainOnOrder extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 1) {
-                    Intent intent = new Intent(MainOnOrder.this, HisOrderMain.class);
+                    Intent intent = new Intent(User_Order_On.this, User_His_Order.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                     finish();

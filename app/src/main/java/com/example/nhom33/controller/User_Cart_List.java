@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Cart extends AppCompatActivity implements Cart_Adapter.OnCartActionListener {
+public class User_Cart_List extends AppCompatActivity implements Cart_Adapter.OnCartActionListener {
 
     private RecyclerView recyclerView;
     private Cart_Adapter adapter;
@@ -40,7 +40,7 @@ public class Cart extends AppCompatActivity implements Cart_Adapter.OnCartAction
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.user_cart_list);
 
         db = FoodDB.getInstance(this);
 
@@ -65,7 +65,7 @@ public class Cart extends AppCompatActivity implements Cart_Adapter.OnCartAction
                 totalQty += Integer.parseInt(item.getQuantity());
             }
 
-            Intent intent = new Intent(Cart.this, Payment0.class);
+            Intent intent = new Intent(User_Cart_List.this, User_edit_payment_infomation.class);
             intent.putExtra("TOTAL_PRICE", currentTotal);
             intent.putExtra("TOTAL_ITEMS", totalQty);
             startActivity(intent);

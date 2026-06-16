@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
 
-public class SuccessActivity extends AppCompatActivity {
+public class Withdraw_Success extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_success);}
+        setContentView(R.layout.withdraw_success);}
 }

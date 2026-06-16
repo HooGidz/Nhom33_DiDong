@@ -20,7 +20,7 @@ public class AdminEditUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_edit_user);
+        setContentView(R.layout.admin_edit_user);
 
         // Ánh xạ
         etFullName = findViewById(R.id.etFullName);

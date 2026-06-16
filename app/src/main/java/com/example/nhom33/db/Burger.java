@@ -1,4 +1,4 @@
-package com.example.nhom33.controller;
+package com.example.nhom33.db;
 
 public class Burger {
     private String name;

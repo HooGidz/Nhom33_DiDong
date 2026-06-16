@@ -14,17 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
-import com.example.nhom33.controller.DetailsActivity;
+import com.example.nhom33.controller.User_Food_Detail;
 
 import java.util.List;
 import java.util.Locale;
 
-public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerViewHolder> {
+public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.BurgerViewHolder> {
 
     private List<FoodsEntity> foodList;
     private Context context;
 
-    public BurgerAdapter(Context context, List<FoodsEntity> foodList) {
+    public FoodAdapter(Context context, List<FoodsEntity> foodList) {
         this.context = context;
         this.foodList = foodList;
     }
@@ -32,7 +32,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerView
     @NonNull
     @Override
     public BurgerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_burger, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_food_list, parent, false);
         return new BurgerViewHolder(view);
     }
 
@@ -73,7 +73,7 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerView
                 .into(holder.imgFood);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailsActivity.class);
+            Intent intent = new Intent(context, User_Food_Detail.class);
             intent.putExtra("FOOD_ID", food.getFoodId());
             context.startActivity(intent);
         });

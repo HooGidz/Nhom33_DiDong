@@ -65,11 +65,6 @@ public class Admin_All_Order extends AppCompatActivity {
         btnFilterShipping = findViewById(R.id.btn_filter_shipping);
         btnFilterCompleted = findViewById(R.id.btn_filter_completed);
         btnFilterCancelled = findViewById(R.id.btn_filter_cancelled);
-
-        navDashboard = findViewById(R.id.nav_dashboard);
-        navMenu = findViewById(R.id.nav_menu);
-        navAdd = findViewById(R.id.nav_add);
-        navNotification = findViewById(R.id.nav_notification);
         navProfile = findViewById(R.id.nav_profile);
     }
 
@@ -166,6 +161,6 @@ public class Admin_All_Order extends AppCompatActivity {
         if (navMenu != null) navMenu.setOnClickListener(v -> startActivity(new Intent(this, Admin_MyFoodList.class)));
         if (navAdd != null) navAdd.setOnClickListener(v -> startActivity(new Intent(this, Admin_Add_Food.class)));
         if (navNotification != null) navNotification.setOnClickListener(v -> startActivity(new Intent(this, Admin_Notification.class)));
-        if (navProfile != null) navProfile.setOnClickListener(v -> startActivity(new Intent(this, MainAdProfile.class)));
+        if (navProfile != null) navProfile.setOnClickListener(v -> startActivity(new Intent(this, Admin_Profile.class)));
     }
 }

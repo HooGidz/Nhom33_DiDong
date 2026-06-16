@@ -11,13 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
 
-public class Payment extends AppCompatActivity {
+public class User_Card_Payment extends AppCompatActivity {
     ImageButton btn_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_payment);
+        setContentView(R.layout.user_card_payment);
         Button btnPayConfirm = findViewById(R.id.btnPayConfirm);
 
         // 2. Thiết lập sự kiện Click cho nút
@@ -25,7 +25,7 @@ public class Payment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 3. Tạo Intent để chuyển sang Activity mới (ví dụ: PaymentSuccessActivity)
-                Intent intent = new Intent(Payment.this, PaymentSuccessActivity.class);
+                Intent intent = new Intent(User_Card_Payment.this, User_Payment_Success.class);
                 startActivity(intent);
             }
         });

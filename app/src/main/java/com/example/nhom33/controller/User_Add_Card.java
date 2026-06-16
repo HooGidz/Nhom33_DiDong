@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
 
-public class Add_Cart extends AppCompatActivity {
+public class User_Add_Card extends AppCompatActivity {
     ImageButton btn_back;
     // add card
    @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
-            setContentView(R.layout.activity_add_card);
+            setContentView(R.layout.user_add_card);
         // 1. Ánh xạ nút bấm từ XML vào Java/
         Button btnSubmit = findViewById(R.id.btnSubmit);
 
@@ -28,7 +28,7 @@ public class Add_Cart extends AppCompatActivity {
             public void onClick(View v) {
                // 3. Lệnh chuyển từ Activity hiện tại sang Activity Success
                // Lưu ý: Bạn cần tạo file PaymentSuccessActivity.java tương ứng với layout success
-               Intent intent = new Intent(Add_Cart.this, Payment.class);
+               Intent intent = new Intent(User_Add_Card.this, User_Card_Payment.class);
                 startActivity(intent);
             }
         });

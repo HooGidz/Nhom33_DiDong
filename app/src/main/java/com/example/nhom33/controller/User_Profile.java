@@ -15,7 +15,7 @@ import com.example.nhom33.R;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.UsersEntity;
 
-public class MainProfile extends AppCompatActivity {
+public class User_Profile extends AppCompatActivity {
     private View btnInfo, btnAddress, btnOrderHistory, btnCart, btnLogout, btnFavorite;
     private TextView txtUsername, txtBio;
     private FoodDB db;
@@ -24,7 +24,7 @@ public class MainProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_activity);
+        setContentView(R.layout.user_profile);
 
         db = FoodDB.getInstance(this);
         txtUsername = findViewById(R.id.txt_username);
@@ -40,7 +40,7 @@ public class MainProfile extends AppCompatActivity {
         btnInfo = findViewById(R.id.btn_info_container);
         if (btnInfo != null) {
             btnInfo.setOnClickListener(v -> {
-                Intent intent = new Intent(MainProfile.this, EditProfile.class);
+                Intent intent = new Intent(User_Profile.this, User_Edit_Profile.class);
                 startActivity(intent);
             });
         }
@@ -49,7 +49,7 @@ public class MainProfile extends AppCompatActivity {
         btnAddress = findViewById(R.id.btn_address_container);
         if (btnAddress != null) {
             btnAddress.setOnClickListener(v -> {
-                Intent intent = new Intent(MainProfile.this, AddressActivity.class);
+                Intent intent = new Intent(User_Profile.this, User_Address.class);
                 startActivity(intent);
             });
         }
@@ -58,7 +58,7 @@ public class MainProfile extends AppCompatActivity {
         btnFavorite = findViewById(R.id.btn_favorite_container);
         if (btnFavorite != null) {
             btnFavorite.setOnClickListener(v -> {
-                Intent intent = new Intent(MainProfile.this, DanhSachBurgerActivity.class);
+                Intent intent = new Intent(User_Profile.this, User_Food_List.class);
                 intent.putExtra("FILTER_HIGH_RATING", true);
                 startActivity(intent);
             });
@@ -68,7 +68,7 @@ public class MainProfile extends AppCompatActivity {
         btnCart = findViewById(R.id.btn_cart_container);
         if (btnCart != null) {
             btnCart.setOnClickListener(v -> {
-                Intent intent = new Intent(MainProfile.this, Cart.class);
+                Intent intent = new Intent(User_Profile.this, User_Cart_List.class);
                 startActivity(intent);
             });
         }
@@ -77,7 +77,7 @@ public class MainProfile extends AppCompatActivity {
         btnOrderHistory = findViewById(R.id.btn_order_history_container);
         if (btnOrderHistory != null) {
             btnOrderHistory.setOnClickListener(v -> {
-                Intent intent = new Intent(MainProfile.this, MainOnOrder.class);
+                Intent intent = new Intent(User_Profile.this, User_Order_On.class);
                 startActivity(intent);
             });
         }
@@ -137,7 +137,7 @@ public class MainProfile extends AppCompatActivity {
         Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
 
         // Chuyển về màn hình đăng nhập và xóa stack các activity trước đó
-        Intent intent = new Intent(MainProfile.this, Login.class);
+        Intent intent = new Intent(User_Profile.this, Login.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

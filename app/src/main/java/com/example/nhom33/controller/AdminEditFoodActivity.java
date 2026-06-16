@@ -41,7 +41,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_food);
+        setContentView(R.layout.admin_edit_food);
 
         db = FoodDB.getInstance(this);
 

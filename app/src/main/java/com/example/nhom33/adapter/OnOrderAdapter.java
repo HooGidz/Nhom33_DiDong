@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.R;
-import com.example.nhom33.controller.Main_track_order;
+import com.example.nhom33.controller.User_track_order;
 import com.example.nhom33.db.OnOrder;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderV
 
     @Override
     public OnOrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_onorder, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_item_onorder, parent, false);
         return new OnOrderViewHolder(view);
     }
 
@@ -47,7 +47,7 @@ public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderV
         holder.btnTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Main_track_order.class);
+                Intent intent = new Intent(context, User_track_order.class);
                 // Truyền dữ liệu đơn hàng nếu cần (ví dụ: orderId)
                 intent.putExtra("orderId", order.getOrderId());
                 context.startActivity(intent);

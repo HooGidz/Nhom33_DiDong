@@ -18,15 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
-import com.example.nhom33.adapter.BurgerAdapter;
+import com.example.nhom33.adapter.FoodAdapter;
 import com.example.nhom33.adapter.DiscountAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DanhSachBurgerActivity extends AppCompatActivity {
+public class User_Food_List extends AppCompatActivity {
     private RecyclerView rvBurgers, rvDiscountList;
-    private BurgerAdapter adapter;
+    private FoodAdapter adapter;
     private DiscountAdapter discountAdapter;
     private List<FoodsEntity> foodList = new ArrayList<>();
     private List<FoodsEntity> discountList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class DanhSachBurgerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.danh_sach_burger);
+        setContentView(R.layout.user_food_list);
 
         db = FoodDB.getInstance(this);
 
@@ -100,7 +100,7 @@ public class DanhSachBurgerActivity extends AppCompatActivity {
         // 4. Thiết lập RecyclerView chính (Grid 2 cột)
         if (rvBurgers != null) {
             rvBurgers.setLayoutManager(new GridLayoutManager(this, 2));
-            adapter = new BurgerAdapter(this, foodList);
+            adapter = new FoodAdapter(this, foodList);
             rvBurgers.setAdapter(adapter);
             rvBurgers.setNestedScrollingEnabled(false);
         }

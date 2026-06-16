@@ -1,6 +1,5 @@
 package com.example.nhom33.controller;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,14 +11,14 @@ import com.example.nhom33.R;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.OrdersEntity;
 
-public class Main_track_order extends AppCompatActivity {
+public class User_track_order extends AppCompatActivity {
     private TextView tvStoreName, tvOrderTime, tvOrderDetails;
     private FoodDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_order);
+        setContentView(R.layout.user_track_order);
 
         db = FoodDB.getInstance(this);
 

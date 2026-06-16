@@ -7,7 +7,7 @@
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#EEE5EE"
+    app:cardBackgroundColor="#EEEEEE"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Đồ ăn"
                 android:textColor="#A0A5BA"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/tvStatus"

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,7 +26,7 @@ import com.example.nhom33.adapter.ReviewAdapter;
 import java.util.List;
 import java.util.Locale;
 
-public class DetailsActivity extends AppCompatActivity {
+public class User_Food_Detail extends AppCompatActivity {
 
     private ImageView imgProduct;
     private TextView tvMainTitle, tvDescription, tvPrice, tvSizeLabel, tvQuantity;
@@ -45,7 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.user_food_details);
 
         db = FoodDB.getInstance(this);
 
@@ -197,7 +196,7 @@ public class DetailsActivity extends AppCompatActivity {
             }
             runOnUiThread(() -> {
                 Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DetailsActivity.this, Cart.class));
+                startActivity(new Intent(User_Food_Detail.this, User_Cart_List.class));
                 finish();
             });
         }).start();

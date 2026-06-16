@@ -33,7 +33,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_home, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_category_home, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,15 +42,18 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         CategoriesEntity category = categoryList.get(position);
         holder.txtName.setText(category.getCategoryName());
 
-        // Load ảnh từ assets/imgg_product/ bằng Glide
+        // SỬA: Load ảnh từ assets/img_cate/ thay vì img_product
         String imgName = category.getImageUrl();
-        String fullPath = "file:///android_asset/img_product/" + imgName;
-
-        Glide.with(context)
-                .load(fullPath)
-                .placeholder(R.drawable.fb)
-                .error(R.drawable.fb)
-                .into(holder.imgCategory);
+        if (imgName != null && !imgName.isEmpty()) {
+            String fullPath = "file:///android_asset/img_cate/" + imgName;
+            Glide.with(context)
+                    .load(fullPath)
+                    .placeholder(R.drawable.fb)
+                    .error(R.drawable.fb)
+                    .into(holder.imgCategory);
+        } else {
+            holder.imgCategory.setImageResource(R.drawable.fb);
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {

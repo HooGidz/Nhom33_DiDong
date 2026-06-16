@@ -28,7 +28,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Nạp file giao diện item_address.xml vào code
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_address, parent, false);
+                .inflate(R.layout.user_item_address, parent, false);
         return new AddressViewHolder(view);
     }
 

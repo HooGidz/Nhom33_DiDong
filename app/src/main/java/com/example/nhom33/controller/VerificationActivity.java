@@ -15,7 +15,7 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verification);
+        setContentView(R.layout.verification);
 
         btnVerify = findViewById(R.id.btnVerify);
         btnVerify.setOnClickListener(new View.OnClickListener() {

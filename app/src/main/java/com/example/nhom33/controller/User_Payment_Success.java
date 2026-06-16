@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nhom33.R;
 
-public class PaymentSuccessActivity extends AppCompatActivity {
+public class User_Payment_Success extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Kết nối với file layout XML của trang thành công
-        setContentView(R.layout.activity_payment_success);
+        setContentView(R.layout.user_payment_success);
 
         // Đưa việc ánh xạ và xử lý sự kiện vào trong onCreate
         Button btnTrackOrder = findViewById(R.id.btnTrackOrder);
@@ -22,7 +22,7 @@ public class PaymentSuccessActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Tạo Intent để chuyển sang Activity Lịch sử đơn hàng (hisorder_activity)
-                Intent intent = new Intent(PaymentSuccessActivity.this, MainOnOrder.class);
+                Intent intent = new Intent(User_Payment_Success.this, User_Order_On.class);
                 startActivity(intent);
                 finish(); // Đóng màn hình thành công để không quay lại được khi bấm Back
             }

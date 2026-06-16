@@ -17,9 +17,7 @@ import com.example.nhom33.R;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.UsersEntity;
 
-import java.util.List;
-
-public class EditProfile extends AppCompatActivity {
+public class User_Edit_Profile extends AppCompatActivity {
     private View btnBack, btnSave;
     private EditText etFullName, etEmail, etPhone, etAddress;
     private FoodDB db;
@@ -30,7 +28,7 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.user_edit_profile);
         
         View mainView = findViewById(R.id.main);
         if (mainView != null) {
@@ -115,12 +113,12 @@ public class EditProfile extends AppCompatActivity {
             try {
                 db.usersDAO().updateUser(currentUser);
                 runOnUiThread(() -> {
-                    Toast.makeText(EditProfile.this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(User_Edit_Profile.this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
                     finish();
                 });
             } catch (Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(EditProfile.this, "Lỗi khi cập nhật hồ sơ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(User_Edit_Profile.this, "Lỗi khi cập nhật hồ sơ", Toast.LENGTH_SHORT).show();
                 });
             }
         }).start();

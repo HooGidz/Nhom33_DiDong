@@ -15,7 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.nhom33.R;
 
-public class OnboardingActivity extends AppCompatActivity {
+public class Load_boarding extends AppCompatActivity {
     // Khai báo biến toàn cục để các hàm đều dùng được
     private ViewPager2 viewPager;
     private Button btnNext;
@@ -23,7 +23,7 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_onboarding);
+        setContentView(R.layout.load_boarding);
 
         // Ánh xạ View
         viewPager = findViewById(R.id.viewPager);
@@ -39,7 +39,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             } else {
                 // Đã đến trang cuối, chuyển sang màn hình Location
-                Intent intent = new Intent(OnboardingActivity.this, LocationActivity.class);
+                Intent intent = new Intent(Load_boarding.this, LocationActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -68,7 +68,7 @@ public class OnboardingActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_onboarding, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_load_boarding, parent, false);
             return new ViewHolder(view);
         }
 

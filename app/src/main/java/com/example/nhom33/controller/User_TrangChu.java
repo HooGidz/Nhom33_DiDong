@@ -22,7 +22,7 @@ import com.example.nhom33.adapter.HomeCategoryAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrangChuActivity extends AppCompatActivity {
+public class User_TrangChu extends AppCompatActivity {
     private RecyclerView recyclerViewCategories;
     private HomeCategoryAdapter categoryAdapter;
     private List<CategoriesEntity> categoryList = new ArrayList<>();
@@ -32,7 +32,7 @@ public class TrangChuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.trangchu);
+        setContentView(R.layout.user_trangchu);
 
         // Khởi tạo Database
         db = FoodDB.getInstance(this);
@@ -63,7 +63,7 @@ public class TrangChuActivity extends AppCompatActivity {
             categoryAdapter = new HomeCategoryAdapter(this, categoryList, new HomeCategoryAdapter.OnCategoryClickListener() {
                 @Override
                 public void onCategoryClick(CategoriesEntity category) {
-                    Intent intent = new Intent(TrangChuActivity.this, DanhSachBurgerActivity.class);
+                    Intent intent = new Intent(User_TrangChu.this, User_Food_List.class);
                     intent.putExtra("CATEGORY_ID", category.getCategoryId());
                     intent.putExtra("CATEGORY_NAME", category.getCategoryName());
                     startActivity(intent);
@@ -80,7 +80,7 @@ public class TrangChuActivity extends AppCompatActivity {
             card_food.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(TrangChuActivity.this, DanhSachBurgerActivity.class);
+                    Intent intent = new Intent(User_TrangChu.this, User_Food_List.class);
                     startActivity(intent);
                 }
             });
@@ -91,7 +91,7 @@ public class TrangChuActivity extends AppCompatActivity {
             btn_Profile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     Intent intent = new Intent(TrangChuActivity.this, MainProfile.class);
+                     Intent intent = new Intent(User_TrangChu.this, User_Profile.class);
                      startActivity(intent);
                 }
             });
@@ -99,7 +99,7 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void performSearch(String query) {
-        Intent intent = new Intent(TrangChuActivity.this, DanhSachBurgerActivity.class);
+        Intent intent = new Intent(User_TrangChu.this, User_Food_List.class);
         intent.putExtra("SEARCH_QUERY", query);
         startActivity(intent);
     }

@@ -15,7 +15,7 @@ import com.example.nhom33.DataEntity.ProductReviewWithDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewActivity extends AppCompatActivity {
+public class Admin_All_Review extends AppCompatActivity {
 
     private RecyclerView recyclerViewReview;
     private ReviewAdapter reviewAdapter;
@@ -25,7 +25,7 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review);
+        setContentView(R.layout.admin_review_list);
 
         // Ánh xạ RecyclerView
         recyclerViewReview = findViewById(R.id.recyclerViewReview);
@@ -78,7 +78,7 @@ public class ReviewActivity extends AppCompatActivity {
                         reviewAdapter = new ReviewAdapter(reviewList, true);
 
                         if (recyclerViewReview != null) {
-                            recyclerViewReview.setLayoutManager(new LinearLayoutManager(ReviewActivity.this));
+                            recyclerViewReview.setLayoutManager(new LinearLayoutManager(Admin_All_Review.this));
                             recyclerViewReview.setAdapter(reviewAdapter);
                         }
                     }

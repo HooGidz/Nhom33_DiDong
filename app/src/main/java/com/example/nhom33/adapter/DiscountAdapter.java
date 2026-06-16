@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
-import com.example.nhom33.controller.DetailsActivity;
+import com.example.nhom33.controller.User_Food_Detail;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,7 +31,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_discount_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_discount, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,7 +57,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
                 .into(holder.imgFood);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailsActivity.class);
+            Intent intent = new Intent(context, User_Food_Detail.class);
             intent.putExtra("FOOD_ID", food.getFoodId());
             context.startActivity(intent);
         });
@@ -77,7 +77,6 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
             txtName = itemView.findViewById(R.id.txtName);
             txtSize = itemView.findViewById(R.id.txtSize); // Đã đổi ID từ txtMealType thành txtSize
             txtPriceSale = itemView.findViewById(R.id.txtPriceSale);
-            txtPush = itemView.findViewById(R.id.txtPush);
             imgFood = itemView.findViewById(R.id.imgFood);
         }
     }

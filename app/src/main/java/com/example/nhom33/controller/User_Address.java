@@ -15,13 +15,13 @@ import com.example.nhom33.R;
 import com.example.nhom33.adapter.AddressAdapter;
 import com.example.nhom33.db.Address;
 
-public class AddressActivity extends AppCompatActivity {
+public class User_Address extends AppCompatActivity {
     View btnAddNew, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.address_activiti);
+        setContentView(R.layout.user_address);
 
         // 1. Tìm RecyclerView từ XML
         RecyclerView rvAddress = findViewById(R.id.rvAddress);
@@ -30,7 +30,7 @@ public class AddressActivity extends AppCompatActivity {
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(AddressActivity.this, MapActivity.class);
+            Intent intent = new Intent(User_Address.this, MapActivity.class);
             startActivity(intent);
         }});
         btnBack.setOnClickListener(new View.OnClickListener() {

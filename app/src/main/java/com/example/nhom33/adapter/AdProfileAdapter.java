@@ -30,7 +30,7 @@ public class AdProfileAdapter extends RecyclerView.Adapter<AdProfileAdapter.Prof
     public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate file item_menu.xml đã tạo ở bước trước
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_adprofile, parent, false);
+                .inflate(R.layout.user_item_profile, parent, false);
         return new ProfileViewHolder(view);
     }
 

@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Đổi Activity đích ở đây
-                Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
+                Intent intent = new Intent(SplashActivity.this, Load_boarding.class);
                 startActivity(intent);
                 finish(); // Đóng Splash để không quay lại được bằng nút Back
             }

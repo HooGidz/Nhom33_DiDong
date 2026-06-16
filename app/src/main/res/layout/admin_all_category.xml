@@ -37,7 +37,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginLeft="17dp"
                 android:text="Danh mục món ăn"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -47,14 +47,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/btn_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_back">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="100dp"
+                android:paddingBottom="20dp"
                 android:clipToPadding="false" />
 
         </androidx.core.widget.NestedScrollView>
@@ -68,70 +68,9 @@
             app:srcCompat="@drawable/icons_add_24"
             app:backgroundTint="#ff7622"
             app:tint="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/btn_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="Thêm danh mục" />
-
-        <LinearLayout
-            android:id="@+id/btn_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/bg_rounded_linear"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageButton
-                android:id="@+id/btn_dashboard"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Trang chính"
-                android:src="@drawable/icon_dashboard" />
-
-            <ImageButton
-                android:id="@+id/btn_menu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Menu"
-                android:src="@drawable/icon_menu_24" />
-
-            <ImageButton
-                android:id="@+id/btn_add"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Thêm mới"
-                android:src="@drawable/icons_add_24" />
-
-            <ImageButton
-                android:id="@+id/btn_notification"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/white"
-                android:contentDescription="thông báo"
-                android:src="@drawable/icons8_notification_24" />
-
-            <ImageButton
-                android:id="@+id/btn_personal"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Trang cá nhân"
-                android:src="@drawable/icons8_person_24" />
-
-        </LinearLayout>
+            android:contentDescription="Thêm danh mục" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

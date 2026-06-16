@@ -30,7 +30,7 @@ public class HisOrderAdapter extends RecyclerView.Adapter<HisOrderAdapter.HisOrd
     @NonNull
     @Override
     public HisOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_hisorder, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_item_hisorder, parent, false);
         return new HisOrderViewHolder(view);
     }
 
