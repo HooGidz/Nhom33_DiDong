@@ -1,5 +1,6 @@
-package com.example.nhom33.DataEntity; // Thay đổi package này cho đúng với cấu trúc thư mục của bạn
+package com.example.nhom33.DataEntity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -9,10 +10,16 @@ import androidx.room.PrimaryKey;
         tableName = "Orders",
         foreignKeys = {
                 @ForeignKey(
-                        entity = UsersEntity.class, // Tên lớp Entity của bảng Users
+                        entity = UsersEntity.class,
                         parentColumns = "user_id",
-                        childColumns = "customer_id",
-                        onDelete = ForeignKey.CASCADE // Hoặc NO_ACTION tùy theo logic của bạn
+                        childColumns = "user_id",
+                        onDelete = ForeignKey.CASCADE
+                ),
+                @ForeignKey(
+                        entity = CouponsEntity.class,
+                        parentColumns = "coupon_id",
+                        childColumns = "coupon_id",
+                        onDelete = ForeignKey.CASCADE
                 )
         }
 )
@@ -22,38 +29,78 @@ public class OrdersEntity {
     @ColumnInfo(name = "order_id")
     private int orderId;
 
-    @ColumnInfo(name = "customer_id")
-    private int customerId;
+    @ColumnInfo(name = "user_id")
+    private int userId;
 
-    // Trong Room, DATETIME thường được lưu dưới dạng String hoặc Long (Timestamp).
-    // Mặc định ban đầu bạn có thể để String để đồng bộ với SQLite.
-    @ColumnInfo(name = "order_date", defaultValue = "CURRENT_TIMESTAMP")
+    @ColumnInfo(name = "coupon_id")
+    private int couponId; // Thiết kế ghi int - Not Null
+
+    @ColumnInfo(name = "customer_name")
+    private String customerName;
+
+    @ColumnInfo(name = "customer_phone")
+    private String customerPhone;
+
+    @ColumnInfo(name = "custome_address") // Giữ nguyên typo "custome" theo thiết kế bảng 2.8
+    private String customerAddress;
+
+    @ColumnInfo(name = "order_date")
     private String orderDate;
 
     @ColumnInfo(name = "total_amount")
-    private double totalAmount; // REAL trong SQLite tương ứng với double/float trong Java
-
-    @ColumnInfo(name = "status")
-    private String status; // Giá trị sẽ gồm: Pending, Confirmed, Delivering, Completed, Cancelled
+    private double totalAmount;
 
     @ColumnInfo(name = "delivery_address")
     private String deliveryAddress;
 
-    // --- Constructor ---
-    public OrdersEntity(int customerId, String orderDate, double totalAmount, String status, String deliveryAddress) {
-        this.customerId = customerId;
-        this.orderDate = orderDate;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.deliveryAddress = deliveryAddress;
+    @ColumnInfo(name = "status")
+    private int status;
+
+    @ColumnInfo(name = "method_payment")
+    private int methodPayment;
+
+    @ColumnInfo(name = "note")
+    private String note;
+
+    // --- Constructor mặc định cho Room ---
+    public OrdersEntity() {
     }
 
-    // --- Getter và Setter (Bắt buộc phải có để Room hoạt động trong Java) ---
+    // --- Constructor đầy đủ ---
+    public OrdersEntity(int userId, int couponId, String customerName, String customerPhone, 
+                        String customerAddress, String orderDate, double totalAmount, 
+                        String deliveryAddress, int status, int methodPayment, String note) {
+        this.userId = userId;
+        this.couponId = couponId;
+        this.customerName = customerName;
+        this.customerPhone = customerPhone;
+        this.customerAddress = customerAddress;
+        this.orderDate = orderDate;
+        this.totalAmount = totalAmount;
+        this.deliveryAddress = deliveryAddress;
+        this.status = status;
+        this.methodPayment = methodPayment;
+        this.note = note;
+    }
+
+    // --- Getter và Setter ---
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }
 
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+
+    public int getCouponId() { return couponId; }
+    public void setCouponId(int couponId) { this.couponId = couponId; }
+
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+
+    public String getCustomerPhone() { return customerPhone; }
+    public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
+
+    public String getCustomerAddress() { return customerAddress; }
+    public void setCustomerAddress(String customerAddress) { this.customerAddress = customerAddress; }
 
     public String getOrderDate() { return orderDate; }
     public void setOrderDate(String orderDate) { this.orderDate = orderDate; }
@@ -61,9 +108,15 @@ public class OrdersEntity {
     public double getTotalAmount() { return totalAmount; }
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
     public String getDeliveryAddress() { return deliveryAddress; }
     public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
+
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
+
+    public int getMethodPayment() { return methodPayment; }
+    public void setMethodPayment(int methodPayment) { this.methodPayment = methodPayment; }
+
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 }

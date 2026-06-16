@@ -93,8 +93,9 @@ public class Payment0 extends AppCompatActivity {
     private void processOrder() {
         String fullName = edtFullName.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
 
-        if (fullName.isEmpty() || address.isEmpty()) {
+        if (fullName.isEmpty() || address.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin nhận hàng", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -109,7 +110,23 @@ public class Payment0 extends AppCompatActivity {
 
             // 2. Tạo đơn hàng mới (Orders)
             String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-            OrdersEntity newOrder = new OrdersEntity(userId, currentDate, totalPrice, "Chờ xác nhận", address);
+
+            // Sửa lại constructor để khớp với OrdersEntity
+            // Tham số: userId, couponId, customerName, customerPhone, customerAddress, orderDate, totalAmount, deliveryAddress, status, methodPayment, note
+            OrdersEntity newOrder = new OrdersEntity(
+                    userId,
+                    0,           // couponId (mặc định 0 nếu không có)
+                    fullName,
+                    phone,
+                    address,
+                    currentDate,
+                    totalPrice,
+                    address,     // deliveryAddress
+                    0,           // status: 0 (Chờ xác nhận)
+                    0,           // methodPayment: 0 (Tiền mặt)
+                    ""           // note
+            );
+
             long orderId = db.ordersDAO().insertOrder(newOrder);
 
             // 3. Thêm chi tiết đơn hàng (OrderDetails)

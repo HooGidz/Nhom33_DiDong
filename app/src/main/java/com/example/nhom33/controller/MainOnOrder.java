@@ -27,7 +27,7 @@ public class MainOnOrder extends AppCompatActivity {
     private OnOrderAdapter orderAdapter;
     private List<OnOrder> orderList;
     private TabLayout tabLayout;
-    private View btn_back; // Changed from MaterialButton to View to avoid ClassCastException
+    private View btn_back;
     private FoodDB db;
 
     @Override
@@ -36,7 +36,7 @@ public class MainOnOrder extends AppCompatActivity {
         setContentView(R.layout.hisorder_activity);
 
         db = FoodDB.getInstance(this);
-        
+
         recyclerView = findViewById(R.id.recyclerView);
         tabLayout = findViewById(R.id.tabLayout);
         btn_back = findViewById(R.id.btn_back);
@@ -48,7 +48,7 @@ public class MainOnOrder extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 1) { 
+                if (tab.getPosition() == 1) {
                     Intent intent = new Intent(MainOnOrder.this, HisOrderMain.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
@@ -66,27 +66,26 @@ public class MainOnOrder extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderList = new ArrayList<>();
-        
+
         loadOngoingOrdersFromDB();
-        
-        orderAdapter = new OnOrderAdapter(this, orderList);
+
+        OnOrderAdapter orderAdapter = new OnOrderAdapter(this, orderList);
         recyclerView.setAdapter(orderAdapter);
     }
 
     private void loadOngoingOrdersFromDB() {
-        // Lấy userId từ SharedPreferences đã lưu khi đăng nhập
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
 
         if (userId == -1) {
-            return; // Chưa đăng nhập
+            return;
         }
 
         List<OrdersEntity> orders = db.ordersDAO().getOngoingOrdersByUserId(userId);
-        
+
         for (OrdersEntity order : orders) {
             List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(order.getOrderId());
-            
+
             String category = "N/A";
             String displayName = "Đơn hàng trống";
             int totalQty = 0;
@@ -102,13 +101,29 @@ public class MainOnOrder extends AppCompatActivity {
                 }
             }
 
+            // Map int status to String description
+            String statusText;
+            switch (order.getStatus()) {
+                case 1:
+                    statusText = "Đang giao hàng";
+                    break;
+                case 2:
+                    statusText = "Đã giao";
+                    break;
+                case 3:
+                    statusText = "Đã hủy";
+                    break;
+                default:
+                    statusText = "Đang chuẩn bị";
+            }
+
             orderList.add(new OnOrder(
-                    category, 
-                    displayName, 
+                    category,
+                    displayName,
                     "#" + order.getOrderId(),
                     String.format(Locale.getDefault(), "%,.0f VNĐ", order.getTotalAmount()),
-                    totalQty + " món", 
-                    order.getStatus(), 
+                    totalQty + " món",
+                    statusText,
                     order.getOrderDate(),
                     R.mipmap.ic_launcher
             ));

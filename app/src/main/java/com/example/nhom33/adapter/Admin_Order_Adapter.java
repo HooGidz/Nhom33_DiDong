@@ -13,11 +13,12 @@ import com.example.nhom33.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Admin_Order_Adapter extends RecyclerView.Adapter<Admin_Order_Adapter.OrderViewHolder> {
 
-    private List<OrdersEntity> orderList;
-    private OnOrderClickListener listener;
+    private final List<OrdersEntity> orderList;
+    private final OnOrderClickListener listener;
 
     // Interface để xử lý sự kiện click
     public interface OnOrderClickListener {
@@ -36,33 +37,55 @@ public class Admin_Order_Adapter extends RecyclerView.Adapter<Admin_Order_Adapte
         return new OrderViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        OrdersEntity order = orderList.get(position);
+     @Override
+     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
+         OrdersEntity order = orderList.get(position);
 
-        // Đổ dữ liệu vào các View
-        holder.txtOrderId.setText("#ORD-" + order.getOrderId());
-        holder.txtOrderDate.setText(order.getOrderDate());
-        
-        // Vì OrdersEntity chỉ có customerId, tạm thời hiển thị ID. 
-        // Sau này bạn có thể join bảng Users để lấy fullName.
-        holder.txtCustomerName.setText("Khách hàng ID: " + order.getCustomerId());
-        
-        // Định dạng hiển thị tiền tệ (Ví dụ: 150.000 VNĐ)
-        holder.txtOrderTotal.setText(String.format("%,.0f VNĐ", order.getTotalAmount()));
-        
-        holder.txtOrderStatus.setText(order.getStatus());
-        
-        // Bạn có thể thêm logic đổi màu trạng thái tại đây nếu muốn
-        // Ví dụ: if(order.getStatus().equals("Completed")) holder.txtOrderStatus.setTextColor(...)
+          // Đổ dữ liệu vào các View
+          holder.txtOrderId.setText(String.format(Locale.getDefault(), "#ORD-%d", order.getOrderId()));
+          holder.txtOrderDate.setText(order.getOrderDate());
 
-        // Xử lý sự kiện click nút Chi tiết
-        holder.btnDetail.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onDetailClick(order);
-            }
-        });
-    }
+          // Vì OrdersEntity chỉ có customerId, tạm thời hiển thị ID.
+          // Sau này bạn có thể join bảng Users để lấy fullName.
+          holder.txtCustomerName.setText(String.format(Locale.getDefault(), "Khách hàng ID: %d", order.getUserId()));
+
+          // Định dạng hiển thị tiền tệ (Ví dụ: 150.000 VNĐ)
+          holder.txtOrderTotal.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", order.getTotalAmount()));
+
+         // Convert int status thành String
+         String statusText = mapStatusToString(order.getStatus());
+         holder.txtOrderStatus.setText(statusText);
+         
+         // Bạn có thể thêm logic đổi màu trạng thái tại đây nếu muốn
+         // Ví dụ: if(order.getStatus() == 2) holder.txtOrderStatus.setTextColor(...)
+
+         // Xử lý sự kiện click nút Chi tiết
+         holder.btnDetail.setOnClickListener(v -> {
+             if (listener != null) {
+                 listener.onDetailClick(order);
+             }
+         });
+     }
+
+     /**
+      * Chuyển đổi status int thành String
+      * 0 - Chờ xác nhận
+      * 1 - Đang giao hàng
+      * 2 - Hoàn thành
+      * 3 - Đã hủy
+      */
+     private String mapStatusToString(int status) {
+         switch (status) {
+             case 1:
+                 return "Đang giao hàng";
+             case 2:
+                 return "Hoàn thành";
+             case 3:
+                 return "Đã hủy";
+             default:
+                 return "Chờ xác nhận";
+         }
+     }
 
     @Override
     public int getItemCount() {
@@ -70,7 +93,7 @@ public class Admin_Order_Adapter extends RecyclerView.Adapter<Admin_Order_Adapte
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView txtOrderId, txtOrderDate, txtCustomerName, txtOrderTotal, txtOrderStatus, txtPaymentMethod;
+        TextView txtOrderId, txtOrderDate, txtCustomerName, txtOrderTotal, txtOrderStatus;
         MaterialButton btnDetail;
 
         public OrderViewHolder(@NonNull View itemView) {

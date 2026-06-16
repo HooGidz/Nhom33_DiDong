@@ -9,13 +9,13 @@ import androidx.room.PrimaryKey;
         tableName = "OrderDetails",
         foreignKeys = {
                 @ForeignKey(
-                        entity = OrdersEntity.class, // Tên lớp Entity của bảng Orders
+                        entity = OrdersEntity.class,
                         parentColumns = "order_id",
                         childColumns = "order_id",
-                        onDelete = ForeignKey.CASCADE // Tự động xóa chi tiết nếu đơn hàng bị xóa
+                        onDelete = ForeignKey.CASCADE
                 ),
                 @ForeignKey(
-                        entity = FoodsEntity.class, // Tên lớp Entity của bảng Foods
+                        entity = FoodsEntity.class,
                         parentColumns = "food_id",
                         childColumns = "food_id",
                         onDelete = ForeignKey.RESTRICT
@@ -38,9 +38,13 @@ public class OrderDetailsEntity {
     private int quantity;
 
     @ColumnInfo(name = "price_at_time")
-    private double priceAtTime; // REAL trong SQLite tương ứng với double/float trong Java
+    private double priceAtTime;
 
-    // --- Constructor ---
+    // Hàm khởi tạo không tham số cho Room
+    public OrderDetailsEntity() {
+    }
+
+    // Hàm khởi tạo đầy đủ tham số
     public OrderDetailsEntity(int orderId, int foodId, int quantity, double priceAtTime) {
         this.orderId = orderId;
         this.foodId = foodId;
@@ -48,44 +52,19 @@ public class OrderDetailsEntity {
         this.priceAtTime = priceAtTime;
     }
 
-    // --- Getter và Setter (Bắt buộc phải có để Room hoạt động trong Java) ---
-    public int getDetailId() {
-        return detailId;
-    }
+    // --- Getter và Setter ---
+    public int getDetailId() { return detailId; }
+    public void setDetailId(int detailId) { this.detailId = detailId; }
 
-    public void setDetailId(int detailId) {
-        this.detailId = detailId;
-    }
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
 
-    public int getOrderId() {
-        return orderId;
-    }
+    public int getFoodId() { return foodId; }
+    public void setFoodId(int foodId) { this.foodId = foodId; }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public int getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(int foodId) {
-        this.foodId = foodId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getPriceAtTime() {
-        return priceAtTime;
-    }
-
-    public void setPriceAtTime(double priceAtTime) {
-        this.priceAtTime = priceAtTime;
-    }
+    public double getPriceAtTime() { return priceAtTime; }
+    public void setPriceAtTime(double priceAtTime) { this.priceAtTime = priceAtTime; }
 }

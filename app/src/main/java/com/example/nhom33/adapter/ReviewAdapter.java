@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.ProductReviewEntity;
 import com.example.nhom33.DataEntity.ProductReviewWithDetails;
 import com.example.nhom33.R;
@@ -64,9 +65,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         // 5. Bình luận (comment)
         holder.txtContent.setText(review.getComment() != null ? review.getComment() : "Không có bình luận.");
 
-        // 6. Xử lý ảnh đánh giá (image_url)
+        // 6. Xử lý ảnh đánh giá (image_url) từ android_asset/img_review
         if (review.getImageUrl() != null && !review.getImageUrl().isEmpty()) {
             holder.imgReview.setVisibility(View.VISIBLE);
+            String fullPath = "file:///android_asset/img_review/" + review.getImageUrl();
+            Glide.with(holder.itemView.getContext())
+                    .load(fullPath)
+                    .placeholder(R.drawable.fb) // Sử dụng fb làm placeholder tạm thời
+                    .error(R.drawable.fb)
+                    .into(holder.imgReview);
         } else {
             holder.imgReview.setVisibility(View.GONE);
         }

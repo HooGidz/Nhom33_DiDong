@@ -63,27 +63,16 @@ public class Admin_MyFoodList extends AppCompatActivity {
 
                 List<item_food> foods = new ArrayList<>();
                 for (FoodsEntity entity : foodsEntities) {
-                    // Xử lý giá tiền định dạng VND
+                    // Định dạng giá tiền
                     String priceFormatted = String.format("%,.0f VND", entity.getPrice());
                     
-                    // Lấy ID hình ảnh từ tên file (ví dụ "pizza_hs.png" -> bỏ đuôi .png -> tìm trong drawable)
-                    int resId = R.drawable.fb; // Ảnh mặc định nếu không tìm thấy
-                    String imgName = entity.getImageUrl();
-                    if (imgName != null && !imgName.isEmpty()) {
-                        // Bỏ phần mở rộng file nếu có (.png, .jpg)
-                        if (imgName.contains(".")) {
-                            imgName = imgName.substring(0, imgName.lastIndexOf("."));
-                        }
-                        int checkId = getResources().getIdentifier(imgName, "drawable", getPackageName());
-                        if (checkId != 0) resId = checkId;
-                    }
-
+                    // Tạo item_food với cấu trúc mới (String imageUrl và String size)
                     item_food item = new item_food(
                             entity.getFoodId(),
-                            resId,
+                            entity.getImageUrl(), // Ví dụ: "pizza_hs.png"
                             entity.getFoodName(),
                             priceFormatted,
-                            entity.getMealType()
+                            entity.getSize()      // Sử dụng getSize() thay cho getMealType()
                     );
                     foods.add(item);
                 }

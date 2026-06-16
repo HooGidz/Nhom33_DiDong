@@ -2,9 +2,9 @@ package com.example.nhom33.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.DataEntity.CategoriesEntity;
@@ -25,9 +26,10 @@ public class AdminEditFoodActivity extends AppCompatActivity {
 
     private ImageButton btnBack;
     private ImageView imgFoodPreview;
-    private EditText edtFoodImageUrl, edtFoodName, edtFoodPrice, edtServingTime;
+    private EditText edtFoodImageUrl, edtFoodName, edtFoodPrice, edtFoodSize;
     private EditText edtFoodDescription, edtFoodPriceSale;
     private Spinner spnCategory;
+    private CheckBox chkIsNew, chkIsBest;
     private SwitchMaterial swIsAvailable;
     private Button btnUpdateFood;
 
@@ -41,33 +43,31 @@ public class AdminEditFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_food);
 
-        // Khởi tạo Room Database instance
         db = FoodDB.getInstance(this);
 
-        // Ánh xạ View từ XML
         btnBack = findViewById(R.id.btn_back);
         imgFoodPreview = findViewById(R.id.img_food_preview);
         edtFoodImageUrl = findViewById(R.id.edt_food_image_url);
         edtFoodName = findViewById(R.id.edt_food_name);
         edtFoodPrice = findViewById(R.id.edt_food_price);
-        edtServingTime = findViewById(R.id.edt_serving_time);
+        edtFoodSize = findViewById(R.id.edt_food_size); // Cập nhật từ edt_serving_time
         
         edtFoodDescription = findViewById(R.id.edt_food_description);
         edtFoodPriceSale = findViewById(R.id.edt_food_price_sale);
         spnCategory = findViewById(R.id.spn_category);
+        
+        chkIsNew = findViewById(R.id.chk_is_new);
+        chkIsBest = findViewById(R.id.chk_is_best);
         swIsAvailable = findViewById(R.id.sw_is_available);
         
         btnUpdateFood = findViewById(R.id.btn_update_food);
 
-        // Tải danh sách danh mục vào Spinner
         loadCategories();
 
-        // 1. Nhận food_id truyền từ Adapter sang
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("FOOD_ID")) {
             foodId = intent.getIntExtra("FOOD_ID", -1);
 
-            // 2. Lấy dữ liệu món ăn gốc từ Room Database
             new Thread(() -> {
                 currentFood = db.foodsDAO().getFoodById(foodId);
 
@@ -76,18 +76,18 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         edtFoodName.setText(currentFood.getFoodName());
                         edtFoodPrice.setText(String.valueOf((int) currentFood.getPrice()));
                         edtFoodImageUrl.setText(currentFood.getImageUrl());
-                        edtServingTime.setText(currentFood.getMealType());
+                        edtFoodSize.setText(currentFood.getSize());
                         edtFoodDescription.setText(currentFood.getDescription());
                         
                         if (currentFood.getPriceSale() != null) {
                             edtFoodPriceSale.setText(String.valueOf(currentFood.getPriceSale().intValue()));
                         }
                         
+                        chkIsNew.setChecked(currentFood.getIsNew() == 1);
+                        chkIsBest.setChecked(currentFood.getIsBest() == 1);
                         swIsAvailable.setChecked(currentFood.getIsAvailable() == 1);
                         
-                        // Chọn danh mục tương ứng trong Spinner
                         setSpinnerSelection();
-                        
                         updateImagePreview(currentFood.getImageUrl());
                     });
                 }
@@ -96,24 +96,24 @@ public class AdminEditFoodActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        // 3. Xử lý logic khi bấm nút CẬP NHẬT MÓN ĂN
         btnUpdateFood.setOnClickListener(v -> {
             String updatedName = edtFoodName.getText().toString().trim();
             String updatedPriceStr = edtFoodPrice.getText().toString().trim();
             String updatedDescription = edtFoodDescription.getText().toString().trim();
             String updatedPriceSaleStr = edtFoodPriceSale.getText().toString().trim();
-            String updatedTime = edtServingTime.getText().toString().trim();
+            String updatedSize = edtFoodSize.getText().toString().trim();
             String updatedUrl = edtFoodImageUrl.getText().toString().trim();
+            
+            int updatedIsNew = chkIsNew.isChecked() ? 1 : 0;
+            int updatedIsBest = chkIsBest.isChecked() ? 1 : 0;
             int updatedIsAvailable = swIsAvailable.isChecked() ? 1 : 0;
 
-            // Kiểm tra danh mục đã được chọn chưa
             if (categoryList.isEmpty() || spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION) {
                 Toast.makeText(this, "Vui lòng chọn danh mục!", Toast.LENGTH_SHORT).show();
                 return;
             }
             int updatedCategoryId = categoryList.get(spnCategory.getSelectedItemPosition()).getCategoryId();
 
-            // Kiểm tra không để trống dữ liệu cốt lõi
             if (updatedName.isEmpty() || updatedPriceStr.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ tên và giá!", Toast.LENGTH_SHORT).show();
                 return;
@@ -129,8 +129,10 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     currentFood.setPriceSale(updatedPriceSale);
                     currentFood.setCategoryId(updatedCategoryId);
                     currentFood.setDescription(updatedDescription);
-                    currentFood.setMealType(updatedTime);
+                    currentFood.setSize(updatedSize);
                     currentFood.setImageUrl(updatedUrl);
+                    currentFood.setIsNew(updatedIsNew);
+                    currentFood.setIsBest(updatedIsBest);
                     currentFood.setIsAvailable(updatedIsAvailable);
 
                     new Thread(() -> {
@@ -161,8 +163,6 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item, categoryNames);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnCategory.setAdapter(adapter);
-                
-                // Sau khi nạp xong danh mục, thử chọn lại đúng danh mục của món ăn
                 setSpinnerSelection();
             });
         }).start();
@@ -180,11 +180,12 @@ public class AdminEditFoodActivity extends AppCompatActivity {
 
     private void updateImagePreview(String imgName) {
         if (imgName != null && !imgName.isEmpty()) {
-            String fileName = imgName.contains(".") ? imgName.substring(0, imgName.lastIndexOf(".")) : imgName;
-            int resId = getResources().getIdentifier(fileName, "drawable", getPackageName());
-            if (resId != 0) {
-                imgFoodPreview.setImageResource(resId);
-            }
+            String fullPath = "file:///android_asset/imgg_product/" + imgName;
+            Glide.with(this)
+                    .load(fullPath)
+                    .placeholder(R.drawable.fb)
+                    .error(R.drawable.fb)
+                    .into(imgFoodPreview);
         }
     }
 }

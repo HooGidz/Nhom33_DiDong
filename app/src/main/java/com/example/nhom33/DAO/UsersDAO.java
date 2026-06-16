@@ -22,7 +22,7 @@ public interface UsersDAO {
     List<UsersEntity> getAllUsers();
 
     @Query("SELECT * FROM Users WHERE role = :role")
-    List<UsersEntity> getUsersByRole(String role);
+    List<UsersEntity> getUsersByRole(int role);
 
     @Insert
     void insertUser(UsersEntity user);

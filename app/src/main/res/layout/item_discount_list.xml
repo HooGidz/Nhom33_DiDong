@@ -39,14 +39,14 @@
         app:layout_constraintTop_toTopOf="@+id/card_img" />
 
     <TextView
-        android:id="@+id/txtMealType"
+        android:id="@+id/txtSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:background="@drawable/bg_white_outline"
         android:paddingHorizontal="10dp"
         android:paddingVertical="2dp"
-        android:text="Cả ngày"
+        android:text="Size"
         android:textColor="#FF7622"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/txtName"
@@ -58,7 +58,7 @@
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="@+id/txtName"
-        app:layout_constraintTop_toBottomOf="@+id/txtMealType">
+        app:layout_constraintTop_toBottomOf="@+id/txtSize">
 
         <ImageView
             android:layout_width="12dp"
@@ -97,7 +97,7 @@
         android:id="@+id/txtPriceSale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="159.000 VNĐ"
+        android:text="0 VNĐ"
         android:textColor="#181C2E"
         android:textSize="14sp"
         android:textStyle="bold"

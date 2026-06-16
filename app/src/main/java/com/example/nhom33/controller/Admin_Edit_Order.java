@@ -1,6 +1,8 @@
 package com.example.nhom33.controller;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -13,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.DAO.OrderDetailsDAO;
 import com.example.nhom33.DataEntity.OrdersEntity;
-import com.example.nhom33.DataEntity.UsersEntity;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.R;
 import com.example.nhom33.adapter.Admin_OrderDetail_Adapter;
@@ -25,7 +26,8 @@ import java.util.Locale;
 
 public class Admin_Edit_Order extends AppCompatActivity {
 
-    private TextView txtOrderId, txtOrderDate, txtOrderTotal, txtCustomerName, txtDeliveryAddress;
+    private TextView txtOrderId, txtOrderDate, txtOrderTotal, txtCustomerName, 
+            txtCustomerPhone, txtDeliveryAddress, txtPaymentMethod, txtOrderNote;
     private Spinner spinnerStatus;
     private RecyclerView rvOrderDetails;
     private MaterialButton btnUpdate;
@@ -64,7 +66,11 @@ public class Admin_Edit_Order extends AppCompatActivity {
         txtOrderDate = findViewById(R.id.txt_edit_order_date);
         txtOrderTotal = findViewById(R.id.txt_edit_order_total);
         txtCustomerName = findViewById(R.id.txt_edit_customer_name);
+        txtCustomerPhone = findViewById(R.id.txt_edit_customer_phone);
         txtDeliveryAddress = findViewById(R.id.txt_edit_delivery_address);
+        txtPaymentMethod = findViewById(R.id.txt_edit_payment_method);
+        txtOrderNote = findViewById(R.id.txt_edit_order_note);
+        
         spinnerStatus = findViewById(R.id.spinner_order_status);
         rvOrderDetails = findViewById(R.id.rv_order_details);
         btnUpdate = findViewById(R.id.btn_update_status);
@@ -74,12 +80,12 @@ public class Admin_Edit_Order extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        // Danh sách trạng thái khớp với dữ liệu trong database của bạn
+        // Danh sách trạng thái (Index tương ứng với giá trị int status trong DB)
         statusList = new ArrayList<>();
-        statusList.add("Chờ xác nhận");
-        statusList.add("Đang giao hàng");
-        statusList.add("Hoàn thành");
-        statusList.add("Đã huỷ");
+        statusList.add("Chờ xác nhận"); // 0
+        statusList.add("Đang giao hàng"); // 1
+        statusList.add("Hoàn thành");    // 2
+        statusList.add("Đã huỷ");         // 3
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,45 +93,61 @@ public class Admin_Edit_Order extends AppCompatActivity {
     }
 
     private void loadOrderData() {
-        // 1. Lấy thông tin đơn hàng
-        currentOrder = db.ordersDAO().getOrderById(orderId);
-        if (currentOrder != null) {
-            txtOrderId.setText(String.format(Locale.getDefault(), "Mã đơn hàng: #ORD-%d", currentOrder.getOrderId()));
-            txtOrderDate.setText(String.format("Ngày đặt: %s", currentOrder.getOrderDate()));
-            txtOrderTotal.setText(String.format(Locale.getDefault(), "Tổng cộng: %,.0f VNĐ", currentOrder.getTotalAmount()));
-            txtDeliveryAddress.setText(String.format("Địa chỉ: %s", currentOrder.getDeliveryAddress()));
+        new Thread(() -> {
+            currentOrder = db.ordersDAO().getOrderById(orderId);
+            if (currentOrder != null) {
+                // Tải danh sách món ăn chi tiết (OrderDetails)
+                List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(orderId);
+                
+                runOnUiThread(() -> {
+                    txtOrderId.setText(String.format(Locale.getDefault(), "Mã đơn hàng: #ORD-%d", currentOrder.getOrderId()));
+                    txtOrderDate.setText(String.format("Ngày đặt: %s", currentOrder.getOrderDate()));
+                    txtOrderTotal.setText(String.format(Locale.getDefault(), "Tổng cộng: %,.0f VNĐ", currentOrder.getTotalAmount()));
+                    
+                    txtCustomerName.setText(String.format("Họ tên: %s", currentOrder.getCustomerName()));
+                    txtCustomerPhone.setText(String.format("SĐT: %s", currentOrder.getCustomerPhone()));
+                    txtDeliveryAddress.setText(String.format("Địa chỉ: %s", currentOrder.getDeliveryAddress()));
+                    txtOrderNote.setText(currentOrder.getNote() != null && !currentOrder.getNote().isEmpty() 
+                            ? currentOrder.getNote() : "Không có ghi chú");
 
-            // 2. Lấy thông tin khách hàng từ customerId
-            UsersEntity user = db.usersDAO().getUserById(currentOrder.getCustomerId());
-            if (user != null) {
-                txtCustomerName.setText(user.getFullName());
+                    // Hiển thị phương thức thanh toán (0: Tiền mặt, 1: Chuyển khoản)
+                    String payment = (currentOrder.getMethodPayment() == 1) ? "Chuyển khoản" : "Tiền mặt";
+                    txtPaymentMethod.setText(String.format("Thanh toán: %s", payment));
+
+                    // Thiết lập vị trí hiện tại cho Spinner dựa trên int status
+                    if (currentOrder.getStatus() >= 0 && currentOrder.getStatus() < statusList.size()) {
+                        spinnerStatus.setSelection(currentOrder.getStatus());
+                    }
+
+                    // Cập nhật adapter cho RecyclerView
+                    Admin_OrderDetail_Adapter detailsAdapter = new Admin_OrderDetail_Adapter(details);
+                    rvOrderDetails.setAdapter(detailsAdapter);
+                });
             }
-
-            // 3. Thiết lập vị trí hiện tại cho Spinner
-            int position = statusList.indexOf(currentOrder.getStatus());
-            if (position >= 0) {
-                spinnerStatus.setSelection(position);
-            }
-
-            // 4. Tải danh sách món ăn chi tiết (OrderDetails)
-            List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(orderId);
-            Admin_OrderDetail_Adapter detailsAdapter = new Admin_OrderDetail_Adapter(details);
-            rvOrderDetails.setAdapter(detailsAdapter);
-        }
+        }).start();
     }
 
     private void updateOrderStatus() {
         if (currentOrder == null) return;
 
-        String newStatus = spinnerStatus.getSelectedItem().toString();
+        int newStatus = spinnerStatus.getSelectedItemPosition();
         currentOrder.setStatus(newStatus);
 
-        // Cập nhật trạng thái mới vào cơ sở dữ liệu
-        db.ordersDAO().updateOrder(currentOrder);
-        Toast.makeText(this, "Cập nhật trạng thái thành công!", Toast.LENGTH_SHORT).show();
-
-        // Trả kết quả về cho màn hình trước đó để cập nhật lại danh sách
-        setResult(RESULT_OK);
-        finish();
+        new Thread(() -> {
+            try {
+                // Cập nhật trạng thái mới vào cơ sở dữ liệu
+                db.ordersDAO().updateOrder(currentOrder);
+                
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    Toast.makeText(Admin_Edit_Order.this, "Cập nhật trạng thái thành công!", Toast.LENGTH_SHORT).show();
+                    // Trả kết quả về cho màn hình trước đó để cập nhật lại danh sách
+                    setResult(RESULT_OK);
+                    finish();
+                });
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> 
+                    Toast.makeText(Admin_Edit_Order.this, "Lỗi khi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
 }

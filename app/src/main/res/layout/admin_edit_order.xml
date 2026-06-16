@@ -21,7 +21,7 @@
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_button_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Quay lại"
             android:src="@drawable/icons8_back_24" />
 
@@ -32,12 +32,14 @@
             android:layout_marginTop="32dp"
             android:text="Cập nhật đơn hàng"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_update_status"
         app:layout_constraintTop_toBottomOf="@id/layout_header">
 
@@ -81,12 +83,21 @@
                         android:textColor="#757575" />
 
                     <TextView
+                        android:id="@+id/txt_edit_payment_method"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Thanh toán: Tiền mặt"
+                        android:textColor="#555555" />
+
+                    <TextView
                         android:id="@+id/txt_edit_order_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Tổng cộng: 0 VNĐ"
                         android:textColor="#FF7622"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -110,7 +121,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thông tin khách hàng"
+                        android:text="Thông tin giao hàng"
                         android:textColor="#FF7622"
                         android:textStyle="bold" />
 
@@ -119,17 +130,47 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Tên khách hàng"
+                        android:text="Họ tên: Tên khách hàng"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txt_edit_customer_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="SĐT: 0123456789"
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/txt_edit_delivery_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Địa chỉ giao hàng"
+                        android:text="Địa chỉ: Địa chỉ giao hàng"
                         android:textColor="#555555" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F0F0F0"
+                        android:layout_marginVertical="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/txt_edit_order_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Không có ghi chú"
+                        android:textColor="#555555"
+                        android:fontStyle="italic"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -138,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Chi tiết món ăn"
+                android:text="Danh sách món ăn"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -165,13 +206,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Cập nhật trạng thái mới"
+                android:text="Cập nhật trạng thái đơn hàng"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
                 app:strokeColor="#D2D3DC"
@@ -194,7 +236,7 @@
         android:layout_height="60dp"
         android:layout_margin="20dp"
         android:backgroundTint="#FF7622"
-        android:text="Cập nhật trạng thái"
+        android:text="Lưu thay đổi"
         android:textAllCaps="false"
         android:textSize="18sp"
         android:textStyle="bold"

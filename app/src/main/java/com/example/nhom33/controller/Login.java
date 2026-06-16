@@ -41,20 +41,19 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             loginUser();
         });
+
         Intent intent = getIntent();
-        if (intent!=null) {
+        if (intent != null) {
             Bundle ex = intent.getExtras();
-            if (ex!=null){
+            if (ex != null) {
                 edtEmail.setText(ex.getString("email"));
                 edtPassword.setText(ex.getString("password"));
-            }}
-
-        txtSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, SignUpActivity.class);
-                startActivity(intent);
             }
+        }
+
+        txtSignUp.setOnClickListener(v -> {
+            Intent intentSignUp = new Intent(Login.this, SignUpActivity.class);
+            startActivity(intentSignUp);
         });
     }
 
@@ -67,30 +66,37 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        // Kiểm tra đăng nhập với database local
-        UsersEntity user = db.usersDAO().getUserByEmailAndPassword(email, password);
-        if (user != null) {
-            // Lưu userId vào SharedPreferences
-            SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("userId", user.getUserId());
-            editor.apply();
+        // Thực hiện kiểm tra trong luồng nền để không làm treo UI
+        new Thread(() -> {
+            UsersEntity user = db.usersDAO().getUserByEmailAndPassword(email, password);
 
-            Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-            
-            Intent intent;
-            if ("merchant".equalsIgnoreCase(user.getRole())) {
-                // Nếu là merchant thì vào trang admin
-                intent = new Intent(Login.this, Admin_Dashboard.class);
-            } else {
-                // Nếu là customer hoặc các role khác thì vào trang người dùng
-                intent = new Intent(Login.this, TrangChuActivity.class);
-            }
+            runOnUiThread(() -> {
+                if (user != null) {
+                    // Lưu userId vào SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("userId", user.getUserId());
+                    editor.putInt("userRole", user.getRole());
+                    editor.apply();
 
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-        }
+                    Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
+                    Intent intent;
+                    // Phân quyền dựa trên UsersEntity: 0 là Admin, 1 là User
+                    if (user.getRole() == 0) {
+                        // Nếu là Admin thì vào trang dashboard quản trị
+                        intent = new Intent(Login.this, Admin_Dashboard.class);
+                    } else {
+                        // Nếu là Người dùng (role = 1) thì vào trang chủ
+                        intent = new Intent(Login.this, TrangChuActivity.class);
+                    }
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
 import com.example.nhom33.controller.DetailsActivity;
@@ -39,34 +40,37 @@ public class BurgerAdapter extends RecyclerView.Adapter<BurgerAdapter.BurgerView
     public void onBindViewHolder(@NonNull BurgerViewHolder holder, int position) {
         FoodsEntity food = foodList.get(position);
         holder.txtName.setText(food.getFoodName());
-        holder.txtRest.setText(food.getDescription());
+        
+        // Hiển thị mô tả và kích cỡ
+        String subInfo = (food.getSize() != null && !food.getSize().isEmpty()) 
+                ? food.getSize() + " | " + food.getDescription() 
+                : food.getDescription();
+        holder.txtRest.setText(subInfo);
 
         // Xử lý hiển thị giá
         if (food.getPriceSale() != null && food.getPriceSale() > 0) {
-            // Có giảm giá
             holder.txtPriceSale.setVisibility(View.VISIBLE);
             holder.txtPriceSale.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPriceSale()));
             
-            // Giá gốc hiển thị nhỏ hơn và có gạch ngang
             holder.txtPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPrice()));
             holder.txtPrice.setPaintFlags(holder.txtPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtPrice.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
         } else {
-            // Không giảm giá
             holder.txtPriceSale.setVisibility(View.GONE);
             holder.txtPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", food.getPrice()));
             holder.txtPrice.setPaintFlags(holder.txtPrice.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.txtPrice.setTextColor(context.getResources().getColor(R.color.black)); // Đảm bảo màu sắc đúng
+            holder.txtPrice.setTextColor(context.getResources().getColor(R.color.black));
         }
 
-        // Load ảnh từ drawable
+        // Load ảnh từ assets/imgg_product/ bằng Glide
         String imgName = food.getImageUrl();
-        if (imgName != null && !imgName.isEmpty()) {
-            if (imgName.contains(".")) imgName = imgName.substring(0, imgName.lastIndexOf("."));
-            int resId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
-            if (resId != 0) holder.imgFood.setImageResource(resId);
-            else holder.imgFood.setImageResource(R.drawable.pizza_img);
-        }
+        String fullPath = "file:///android_asset/img_product/" + imgName;
+        
+        Glide.with(context)
+                .load(fullPath)
+                .placeholder(R.drawable.fb)
+                .error(R.drawable.fb)
+                .into(holder.imgFood);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailsActivity.class);

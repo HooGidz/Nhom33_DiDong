@@ -47,7 +47,7 @@ public class Admin_Category_Adapter extends RecyclerView.Adapter<Admin_Category_
         // Sử dụng Glide để load ảnh từ thư mục assets/imgg_product/
         String imageUrl = category.getImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            String fullPath = "file:///android_asset/img_product/" + imageUrl;
+            String fullPath = "file:///android_asset/img_cate/" + imageUrl;
             Glide.with(holder.itemView.getContext())
                     .load(fullPath)
                     .placeholder(R.drawable.fb) // Ảnh thay thế khi đang load

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.CartEntity;
 import com.example.nhom33.DataEntity.FavoritesEntity;
 import com.example.nhom33.DataEntity.FoodsEntity;
@@ -23,11 +25,12 @@ import com.example.nhom33.R;
 import com.example.nhom33.adapter.ReviewAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private ImageView imgProduct;
-    private TextView tvMainTitle, tvDescription, tvPrice, tvQuantity;
+    private TextView tvMainTitle, tvDescription, tvPrice, tvSizeLabel, tvQuantity;
     private RecyclerView rcvReviews;
     private ReviewAdapter reviewAdapter;
 
@@ -44,11 +47,14 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        db = FoodDB.getInstance(this);
+
         // Khởi tạo View
         imgProduct = findViewById(R.id.imgProduct);
         tvMainTitle = findViewById(R.id.tvMainTitle);
         tvDescription = findViewById(R.id.tvDescription);
         tvPrice = findViewById(R.id.tvPrice);
+        tvSizeLabel = findViewById(R.id.tvSizeLabel);
         rcvReviews = findViewById(R.id.rcvReviews);
         tvQuantity = findViewById(R.id.tvQuantity);
         btnFavorite = findViewById(R.id.btnFavorite);
@@ -57,8 +63,6 @@ public class DetailsActivity extends AppCompatActivity {
         ImageButton btnPlus = findViewById(R.id.btnPlus);
         ImageButton btnMinus = findViewById(R.id.btnMinus);
         Button btnAddToCart = findViewById(R.id.btn_add_to_cart);
-
-        db = FoodDB.getInstance(this);
 
         // Cấu hình RecyclerView cho đánh giá
         rcvReviews.setLayoutManager(new LinearLayoutManager(this));
@@ -149,20 +153,27 @@ public class DetailsActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     tvMainTitle.setText(food.getFoodName());
                     tvDescription.setText(food.getDescription());
-                    tvPrice.setText(String.format("%,.0f VNĐ", food.getPrice()));
 
-                    String imgName = food.getImageUrl();
-                    if (imgName != null && !imgName.isEmpty()) {
-                        if (imgName.contains(".")) {
-                            imgName = imgName.substring(0, imgName.lastIndexOf("."));
-                        }
-                        int resId = getResources().getIdentifier(imgName, "drawable", getPackageName());
-                        if (resId != 0) {
-                            imgProduct.setImageResource(resId);
-                        } else {
-                            imgProduct.setImageResource(R.drawable.pizza_img);
-                        }
+                    // Hiển thị giá (ưu tiên giá khuyến mãi nếu có)
+                    double price = (food.getPriceSale() != null && food.getPriceSale() > 0) ? food.getPriceSale() : food.getPrice();
+                    tvPrice.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", price));
+
+                    // Cập nhật thông tin Size
+                    if (food.getSize() != null && !food.getSize().isEmpty()) {
+                        tvSizeLabel.setText("Kích thước: " + food.getSize());
+                    } else {
+                        tvSizeLabel.setText("Kích thước: Cả ngày");
                     }
+
+                    // Load ảnh từ assets bằng Glide
+                    String imgName = food.getImageUrl();
+                    String fullPath = "file:///android_asset/img_product/" + imgName;
+
+                    Glide.with(this)
+                            .load(fullPath)
+                            .placeholder(R.drawable.pizza_img)
+                            .error(R.drawable.pizza_img)
+                            .into(imgProduct);
                 });
             }
         }).start();

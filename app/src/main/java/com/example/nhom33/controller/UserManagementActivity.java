@@ -26,14 +26,12 @@ public class UserManagementActivity extends AppCompatActivity {
     private List<UsersEntity> userList;
     private FoodDB db;
     private TabLayout tabLayout;
-    private String currentRole = "customer"; // Mặc định hiển thị customer
+    private int currentRole = 1; // 1: Customer, 0: Merchant/Admin
 
-    // Khai báo launcher để nhận kết quả từ màn hình chỉnh sửa
     private final ActivityResultLauncher<Intent> editUserLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
-                    // Tải lại danh sách sau khi chỉnh sửa thành công
                     loadUsers();
                 }
             }
@@ -51,7 +49,6 @@ public class UserManagementActivity extends AppCompatActivity {
         db = FoodDB.getInstance(this);
         userList = new ArrayList<>();
 
-        // Khởi tạo Adapter với Listener xử lý Xóa và Chuyển sang trang Sửa
         userAdapter = new UserAdapter(userList, new UserAdapter.OnUserActionListener() {
             @Override
             public void onDelete(UsersEntity user, int position) {
@@ -60,7 +57,6 @@ public class UserManagementActivity extends AppCompatActivity {
 
             @Override
             public void onEdit(UsersEntity user, int position) {
-                // Mở Activity chỉnh sửa tài khoản thay vì Dialog
                 Intent intent = new Intent(UserManagementActivity.this, AdminEditUserActivity.class);
                 intent.putExtra("USER_ID", user.getUserId());
                 editUserLauncher.launch(intent);
@@ -70,14 +66,13 @@ public class UserManagementActivity extends AppCompatActivity {
         rvUsers.setLayoutManager(new LinearLayoutManager(this));
         rvUsers.setAdapter(userAdapter);
 
-        // Xử lý chuyển Tab
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    currentRole = "customer";
+                    currentRole = 1; // Customer
                 } else {
-                    currentRole = "merchant";
+                    currentRole = 0; // Merchant
                 }
                 loadUsers();
             }
@@ -106,7 +101,7 @@ public class UserManagementActivity extends AppCompatActivity {
     private void showDeleteConfirmDialog(UsersEntity user, int position) {
         new AlertDialog.Builder(this)
                 .setTitle("Xóa tài khoản")
-                .setMessage("Bạn có chắc chắn muốn xóa " + (user.getRole().equals("merchant") ? "Admin " : "người dùng ") + user.getFullName() + "?")
+                .setMessage("Bạn có chắc chắn muốn xóa " + (user.getRole() == 0 ? "Admin " : "người dùng ") + user.getFullName() + "?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
                     deleteUser(user, position);
                 })

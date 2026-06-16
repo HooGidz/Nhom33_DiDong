@@ -1,9 +1,9 @@
 package com.example.nhom33.Database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -46,7 +46,7 @@ import java.util.concurrent.Executors;
         ProductReviewEntity.class,
         NotificationEntity.class,
         SearchHistoryEntity.class
-}, version = 11) // Nâng version lên 11 để database cập nhật lại dữ liệu mẫu
+}, version = 12) // Nâng lên version 12 để làm mới cấu trúc bảng
 public abstract class FoodDB extends RoomDatabase {
     private static final String DB_NAME = "ql_doan33.db";
     private static FoodDB instance;
@@ -80,89 +80,139 @@ public abstract class FoodDB extends RoomDatabase {
 
             Executors.newSingleThreadExecutor().execute(() -> {
                 try {
-                    // 1. Chèn người dùng
-                    db.execSQL("INSERT INTO Users (username, password, full_name, email, phone, address, role) VALUES " +
-                            "('hoanggiap', '123456', 'Hoàng Giáp', 'giap@gmail.com', '0987654321', 'Vinh, Nghệ An', 'customer'), " +
-                            "('giang', '123', 'Giang Nguyễn', 'giang@gmail.com', '0123456789', 'Hà Nội', 'customer'), " +
-                            "('thangle', '123', 'Thắng Lê', 'tl@gmail.com', '0123456789', 'Hà Nội', 'customer'), " +
-                            "('admin', '123', 'Admin Hệ Thống', 'admin@nhom33.com', '0123456789', 'Hà Nội', 'merchant');");
+                    // 1. Chèn Users (role: 0-Admin, 1-User | status: 0-Inactive, 1-Active)
+                    db.execSQL("INSERT INTO Users (username, password, full_name, email, phone, address, role, avatar, status, created_at) VALUES " +
+                            "('admin', '123', 'Admin Hệ Thống', 'admin@nhom33.com', '0123456789', 'Hà Nội', 0, 'admin.png', 1, '2024-01-01'), " +
+                            "('hoanggiap', '123', 'Hoàng Giáp', 'giap@gmail.com', '0987654321', 'Vinh, Nghệ An', 1, 'giap.png', 1, '2024-02-01'), " +
+                            "('giang', '123', 'Giang Nguyễn', 'giang@gmail.com', '0111222333', 'Hà Nội', 1, 'giang.png', 1, '2024-02-10'), " +
+                            "('thangle', '123', 'Thắng Lê', 'tl@gmail.com', '0444555666', 'Hồ Chí Minh', 1, 'thang.png', 1, '2024-03-01'), " +
+                            "('user5', '123', 'Người Dùng 5', 'user5@gmail.com', '0999888777', 'Đà Nẵng', 1, 'user5.png', 1, '2024-03-05');");
 
-                    // 2. Chèn SearchHistory
-                    db.execSQL("INSERT INTO SearchHistory (user_id, search_query, search_time) VALUES " +
-                            "(1, 'Pizza', datetime('now')), " +
-                            "(1, 'Trà sữa Phúc Long', datetime('now')), " +
-                            "(2, 'Gà rán KFC', datetime('now')), " +
-                            "(1, 'Trà sữa', datetime('now'));");
-                    // 3. DeliveryLog
-                    db.execSQL("INSERT INTO DeliveryLog (order_id, status_description, log_time) VALUES " +
-                            "(1, 'Đã nhận đơn hàng', datetime('now', '-2 hours')), " +
-                            "(1, 'Shipper đã lấy hàng', datetime('now', '-1 hour')), " +
-                            "(1, 'Giao hàng thành công', datetime('now', '-30 minutes')), " +
-                            "(2, 'Đã nhận đơn hàng', datetime('now', '-1 hour')), " +
-                            "(2, 'Đang chuẩn bị món ăn', datetime('now', '-45 minutes')), " +
-                            "(2, 'Đang giao hàng', datetime('now', '-10 minutes')), " +
-                            "(5, 'Đã nhận đơn hàng', datetime('now', '-20 minutes'));");
-                    // 4. Notification (bây giờ đổi sang bảng Notifications)
-                    db.execSQL("INSERT INTO Notifications (title, content, created_at) VALUES " +
-                            "('Khuyến mãi sốc', 'Giảm giá 50% toàn bộ thực đơn ngày hôm nay!', '13/06/2026'), " +
-                            "('Hệ thống bảo trì', 'Ứng dụng sẽ bảo trì hệ thống nạp tiền vào lúc 23h00.', '13/06/2026');");
-                    // 5. Chèn Categories
+                    // 2. Chèn Categories
                     db.execSQL("INSERT INTO Categories (category_name, description, image_url) VALUES " +
-                            "('Đồ ăn nhanh', 'Các món chế biến nhanh, tiện lợi', 'ga_gion.png'), " +
-                            "('Đồ uống', 'Nước giải khát, trà sữa, cà phê', 'drinks.png'), " +
-                            "('Món Việt', 'Ẩm thực truyền thống Việt Nam', 'vietnamese.png'), " +
-                            "('Tráng miệng', 'Bánh ngọt và trái cây', 'dessert.png');");
-                    // 6. Chèn Foods
-                    db.execSQL("INSERT INTO Foods (category_id, food_name, description, price, price_sale, image_url, is_available, meal_type) VALUES " +
-                            "(1, 'Pizza Hải Sản', 'Pizza với tôm, mực và phô mai', 159000.0, 140000.0, 'pizza_hs.png', 1, 'Cả ngày')," +
-                            "(2, 'Trà Sữa Phúc Long', 'Đậm vị trà, béo vị sữa', 55000.0, NULL, 'ts_phuclong.png', 1, 'Cả ngày')," +
-                            "(1, 'Combo Gà Rán', '2 miếng gà + 1 khoai tây + 1 Pepsi', 89000.0, 79000.0, 'kfc_combo.png', 1, 'Cả ngày')," +
-                            "(2, 'Cà Phê Sữa Đá', 'Hạt cà phê nguyên chất', 35000.0, NULL, 'cf_suada.png', 1, 'Sáng')," +
-                            "(1, 'Burger Bò', 'Burger bò mỹ với các loại thịt chất lượng cao', 95000.0, 85000.0, 'burger_bo.png', 1, 'Cả ngày');");
+                            "('Combo bán chạy', 'Các phần ăn combo được yêu thích nhất', 'combo_ban_chay.png'), " +
+                            "('Gà giòn vui vẻ', 'Gà rán giòn rụm thơm ngon', 'ga_gion_vui_ve.png'), " +
+                            "('Mì ý jolly', 'Mì Ý sốt bò băm đậm đà', 'mi_y_jolly.png'), " +
+                            "('Gà sốt cay', 'Gà rán phủ sốt gia vị cay nồng', 'ga_sot_cay.png'), " +
+                            "('Burger/cơm', 'Các loại bánh burger và cơm phần', 'burger_com.png'), " +
+                            "('Phần ăn phụ', 'Khoai tây chiên và các món ăn kèm', 'phan_an_phu.png'), " +
+                            "('Món tráng miệng', 'Kem tươi và các món ngọt tráng miệng', 'mon_trang_mieng.png'), " +
+                            "('Thức uống', 'Nước giải khát và trà trái cây thanh mát', 'thuc_uong.png');");
 
-                    // 7. Chèn Coupons
+                    // 3. Chèn Foods (is_new, is_best, is_available: 0-No, 1-Yes)
+                    db.execSQL("INSERT INTO Foods (category_id, food_name, size, description, price, price_sale, image_url, is_new, is_best, is_available) VALUES " +
+                            // CATEGORY 1: Combo bán chạy (category_id = 1)
+                            "(1, 'Combo gà rán mì ý', 'Phần', '1 Gà rán + 1 Mì Ý jolly lớn + 1 Nước ngọt', 95000.0, 85000.0, 'combo_ga_mi.png', 1, 1, 1)," +
+                            "(1, 'Combo burger khoai tây', 'Phần', '1 Burger bò + 1 Khoai tây chiên vừa + 1 Nước ngọt', 75000.0, NULL, 'burger.png', 0, 1, 1)," +
+                            "(1, 'Combo gia đình vui vẻ', 'Phần lớn', '4 Gà rán + 2 Mì Ý + 1 Khoai tây chiên lớn + 3 Nước ngọt', 289000.0, 259000.0, 'combo_family.png', 0, 1, 1)," +
+
+                            // CATEGORY 2: Gà giòn vui vẻ (category_id = 2)
+                            "(2, 'Gà rán truyền thống', '1 Miếng', 'Gà rán giòn rụm, thịt bên trong mềm ngọt', 36000.0, NULL, 'ga_truyen_thong.png', 0, 1, 1)," +
+                            "(2, 'Cánh gà rán giòn', ' Cánh 1 miếng', '1 miếng cánh gà rán truyền thống tiết kiệm', 139000.0, 129000.0, 'canh_ga_ran.png', 0, 0, 1)," +
+                            "(2, 'Gà rán tender', '3 Miếng', 'Gà phi lê chiên xù không xương tiện lợi', 42000.0, 39000.0, 'ga_tender.png', 1, 0, 1)," +
+
+                            // CATEGORY 3: Mì ý jolly (category_id = 3)
+                            "(3, 'Mì ý sốt bò băm', 'Đĩa vừa', 'Mì Ý truyền thống kết hợp sốt bò băm đậm đà', 40000.0, NULL, 'mi_y_bo_bam.png', 0, 1, 1)," +
+                            "(3, 'Mì ý gà giòn', 'Đĩa lớn', 'Mì Ý sốt bò băm kèm theo 1 miếng gà rán giòn', 72000.0, 65000.0, 'mi_y_ga_gion.png', 0, 1, 1)," +
+                            "(3, 'Mì ý sốt cá hồi', 'Đĩa vừa', 'Mì Ý cải tiến với sốt kem cá hồi béo ngậy', 55000.0, 49000.0, 'mi_y_ca_hoi.png', 1, 0, 1)," +
+
+                            // CATEGORY 4: Gà sốt cay (category_id = 4)
+                            "(4, 'Gà sốt cay đậm đà', '1 Miếng', 'Gà rán giòn phủ sốt cay ngọt kiểu Hàn Quốc', 38000.0, NULL, 'ga_cay.jpg', 0, 1, 1)," +
+                            "(4, 'Gà sốt mật ong mù tạt', '1 Miếng', 'Gà rán phủ sốt mật ong mù tạt thơm lừng', 38000.0, 35000.0, 'ga_mat_ong.jpg', 1, 0, 1)," +
+                            "(4, 'Xô gà sốt cay', 'Xô 4 miếng', 'Xô 4 miếng gà sốt cay nồng nàn', 145000.0, 135000.0, 'xo_ga_cay.jpg', 0, 1, 1)," +
+
+                            // CATEGORY 5: Burger/cơm (category_id = 5)
+                            "(5, 'Burger bò nướng', 'Cái', 'Bánh mì kẹp thịt bò nướng kèm sốt đặc biệt', 35000.0, NULL, 'burger_bo.jpg', 0, 1, 1)," +
+                            "(5, 'Cơm gà rán giòn', 'Dĩa', 'Cơm trắng thơm dẻo ăn kèm 1 miếng gà rán giòn', 45000.0, 42000.0, 'com_ga_ran.png', 0, 1, 1)," +
+                            "(5, 'Cơm thịt bò xào', 'Dĩa', 'Cơm trắng sốt thịt bò xào hành tây đậm vị', 45000.0, NULL, 'com_bo_xao.jpg', 1, 0, 1)," +
+
+                            // CATEGORY 6: Phần ăn phụ (category_id = 6)
+                            "(6, 'Khoai tây chiên', 'Hộp vừa', 'Khoai tây cắt thanh chiên vàng giòn rụm', 22000.0, 19000.0, 'khoai_tay_chien.jpg', 0, 1, 1)," +
+                            "(6, 'Khoai tây lắc phô mai', 'Hộp vừa', 'Khoai tây chiên giòn lắc bột phô mai mặn ngọt', 29000.0, NULL, 'tuongca.jpg', 1, 1, 1)," +
+                            "(6, 'Gà popcorn', 'Hộp', 'Thịt viên gà chiên giòn nhỏ xinh dễ ăn', 30000.0, NULL, 'sup_bi_do.jpg', 0, 0, 1)," +
+
+                            // CATEGORY 7: Món tráng miệng (category_id = 7)
+                            "(7, 'Kem hình nón', 'Cây', 'Kem cây vị vani thơm ngon mềm mịn', 8000.0, NULL, 'kemvani.jpg', 0, 1, 1)," +
+                            "(7, 'Bánh pie khoai môn', 'Cái', 'Bánh pie chiên giòn rụm nhân khoai môn nóng hổi', 18000.0, 15000.0, 'kem_socola.jpg', 0, 0, 1)," +
+                            "(7, 'Kem sundae dâu', 'Ly', 'Kem ly vani phủ sốt mứt dâu tây ngọt ngào', 18000.0, NULL, 'kem_dau.jpg', 0, 1, 1)," +
+
+                            // CATEGORY 8: Thức uống (category_id = 8)
+                            "(8, 'Pepsi tươi', 'Ly vừa', 'Nước ngọt có ga giải nhiệt cực đã', 15000.0, NULL, 'pepsi.png', 0, 1, 1)," +
+                            "(8, 'Trà chanh', 'Ly lớn', 'Trà chanh thanh mát kết hợp hạt chia bổ dưỡng', 25000.0, 22000.0, 'tra_chanh.png', 1, 1, 1)," +
+                            "(8, 'Nước cam ép', 'Ly', 'Nước cam nguyên chất giàu vitamin C', 22000.0, NULL, 'nuoc_cam.png', 0, 0, 1);");
+
+                    // 4. Chèn Coupons
                     db.execSQL("INSERT INTO Coupons (coupon_code, discount_percent, discount_amount, min_order_value, expiry_date, is_active) VALUES " +
                             "('GIAP2026', 20, 0.0, 100000.0, '2026-12-31', 1), " +
-                            "('FREESHIP', 0, 30000.0, 50000.0, '2026-06-01', 1);");
+                            "('FREESHIP', 0, 30000.0, 50000.0, '2026-06-01', 1), " +
+                            "('NEWUSER', 10, 0, 0, '2024-12-31', 1), " +
+                            "('SALE50K', 0, 50000, 200000, '2024-05-01', 1), " +
+                            "('SUMMER', 15, 0, 150000, '2024-08-31', 0);");
 
-                    // 8. Chèn Orders
-                    db.execSQL("INSERT INTO Orders (customer_id, order_date, total_amount, status, delivery_address) VALUES " +
-                            "(1, datetime('now'), 159000, 'Hoàn thành', 'Vinh, Nghệ An'), " +
-                            "(2, datetime('now'), 55000, 'Đang giao hàng', 'Hà Nội'), " +
-                            "(3, datetime('now'), 89000, 'Chờ xác nhận', 'Đà Nẵng'), " +
-                            "(1, datetime('now'), 35000, 'Đã huỷ', 'Vinh, Nghệ An'), " +
-                            "(1, datetime('now'), 55000, 'Đang giao hàng', 'Hà Nội');");
+                    // 5. Chèn Orders (status: 0-Pending, 1-Confirmed, 2-Delivering, 3-Completed, 4-Cancelled)
+                    db.execSQL("INSERT INTO Orders (user_id, coupon_id, customer_name, customer_phone, custome_address, order_date, total_amount, delivery_address, status, method_payment, note) VALUES " +
+                            "(2, 1, 'Hoàng Giáp', '0987654321', 'Vinh, Nghệ An', datetime('now'), 159000, 'Vinh, Nghệ An', 3, 0, 'Giao trước 12h'), " +
+                            "(3, 2, 'Giang Nguyễn', '0111222333', 'Hà Nội', datetime('now'), 55000, 'Hà Nội', 2, 1, ''), " +
+                            "(4, 1, 'Thắng Lê', '0444555666', 'Hồ Chí Minh', datetime('now'), 95000, 'Hồ Chí Minh', 1, 0, 'Gọi trước khi giao'), " +
+                            "(5, 4, 'Người Dùng 5', '0999888777', 'Đà Nẵng', datetime('now'), 200000, 'Đà Nẵng', 0, 1, 'Cẩn thận đồ dễ vỡ'), " +
+                            "(2, 2, 'Hoàng Giáp', '0987654321', 'Vinh, Nghệ An', datetime('now'), 80000, 'Vinh, Nghệ An', 4, 0, 'Huỷ do đặt nhầm');");
 
-                    // 9. Chèn OrderDetails
+                    // 6. Chèn OrderDetails
                     db.execSQL("INSERT INTO OrderDetails (order_id, food_id, quantity, price_at_time) VALUES " +
                             "(1, 1, 1, 159000), " +
                             "(2, 2, 1, 55000), " +
-                            "(3, 3, 1, 89000), " +
-                            "(4, 4, 1, 35000), " +
-                            "(5, 2, 1, 55000);"); // Đã bổ sung chi tiết cho đơn hàng ID 5
+                            "(3, 3, 1, 95000), " +
+                            "(4, 1, 1, 159000), " +
+                            "(5, 2, 1, 55000);");
 
-                    // 10. Chèn ProductReview
-                    db.execSQL("INSERT INTO ProductReview (user_id, food_id, order_id, rating, comment, image_url, review_date) VALUES " +
-                            "(1, 1, 1, 5, 'Pizza rất ngon, giao hàng nhanh!', 'review_pizza.jpg', datetime('now')), " +
-                            "(2, 2, 2, 4, 'Trà sữa thơm nhưng hơi ngọt quá.', NULL, datetime('now')), " +
-                            "(1, 5, 5, 5, 'Burger bò rất chất lượng, sẽ ủng hộ tiếp.', 'review_burger.jpg', datetime('now')), " +
-                            "(3, 3, 3, 3, 'Gà hơi nguội khi giao đến.', NULL, datetime('now')), " +
-                            "(1, 1, 1, 5, 'Rất ngon!', 'review1.jpg', datetime('now'));");
+                    // 7. Chèn Notifications
+                    db.execSQL("INSERT INTO Notifications (title, content, created_at) VALUES " +
+                            "('Khuyến mãi sốc', 'Giảm giá 50% toàn bộ thực đơn ngày hôm nay!', '2024-03-20'), " +
+                            "('Món mới ra mắt', 'Thử ngay Pizza Hải Sản size L cực đã.', '2024-03-21'), " +
+                            "('Freeship cuối tuần', 'Nhập mã FREESHIP để được miễn phí vận chuyển.', '2024-03-22'), " +
+                            "('Bảo trì hệ thống', 'Ứng dụng sẽ bảo trì vào lúc 0h sáng mai.', '2024-03-23'), " +
+                            "('Chúc mừng sinh nhật', 'Tặng bạn voucher giảm 20% cho đơn hàng tiếp theo.', '2024-03-24');");
 
+                    // 8. Chèn Cart
+                    db.execSQL("INSERT INTO Cart (user_id, food_id, quantity, price_at_time) VALUES " +
+                            "(2, 1, 2, 159000.0), " +
+                            "(3, 2, 1, 55000.0), " +
+                            "(4, 3, 3, 95000.0), " +
+                            "(5, 4, 1, 45000.0), " +
+                            "(2, 5, 2, 15000.0);");
 
-                    // 11. Favorites
+                    // 9. Chèn DeliveryLog
+                    db.execSQL("INSERT INTO DeliveryLog (order_id, status_description, log_time) VALUES " +
+                            "(1, 'Đơn hàng đã được tiếp nhận', datetime('now')), " +
+                            "(1, 'Đang chuẩn bị món ăn', datetime('now')), " +
+                            "(2, 'Shipper đã lấy hàng', datetime('now')), " +
+                            "(3, 'Đang giao hàng', datetime('now')), " +
+                            "(4, 'Đã giao hàng thành công', datetime('now'));");
+
+                    // 10. Chèn Favorites
                     db.execSQL("INSERT INTO Favorites (user_id, food_id) VALUES " +
-                            "(1, 1), " +
-                            "(1, 2), " +
-                            "(2, 3), " +
-                            "(3, 4), " +
-                            "(1, 5);");
+                            "(2, 1), (2, 2), (3, 1), (4, 4), (5, 5);");
+
+                    // 11. Chèn ProductReview
+                    db.execSQL("INSERT INTO ProductReview (user_id, food_id, order_id, rating, comment, image_url, review_date) VALUES " +
+                            "(2, 1, 1, 5, 'Rất ngon, giao hàng nhanh!', 'review1.png', datetime('now')), " +
+                            "(3, 2, 2, 4, 'Trà sữa hơi ngọt nhưng vẫn ổn.', 'review2.png', datetime('now')), " +
+                            "(4, 3, 3, 3, 'Burger hơi nguội.', NULL, datetime('now')), " +
+                            "(5, 4, 4, 5, 'Phở rất đậm đà.', 'review4.png', datetime('now')), " +
+                            "(2, 5, 5, 2, 'Bánh hơi bé so với giá.', NULL, datetime('now'));");
+
+                    // 12. Chèn SearchHistory
+                    db.execSQL("INSERT INTO SearchHistory (user_id, search_query, search_time) VALUES " +
+                            "(2, 'Pizza', datetime('now')), " +
+                            "(2, 'Burger', datetime('now')), " +
+                            "(3, 'Trà sữa', datetime('now')), " +
+                            "(4, 'Phở', datetime('now')), " +
+                            "(5, 'Lẩu', datetime('now'));");
 
                 } catch (Exception e) {
                     Log.e("FoodDB", "Error inserting initial data", e);
                 }
             });
-
         }
     };
 }

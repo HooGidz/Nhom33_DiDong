@@ -15,7 +15,7 @@ import com.example.nhom33.db.item_running_order;
 import java.util.List;
 
 public class Admin_RunOrd_Adapter extends RecyclerView.Adapter<Admin_RunOrd_Adapter.MyViewHolder> {
-    private List<item_running_order> itemList;
+    private final List<item_running_order> itemList;
 
     public Admin_RunOrd_Adapter(List<item_running_order> itemList) {
         this.itemList = itemList;

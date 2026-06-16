@@ -104,10 +104,26 @@ public class HisOrderMain extends AppCompatActivity {
                 }
             }
 
+            // Chuyển status (kiểu int) thành chuỗi mô tả để phù hợp với constructor hisOrder
+            String statusText;
+            switch (entity.getStatus()) {
+                case 1:
+                    statusText = "Đang giao hàng";
+                    break;
+                case 2:
+                    statusText = "Đã giao";
+                    break;
+                case 3:
+                    statusText = "Đã hủy";
+                    break;
+                default:
+                    statusText = "Đang chuẩn bị";
+            }
+
             orderList.add(new hisOrder(
-                    category, 
-                    entity.getStatus(),
-                    displayName, 
+                    category,
+                    statusText,
+                    displayName,
                     "#" + entity.getOrderId(),
                     String.format(Locale.getDefault(), "%,.0f VNĐ", entity.getTotalAmount()),
                     entity.getOrderDate(),

@@ -8,8 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.CategoriesEntity;
 import com.example.nhom33.R;
+
 import java.util.List;
 
 public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder> {
@@ -39,13 +42,15 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         CategoriesEntity category = categoryList.get(position);
         holder.txtName.setText(category.getCategoryName());
 
+        // Load ảnh từ assets/imgg_product/ bằng Glide
         String imgName = category.getImageUrl();
-        if (imgName != null && !imgName.isEmpty()) {
-            if (imgName.contains(".")) imgName = imgName.substring(0, imgName.lastIndexOf("."));
-            int resId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
-            if (resId != 0) holder.imgCategory.setImageResource(resId);
-            else holder.imgCategory.setImageResource(R.drawable.fb);
-        }
+        String fullPath = "file:///android_asset/img_product/" + imgName;
+
+        Glide.with(context)
+                .load(fullPath)
+                .placeholder(R.drawable.fb)
+                .error(R.drawable.fb)
+                .into(holder.imgCategory);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -55,7 +60,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     }
 
     @Override
-    public int getItemCount() { return categoryList.size(); }
+    public int getItemCount() { return categoryList != null ? categoryList.size() : 0; }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCategory;

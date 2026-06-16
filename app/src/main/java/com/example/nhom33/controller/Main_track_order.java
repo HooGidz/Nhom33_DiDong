@@ -53,11 +53,24 @@ public class Main_track_order extends AppCompatActivity {
     private void loadOrderData(int orderId) {
         OrdersEntity order = db.ordersDAO().getOrderById(orderId);
         if (order != null) {
+            // Hiển thị thông tin đơn hàng. order.getStatus() trả về mã trạng thái (int).
             tvStoreName.setText("Cửa hàng NHOM33"); // Hoặc lấy từ liên kết bảng Foods
             tvOrderTime.setText("Đặt lúc: " + order.getOrderDate());
-            
-            String statusInfo = "Trạng thái: " + order.getStatus();
-            if (order.getStatus().equals("Đang giao hàng")) {
+
+            int status = order.getStatus();
+            String statusText;
+            if (status == 1) {
+                statusText = "Đang giao hàng";
+            } else if (status == 2) {
+                statusText = "Đã giao";
+            } else if (status == 3) {
+                statusText = "Đã hủy";
+            } else {
+                statusText = "Đang chuẩn bị";
+            }
+
+            String statusInfo = "Trạng thái: " + statusText;
+            if (status == 1) {
                 statusInfo += "\nShipper đang trên đường giao đến bạn.";
             } else {
                 statusInfo += "\nĐơn hàng đang được chuẩn bị.";

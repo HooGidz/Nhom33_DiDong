@@ -1,11 +1,11 @@
 package com.example.nhom33.DataEntity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-// Khai báo bảng "Users" và thiết lập thuộc tính UNIQUE cho cột username
 @Entity(
         tableName = "Users",
         indices = {@Index(value = {"username"}, unique = true)}
@@ -19,6 +19,7 @@ public class UsersEntity {
     @ColumnInfo(name = "username")
     private String username;
 
+    @NonNull
     @ColumnInfo(name = "password")
     private String password;
 
@@ -28,18 +29,26 @@ public class UsersEntity {
     @ColumnInfo(name = "email")
     private String email;
 
+    @NonNull
     @ColumnInfo(name = "phone")
     private String phone;
 
     @ColumnInfo(name = "address")
     private String address;
 
-    // Cột role nhận giá trị 'customer' hoặc 'merchant'
-    @ColumnInfo(name = "role")
-    private String role;
+    @ColumnInfo(name = "role", defaultValue = "1")
+    private int role; // 0: Quản trị viên, 1: Người dùng
 
-    // --- Constructor ---
-    public UsersEntity(String username, String password, String fullName, String email, String phone, String address, String role) {
+    @ColumnInfo(name = "avatar")
+    private String avatar;
+
+    @ColumnInfo(name = "status", defaultValue = "0")
+    private int status; // 0: Không hoạt động, 1: Hoạt động
+
+    @ColumnInfo(name = "created_at")
+    private String createdAt;
+
+    public UsersEntity(String username, @NonNull String password, String fullName, String email, @NonNull String phone, String address, int role, String avatar, int status, String createdAt) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -47,9 +56,15 @@ public class UsersEntity {
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.avatar = avatar;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 
-    // --- Getter và Setter (Bắt buộc phải có để Room đọc/ghi dữ liệu) ---
+    // Hàm khởi tạo không tham số cho Room
+    public UsersEntity() {
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -66,11 +81,12 @@ public class UsersEntity {
         this.username = username;
     }
 
+    @NonNull
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NonNull String password) {
         this.password = password;
     }
 
@@ -90,11 +106,12 @@ public class UsersEntity {
         this.email = email;
     }
 
+    @NonNull
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(@NonNull String phone) {
         this.phone = phone;
     }
 
@@ -106,11 +123,35 @@ public class UsersEntity {
         this.address = address;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

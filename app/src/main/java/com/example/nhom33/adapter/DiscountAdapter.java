@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
 import com.example.nhom33.controller.DetailsActivity;
@@ -38,18 +39,22 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodsEntity food = foodList.get(position);
         holder.txtName.setText(food.getFoodName());
-        holder.txtMealType.setText(food.getMealType() != null ? food.getMealType() : "Cả ngày");
+        
+        // Cập nhật giao diện: Sử dụng txtSize hiển thị thông tin getSize() từ FoodsEntity
+        holder.txtSize.setText(food.getSize() != null ? food.getSize() : "N/A");
         
         double priceToShow = (food.getPriceSale() != null && food.getPriceSale() > 0) ? food.getPriceSale() : food.getPrice();
         holder.txtPriceSale.setText(String.format(Locale.getDefault(), "%,.0f VNĐ", priceToShow));
 
+        // Load ảnh từ assets/img_product/ bằng Glide
         String imgName = food.getImageUrl();
-        if (imgName != null && !imgName.isEmpty()) {
-            if (imgName.contains(".")) imgName = imgName.substring(0, imgName.lastIndexOf("."));
-            int resId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
-            if (resId != 0) holder.imgFood.setImageResource(resId);
-            else holder.imgFood.setImageResource(R.drawable.fb);
-        }
+        String fullPath = "file:///android_asset/img_product/" + imgName;
+        
+        Glide.with(context)
+                .load(fullPath)
+                .placeholder(R.drawable.fb)
+                .error(R.drawable.fb)
+                .into(holder.imgFood);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailsActivity.class);
@@ -64,13 +69,13 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtName, txtMealType, txtPriceSale, txtPush;
+        TextView txtName, txtSize, txtPriceSale, txtPush;
         ImageView imgFood;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtName);
-            txtMealType = itemView.findViewById(R.id.txtMealType);
+            txtSize = itemView.findViewById(R.id.txtSize); // Đã đổi ID từ txtMealType thành txtSize
             txtPriceSale = itemView.findViewById(R.id.txtPriceSale);
             txtPush = itemView.findViewById(R.id.txtPush);
             imgFood = itemView.findViewById(R.id.imgFood);

@@ -3,9 +3,10 @@ package com.example.nhom33.controller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,14 +24,13 @@ public class Admin_All_Order extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Admin_Order_Adapter adapter;
-    private List<OrdersEntity> orderList = new ArrayList<>();
+    private final List<OrdersEntity> orderList = new ArrayList<>();
     private FoodDB db;
 
     private ImageButton btnBack;
     private Button btnFilterAll, btnFilterPending, btnFilterShipping, btnFilterCompleted, btnFilterCancelled;
     private ImageButton navDashboard, navMenu, navAdd, navNotification, navProfile;
-    
-    // Biến lưu trữ bộ lọc hiện tại (Mặc định là "All")
+
     private String currentFilter = "All";
 
     @Override
@@ -40,7 +40,6 @@ public class Admin_All_Order extends AppCompatActivity {
 
         db = FoodDB.getInstance(this);
 
-        // Kiểm tra xem có yêu cầu lọc cụ thể từ Intent không
         String filter = getIntent().getStringExtra("FILTER_STATUS");
         if (filter != null) {
             currentFilter = filter;
@@ -51,11 +50,10 @@ public class Admin_All_Order extends AppCompatActivity {
         setupListeners();
     }
 
-    // Hàm onResume sẽ chạy mỗi khi bạn quay lại màn hình này
     @Override
     protected void onResume() {
         super.onResume();
-        loadOrders(currentFilter); // Tải lại danh sách theo bộ lọc hiện tại
+        loadOrders(currentFilter);
     }
 
     private void initViews() {
@@ -78,7 +76,6 @@ public class Admin_All_Order extends AppCompatActivity {
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Admin_Order_Adapter(orderList, order -> {
-            // Chuyển sang màn hình sửa và cập nhật đơn hàng
             Intent intent = new Intent(Admin_All_Order.this, Admin_Edit_Order.class);
             intent.putExtra("order_id", order.getOrderId());
             startActivity(intent);
@@ -87,61 +84,88 @@ public class Admin_All_Order extends AppCompatActivity {
     }
 
     private void loadOrders(String status) {
-        this.currentFilter = status; // Cập nhật bộ lọc hiện tại
-        orderList.clear();
-        if (status.equalsIgnoreCase("All")) {
-            orderList.addAll(db.ordersDAO().getAllOrders());
-        } else {
-            // Lọc theo trạng thái chính xác từ Database
-            orderList.addAll(db.ordersDAO().getOrdersByStatus(status));
+        this.currentFilter = status;
+
+        // Chạy truy vấn DB trong luồng nền để tránh crash (ANR/MainThreadQueries)
+        new Thread(() -> {
+            List<OrdersEntity> resultList = new ArrayList<>();
+            try {
+                if (status.equalsIgnoreCase("All")) {
+                    List<OrdersEntity> allOrders = db.ordersDAO().getAllOrders();
+                    if (allOrders != null) resultList.addAll(allOrders);
+                } else {
+                    int statusCode = mapStatusStringToCode(status);
+                    List<OrdersEntity> filteredOrders = db.ordersDAO().getOrdersByStatus(statusCode);
+                    if (filteredOrders != null) resultList.addAll(filteredOrders);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Cập nhật giao diện trên luồng chính
+            new Handler(Looper.getMainLooper()).post(() -> {
+                orderList.clear();
+                orderList.addAll(resultList);
+                if (adapter != null) {
+                    adapter.notifyDataSetChanged(); // Sử dụng notifyDataSetChanged để an toàn hơn khi thay đổi toàn bộ list
+                }
+                updateTabUI(status);
+            });
+        }).start();
+    }
+
+    private int mapStatusStringToCode(String statusText) {
+        if (statusText.equalsIgnoreCase("Đang giao hàng")) {
+            return 1;
+        } else if (statusText.equalsIgnoreCase("Hoàn thành") || statusText.equalsIgnoreCase("Đã giao")) {
+            return 2;
+        } else if (statusText.equalsIgnoreCase("Đã huỷ")) {
+            return 3;
         }
-        adapter.notifyDataSetChanged();
-        updateTabUI(status);
+        return 0; // Chờ xác nhận
     }
 
     private void updateTabUI(String activeStatus) {
         int activeColor = Color.parseColor("#FF7622");
         int inactiveColor = Color.parseColor("#D2D3DC");
 
-        btnFilterAll.setTextColor(inactiveColor);
-        btnFilterPending.setTextColor(inactiveColor);
-        btnFilterShipping.setTextColor(inactiveColor);
-        btnFilterCompleted.setTextColor(inactiveColor);
-        btnFilterCancelled.setTextColor(inactiveColor);
+        if (btnFilterAll != null) btnFilterAll.setTextColor(inactiveColor);
+        if (btnFilterPending != null) btnFilterPending.setTextColor(inactiveColor);
+        if (btnFilterShipping != null) btnFilterShipping.setTextColor(inactiveColor);
+        if (btnFilterCompleted != null) btnFilterCompleted.setTextColor(inactiveColor);
+        if (btnFilterCancelled != null) btnFilterCancelled.setTextColor(inactiveColor);
 
         if (activeStatus.equalsIgnoreCase("All")) {
-            btnFilterAll.setTextColor(activeColor);
+            if (btnFilterAll != null) btnFilterAll.setTextColor(activeColor);
         } else if (activeStatus.equalsIgnoreCase("Chờ xác nhận")) {
-            btnFilterPending.setTextColor(activeColor);
+            if (btnFilterPending != null) btnFilterPending.setTextColor(activeColor);
         } else if (activeStatus.equalsIgnoreCase("Đang giao hàng")) {
-            btnFilterShipping.setTextColor(activeColor);
+            if (btnFilterShipping != null) btnFilterShipping.setTextColor(activeColor);
         } else if (activeStatus.equalsIgnoreCase("Hoàn thành")) {
-            btnFilterCompleted.setTextColor(activeColor);
+            if (btnFilterCompleted != null) btnFilterCompleted.setTextColor(activeColor);
         } else if (activeStatus.equalsIgnoreCase("Đã huỷ")) {
-            btnFilterCancelled.setTextColor(activeColor);
+            if (btnFilterCancelled != null) btnFilterCancelled.setTextColor(activeColor);
         }
     }
 
     private void setupListeners() {
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+
+        if (btnFilterAll != null) btnFilterAll.setOnClickListener(v -> loadOrders("All"));
+        if (btnFilterPending != null) btnFilterPending.setOnClickListener(v -> loadOrders("Chờ xác nhận"));
+        if (btnFilterShipping != null) btnFilterShipping.setOnClickListener(v -> loadOrders("Đang giao hàng"));
+        if (btnFilterCompleted != null) btnFilterCompleted.setOnClickListener(v -> loadOrders("Hoàn thành"));
+        if (btnFilterCancelled != null) btnFilterCancelled.setOnClickListener(v -> loadOrders("Đã huỷ"));
+
+        if (navDashboard != null) {
+            navDashboard.setOnClickListener(v -> {
+                startActivity(new Intent(this, Admin_Dashboard.class));
+                finish();
+            });
         }
-
-        // Cập nhật bộ lọc khi nhấn nút
-        btnFilterAll.setOnClickListener(v -> loadOrders("All"));
-        btnFilterPending.setOnClickListener(v -> loadOrders("Chờ xác nhận"));
-        btnFilterShipping.setOnClickListener(v -> loadOrders("Đang giao hàng"));
-        btnFilterCompleted.setOnClickListener(v -> loadOrders("Hoàn thành"));
-        btnFilterCancelled.setOnClickListener(v -> loadOrders("Đã huỷ"));
-
-        navDashboard.setOnClickListener(v -> {
-            startActivity(new Intent(this, Admin_Dashboard.class));
-            finish();
-        });
-
-        navMenu.setOnClickListener(v -> startActivity(new Intent(this, Admin_MyFoodList.class)));
-        navAdd.setOnClickListener(v -> startActivity(new Intent(this, Admin_Add_Food.class)));
-        navNotification.setOnClickListener(v -> startActivity(new Intent(this, Admin_Notification.class)));
-        navProfile.setOnClickListener(v -> startActivity(new Intent(this, MainAdProfile.class)));
+        if (navMenu != null) navMenu.setOnClickListener(v -> startActivity(new Intent(this, Admin_MyFoodList.class)));
+        if (navAdd != null) navAdd.setOnClickListener(v -> startActivity(new Intent(this, Admin_Add_Food.class)));
+        if (navNotification != null) navNotification.setOnClickListener(v -> startActivity(new Intent(this, Admin_Notification.class)));
+        if (navProfile != null) navProfile.setOnClickListener(v -> startActivity(new Intent(this, MainAdProfile.class)));
     }
 }

@@ -28,6 +28,9 @@ public class FoodsEntity {
     @ColumnInfo(name = "food_name")
     private String foodName;
 
+    @ColumnInfo(name = "size")
+    private String size;
+
     @ColumnInfo(name = "description")
     private String description;
 
@@ -40,29 +43,36 @@ public class FoodsEntity {
     @ColumnInfo(name = "image_url")
     private String imageUrl;
 
-    @ColumnInfo(name = "is_available")
-    private int isAvailable;
+    @ColumnInfo(name = "is_new", defaultValue = "0")
+    private int isNew; // 0: Không hoạt động, 1: Hoạt động
 
-    @ColumnInfo(name = "meal_type")
-    private String mealType;
+    @ColumnInfo(name = "is_best", defaultValue = "0")
+    private int isBest; // 0: Không hoạt động, 1: Hoạt động
+
+    @ColumnInfo(name = "is_available", defaultValue = "1")
+    private int isAvailable; // 0: Không, 1: Có
 
     // Hàm khởi tạo không tham số bắt buộc của Room
     public FoodsEntity() {
     }
 
-    // Hàm khởi tạo đầy đủ tham số
-    public FoodsEntity(int categoryId, @NonNull String foodName, String description, double price, Double priceSale, String imageUrl, int isAvailable, String mealType) {
+    // Hàm khởi tạo đầy đủ tham số (đã cập nhật theo bảng mới)
+    public FoodsEntity(int categoryId, @NonNull String foodName, String size, String description, 
+                       double price, Double priceSale, String imageUrl, int isNew, 
+                       int isBest, int isAvailable) {
         this.categoryId = categoryId;
         this.foodName = foodName;
+        this.size = size;
         this.description = description;
         this.price = price;
         this.priceSale = priceSale;
         this.imageUrl = imageUrl;
+        this.isNew = isNew;
+        this.isBest = isBest;
         this.isAvailable = isAvailable;
-        this.mealType = mealType;
     }
 
-    // --- TOÀN BỘ GETTER & SETTER CHUẨN ---
+    // --- GETTER & SETTER ---
     public int getFoodId() { return foodId; }
     public void setFoodId(int foodId) { this.foodId = foodId; }
 
@@ -72,6 +82,9 @@ public class FoodsEntity {
     @NonNull
     public String getFoodName() { return foodName; }
     public void setFoodName(@NonNull String foodName) { this.foodName = foodName; }
+
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
@@ -85,9 +98,12 @@ public class FoodsEntity {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
+    public int getIsNew() { return isNew; }
+    public void setIsNew(int isNew) { this.isNew = isNew; }
+
+    public int getIsBest() { return isBest; }
+    public void setIsBest(int isBest) { this.isBest = isBest; }
+
     public int getIsAvailable() { return isAvailable; }
     public void setIsAvailable(int isAvailable) { this.isAvailable = isAvailable; }
-
-    public String getMealType() { return mealType; }
-    public void setMealType(String mealType) { this.mealType = mealType; }
 }
