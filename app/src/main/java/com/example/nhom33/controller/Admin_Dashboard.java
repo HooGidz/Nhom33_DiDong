@@ -104,6 +104,8 @@ public class Admin_Dashboard extends AppCompatActivity {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_All_Category.class));
                     } else if (id == R.id.nav_all_productreview) {
                         startActivity(new Intent(Admin_Dashboard.this, ReviewActivity.class));
+                    } else if (id == R.id.nav_manage_users) {
+                        startActivity(new Intent(Admin_Dashboard.this, UserManagementActivity.class));
                     } else if (id == R.id.nav_notifications) {
                         startActivity(new Intent(Admin_Dashboard.this, Admin_Notification.class));
                     } else if (id == R.id.nav_profile) {

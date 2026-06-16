@@ -22,6 +22,10 @@
             android:icon="@drawable/icons8_review_24"
             android:title="Đánh giá khách hàng" />
         <item
+            android:id="@+id/nav_manage_users"
+            android:icon="@drawable/icons8_person_24"
+            android:title="Quản lý người dùng" />
+        <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/icons8_notification_24"
             android:title="Thông báo" />

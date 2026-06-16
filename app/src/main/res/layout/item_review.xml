@@ -48,12 +48,14 @@
                     android:text="20/12/2020"
                     android:textColor="#9E9E9E"
                     android:textSize="11sp" />
+
                 <ImageView
                     android:id="@+id/imgMore"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/icons8_menu_herti"
+                    android:visibility="gone"
                     app:tint="#9E9E9E" />
             </RelativeLayout>
 

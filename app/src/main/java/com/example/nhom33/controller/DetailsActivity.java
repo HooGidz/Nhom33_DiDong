@@ -11,17 +11,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.DataEntity.CartEntity;
 import com.example.nhom33.DataEntity.FavoritesEntity;
 import com.example.nhom33.DataEntity.FoodsEntity;
+import com.example.nhom33.DataEntity.ProductReviewWithDetails;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.R;
+import com.example.nhom33.adapter.ReviewAdapter;
+
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private ImageView imgProduct;
     private TextView tvMainTitle, tvDescription, tvPrice, tvQuantity;
+    private RecyclerView rcvReviews;
+    private ReviewAdapter reviewAdapter;
 
     private ImageButton btnFavorite;
     private FoodDB db;
@@ -41,8 +49,10 @@ public class DetailsActivity extends AppCompatActivity {
         tvMainTitle = findViewById(R.id.tvMainTitle);
         tvDescription = findViewById(R.id.tvDescription);
         tvPrice = findViewById(R.id.tvPrice);
+        rcvReviews = findViewById(R.id.rcvReviews);
         tvQuantity = findViewById(R.id.tvQuantity);
         btnFavorite = findViewById(R.id.btnFavorite);
+
         ImageButton btnBack = findViewById(R.id.btnBack);
         ImageButton btnPlus = findViewById(R.id.btnPlus);
         ImageButton btnMinus = findViewById(R.id.btnMinus);
@@ -50,26 +60,34 @@ public class DetailsActivity extends AppCompatActivity {
 
         db = FoodDB.getInstance(this);
 
+        // Cấu hình RecyclerView cho đánh giá
+        rcvReviews.setLayoutManager(new LinearLayoutManager(this));
+
         // Lấy FOOD_ID từ Intent
         foodId = getIntent().getIntExtra("FOOD_ID", -1);
 
         // Lấy userId từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", -1);
-        if (userId == -1) userId = 1; // Mặc định cho người dùng đầu tiên để test nếu chưa đăng nhập
 
         if (foodId != -1) {
             loadFoodDetails();
-            checkIsFavorite();
+            loadReviews();
+            if (userId != -1) {
+                checkIsFavorite();
+            }
         }
 
+        // Sự kiện nút Back
         btnBack.setOnClickListener(v -> finish());
 
+        // Tăng số lượng
         btnPlus.setOnClickListener(v -> {
             quantity++;
             tvQuantity.setText(String.valueOf(quantity));
         });
 
+        // Giảm số lượng
         btnMinus.setOnClickListener(v -> {
             if (quantity > 1) {
                 quantity--;
@@ -77,8 +95,10 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+        // Nút Yêu thích
         btnFavorite.setOnClickListener(v -> toggleFavorite());
 
+        // Nút Thêm vào giỏ hàng
         btnAddToCart.setOnClickListener(v -> addToCart());
     }
 
@@ -91,6 +111,10 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void toggleFavorite() {
+        if (userId == -1) {
+            Toast.makeText(this, "Vui lòng đăng nhập để thực hiện", Toast.LENGTH_SHORT).show();
+            return;
+        }
         new Thread(() -> {
             try {
                 if (isFavorite) {
@@ -101,11 +125,7 @@ public class DetailsActivity extends AppCompatActivity {
                 isFavorite = !isFavorite;
                 runOnUiThread(() -> {
                     updateFavoriteUI();
-                    if (isFavorite) {
-                        Toast.makeText(DetailsActivity.this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(DetailsActivity.this, "Đã xóa khỏi yêu thích", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(this, isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -115,9 +135,9 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void updateFavoriteUI() {
         if (isFavorite) {
-            btnFavorite.setColorFilter(Color.RED); // Chuyển sang màu đỏ
+            btnFavorite.setColorFilter(Color.RED);
         } else {
-            btnFavorite.setColorFilter(Color.parseColor("#828282")); // Màu xám mặc định
+            btnFavorite.setColorFilter(Color.parseColor("#828282"));
         }
     }
 
@@ -131,7 +151,6 @@ public class DetailsActivity extends AppCompatActivity {
                     tvDescription.setText(food.getDescription());
                     tvPrice.setText(String.format("%,.0f VNĐ", food.getPrice()));
 
-                    // Load ảnh từ drawable
                     String imgName = food.getImageUrl();
                     if (imgName != null && !imgName.isEmpty()) {
                         if (imgName.contains(".")) {
@@ -150,11 +169,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void addToCart() {
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", -1);
-
         if (userId == -1) {
-            Toast.makeText(this, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng đăng nhập để mua hàng", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, Login.class));
             return;
         }
@@ -170,10 +186,18 @@ public class DetailsActivity extends AppCompatActivity {
             }
             runOnUiThread(() -> {
                 Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                // Chuyển sang màn hình giỏ hàng
-                Intent intent = new Intent(DetailsActivity.this, Cart.class);
-                startActivity(intent);
-                finish(); // Đóng màn hình chi tiết
+                startActivity(new Intent(DetailsActivity.this, Cart.class));
+                finish();
+            });
+        }).start();
+    }
+
+    private void loadReviews() {
+        new Thread(() -> {
+            List<ProductReviewWithDetails> reviews = db.productReviewDAO().getReviewsByFoodId(foodId);
+            runOnUiThread(() -> {
+                reviewAdapter = new ReviewAdapter(reviews);
+                rcvReviews.setAdapter(reviewAdapter);
             });
         }).start();
     }

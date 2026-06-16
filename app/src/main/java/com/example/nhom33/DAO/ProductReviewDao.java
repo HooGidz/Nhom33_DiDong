@@ -17,4 +17,11 @@ public interface ProductReviewDao {
            "LEFT JOIN Users u ON pr.user_id = u.user_id " +
            "LEFT JOIN Foods f ON pr.food_id = f.food_id")
     List<ProductReviewWithDetails> getAllReviewsWithDetails();
+
+    @Query("SELECT pr.*, u.full_name as fullName, f.food_name as foodName " +
+           "FROM ProductReview pr " +
+           "LEFT JOIN Users u ON pr.user_id = u.user_id " +
+           "LEFT JOIN Foods f ON pr.food_id = f.food_id " +
+           "WHERE pr.food_id = :foodId")
+    List<ProductReviewWithDetails> getReviewsByFoodId(int foodId);
 }

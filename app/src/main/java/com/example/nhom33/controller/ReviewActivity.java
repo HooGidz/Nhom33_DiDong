@@ -74,8 +74,8 @@ public class ReviewActivity extends AppCompatActivity {
                         reviewList.clear();
                         reviewList.addAll(resultList);
 
-                        // Khởi tạo adapter với danh sách ReviewWithDetails
-                        reviewAdapter = new ReviewAdapter(reviewList);
+                        // Khởi tạo adapter với danh sách ReviewWithDetails và cho phép hiển thị options (Admin)
+                        reviewAdapter = new ReviewAdapter(reviewList, true);
 
                         if (recyclerViewReview != null) {
                             recyclerViewReview.setLayoutManager(new LinearLayoutManager(ReviewActivity.this));

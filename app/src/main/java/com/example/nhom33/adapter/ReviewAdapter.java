@@ -18,9 +18,15 @@ import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     private List<ProductReviewWithDetails> reviewList;
+    private boolean showOptions;
 
     public ReviewAdapter(List<ProductReviewWithDetails> reviewList) {
+        this(reviewList, false);
+    }
+
+    public ReviewAdapter(List<ProductReviewWithDetails> reviewList, boolean showOptions) {
         this.reviewList = reviewList;
+        this.showOptions = showOptions;
     }
 
     @NonNull
@@ -68,8 +74,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         // 7. Ảnh đại diện mặc định
         holder.imgAvatar.setImageResource(R.mipmap.ic_launcher);
 
-        // Xử lý nút tùy chọn (Chỉnh sửa/Xóa)
-        if (holder.btnMoreOptions != null) {
+        // 8. Xử lý nút tùy chọn (Dấu 3 chấm)
+        if (showOptions && holder.btnMoreOptions != null) {
+            holder.btnMoreOptions.setVisibility(View.VISIBLE);
             holder.btnMoreOptions.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                 popupMenu.getMenu().add(android.view.Menu.NONE, 1, 1, "Chỉnh sửa");
@@ -94,6 +101,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 });
                 popupMenu.show();
             });
+        } else if (holder.btnMoreOptions != null) {
+            holder.btnMoreOptions.setVisibility(View.GONE);
         }
     }
 
