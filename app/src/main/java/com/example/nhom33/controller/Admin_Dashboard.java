@@ -3,6 +3,7 @@ package com.example.nhom33.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,26 +14,39 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.OrdersEntity;
+import com.example.nhom33.DataEntity.ProductReviewEntity;
 import com.example.nhom33.DataEntity.UsersEntity;
 import com.example.nhom33.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class Admin_Dashboard extends AppCompatActivity {
 
     View btn_MenuHome;
     View btnXemTatCaReview, tvSeeDetails;
     MaterialCardView card_running_orders, card_delivery_orders, card_review, card_revenue;
+    TextView tvRunningOrdersCount, tvDeliveryOrdersCount, tvRevenueAmount, tvAverageRating, tvTotalReviews;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    LineChart revenueChart;
     private FoodDB db;
 
     @Override
@@ -43,20 +57,16 @@ public class Admin_Dashboard extends AppCompatActivity {
 
         db = FoodDB.getInstance(this);
 
-        // Thiết lập padding cho system bars (Status bar, Navigation bar)
-        View mainView = findViewById(R.id.drawer_layout);
-        if (mainView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-        }
-
         // Ánh xạ các View từ XML
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         btn_MenuHome = findViewById(R.id.btn_MenuHome);
+
+        tvRunningOrdersCount = findViewById(R.id.tvRunningOrdersCount);
+        tvDeliveryOrdersCount = findViewById(R.id.tvDeliveryOrdersCount);
+        tvRevenueAmount = findViewById(R.id.tvRevenueAmount);
+        tvAverageRating = findViewById(R.id.tvAverageRating);
+        tvTotalReviews = findViewById(R.id.tvTotalReviews);
 
         card_running_orders = findViewById(R.id.card_running_orders);
         card_delivery_orders = findViewById(R.id.card_delivery_orders);
@@ -64,6 +74,9 @@ public class Admin_Dashboard extends AppCompatActivity {
         tvSeeDetails = findViewById(R.id.tvSeeDetails);
         card_review = findViewById(R.id.card_review);
         btnXemTatCaReview = findViewById(R.id.btnXemTatCaReview);
+        revenueChart = findViewById(R.id.revenueChart);
+
+        setupRevenueChart();
 
         // Load thông tin Admin vào Header của Sidebar
         loadAdminInfo();
@@ -126,6 +139,121 @@ public class Admin_Dashboard extends AppCompatActivity {
         setupCardListeners();
     }
 
+    private void setupRevenueChart() {
+        if (revenueChart == null) return;
+        
+        revenueChart.getDescription().setEnabled(false);
+        revenueChart.setTouchEnabled(false);
+        revenueChart.setDrawGridBackground(false);
+        revenueChart.getLegend().setEnabled(false);
+        
+        XAxis xAxis = revenueChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setTextColor(Color.parseColor("#A0A5BA"));
+        xAxis.setGranularity(1f);
+        
+        revenueChart.getAxisLeft().setEnabled(false);
+        revenueChart.getAxisRight().setEnabled(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDashboardStats();
+    }
+
+    private void loadDashboardStats() {
+        new Thread(() -> {
+            List<OrdersEntity> allOrders = db.ordersDAO().getAllOrders();
+            List<ProductReviewEntity> allReviews = db.productReviewDAO().getAllReviews();
+
+            int runningCount = 0;
+            int deliveryCount = 0;
+            double todayRevenue = 0;
+            String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+            float[] hourlyData = new float[7]; // 08, 10, 12, 14, 16, 18, 20
+            
+            for (OrdersEntity order : allOrders) {
+                if (order.getStatus() == 0) runningCount++; // Chờ xác nhận
+                if (order.getStatus() == 1) deliveryCount++; // Đang giao
+
+                // Tính doanh thu hôm nay (Chỉ đơn hoàn thành - Status = 2)
+                if (order.getStatus() == 2 && order.getOrderDate() != null && order.getOrderDate().contains(today)) {
+                    todayRevenue += order.getTotalAmount();
+                    
+                    try {
+                        // Giả sử định dạng "yyyy-MM-dd HH:mm:ss"
+                        String[] parts = order.getOrderDate().split(" ");
+                        if (parts.length > 1) {
+                            int hour = Integer.parseInt(parts[1].split(":")[0]);
+                            if (hour >= 8 && hour < 10) hourlyData[0] += order.getTotalAmount();
+                            else if (hour >= 10 && hour < 12) hourlyData[1] += order.getTotalAmount();
+                            else if (hour >= 12 && hour < 14) hourlyData[2] += order.getTotalAmount();
+                            else if (hour >= 14 && hour < 16) hourlyData[3] += order.getTotalAmount();
+                            else if (hour >= 16 && hour < 18) hourlyData[4] += order.getTotalAmount();
+                            else if (hour >= 18 && hour < 20) hourlyData[5] += order.getTotalAmount();
+                            else if (hour >= 20) hourlyData[6] += order.getTotalAmount();
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+
+            double totalRating = 0;
+            for (ProductReviewEntity review : allReviews) {
+                totalRating += review.getRating();
+            }
+            double avgRating = allReviews.isEmpty() ? 0 : totalRating / allReviews.size();
+
+            final double finalRevenue = todayRevenue;
+            final int finalRunning = runningCount;
+            final int finalDelivery = deliveryCount;
+            final double finalAvg = avgRating;
+            final int finalReviewCount = allReviews.size();
+            final float[] finalHourlyData = hourlyData;
+
+            runOnUiThread(() -> {
+                if (tvRunningOrdersCount != null) tvRunningOrdersCount.setText(String.valueOf(finalRunning));
+                if (tvDeliveryOrdersCount != null) tvDeliveryOrdersCount.setText(String.valueOf(finalDelivery));
+                if (tvRevenueAmount != null) tvRevenueAmount.setText(String.format(Locale.getDefault(), "%,.0f VND", finalRevenue));
+                if (tvAverageRating != null) tvAverageRating.setText(String.format(Locale.getDefault(), "%.1f", finalAvg));
+                if (tvTotalReviews != null) tvTotalReviews.setText("Tổng " + finalReviewCount + " đánh giá");
+                
+                updateChart(finalHourlyData);
+            });
+        }).start();
+    }
+
+    private void updateChart(float[] data) {
+        if (revenueChart == null) return;
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < data.length; i++) {
+            entries.add(new Entry(i, data[i]));
+        }
+
+        LineDataSet dataSet = new LineDataSet(entries, "Doanh thu");
+        dataSet.setColor(Color.parseColor("#FF7622"));
+        dataSet.setLineWidth(3f);
+        dataSet.setCircleColor(Color.parseColor("#FF7622"));
+        dataSet.setCircleRadius(5f);
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setDrawFilled(true);
+        dataSet.setFillColor(Color.parseColor("#FF7622"));
+        dataSet.setFillAlpha(50);
+
+        LineData lineData = new LineData(dataSet);
+        revenueChart.setData(lineData);
+
+        String[] labels = {"08h", "10h", "12h", "14h", "16h", "18h", "20h"};
+        revenueChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        
+        revenueChart.invalidate();
+        revenueChart.animateY(1000);
+    }
+
     private void loadAdminInfo() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
@@ -144,7 +272,6 @@ public class Admin_Dashboard extends AppCompatActivity {
                             if (tvName != null) tvName.setText(admin.getFullName());
                             if (tvEmail != null) tvEmail.setText(admin.getEmail());
 
-                            // Load avatar
                             String avatar = admin.getAvatar();
                             if (imgAvatar != null) {
                                 if (!TextUtils.isEmpty(avatar)) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/icon_menu"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_order"
+            android:icon="@drawable/icons8_order_24"
+            android:title="Quản lý đơn hàng" />
+        <item
+            android:id="@+id/nav_food_list"
+            android:icon="@drawable/icons8_category_24"
+            android:title="Danh sách món ăn" />
+        <item
+            android:id="@+id/nav_all_category"
+            android:icon="@drawable/icons8_category_24"
+            android:title="Danh mục món ăn" />
+        <item
+            android:id="@+id/nav_all_productreview"
+            android:icon="@drawable/icons8_review_24"
+            android:title="Đánh giá sản phẩm" />
+        <item
+            android:id="@+id/nav_manage_users"
+            android:icon="@drawable/icons8_person_24"
+            android:title="Quản lý người dùng" />
+    </group>
+
+    <item android:title="Khác">
+        <menu>
+            <item
+                android:id="@+id/nav_notifications"
+                android:icon="@drawable/icons8_notification_24"
+                android:title="Thông báo" />
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/icons8_person_24"
+                android:title="Hồ sơ cá nhân" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/icons8_back_24"
+                android:title="Đăng xuất" />
+        </menu>
+    </item>
+
+</menu>

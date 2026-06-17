@@ -112,13 +112,37 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Năm này"
                         android:textAllCaps="false"
                         android:textColor="#A0A5BA"
                         app:cornerRadius="12dp"
                         app:strokeColor="#E8EAED" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCustomRange"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Khoảng thời gian"
+                        android:textAllCaps="false"
+                        android:textColor="#A0A5BA"
+                        app:cornerRadius="12dp"
+                        app:strokeColor="#E8EAED"
+                        app:icon="@drawable/icons8_category_24"
+                        app:iconTint="#A0A5BA"/>
                 </LinearLayout>
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tvDateRangeDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="Đang hiển thị: Hôm nay"
+                android:textColor="#646982"
+                android:textSize="14sp"
+                android:visibility="visible" />
 
             <!-- Total Revenue Card -->
             <com.google.android.material.card.MaterialCardView
@@ -147,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="15.250.000 VND"
+                        android:text="0 VND"
                         android:textColor="#FFFFFF"
                         android:textSize="32sp"
                         android:textStyle="bold" />
@@ -159,18 +183,11 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:contentDescription="Trend"
-                            android:src="@android:drawable/arrow_up_float"
-                            app:tint="#4CAF50" />
-
                         <TextView
+                            android:id="@+id/tvOrderCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="+12.5% so với kỳ trước"
+                            android:text="Số đơn hàng hoàn thành: 0"
                             android:textColor="#FFFFFF"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -200,85 +217,12 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/ivRevenueChart"
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/revenueChart"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="20dp"
-                        android:contentDescription="Biểu đồ doanh thu"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/dummy_chart_gradient" />
+                        android:layout_height="220dp"
+                        android:layout_marginTop="20dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal"
-                        android:weightSum="7">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T2"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T3"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T4"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T5"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T6"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T7"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="CN"
-                            android:textColor="#A0A5BA"
-                            android:textSize="11sp" />
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -294,7 +238,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Đơn hàng gần đây"
+                    android:text="Đơn hàng"
                     android:textColor="#181C2E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
