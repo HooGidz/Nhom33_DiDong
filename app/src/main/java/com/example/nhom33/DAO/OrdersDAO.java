@@ -1,6 +1,7 @@
 package com.example.nhom33.DAO;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -34,4 +35,10 @@ public interface OrdersDAO {
 
     @Update
     void updateOrder(OrdersEntity order);
+
+    @Delete
+    void deleteOrder(OrdersEntity order);
+    
+    @Query("DELETE FROM Orders WHERE order_id = :orderId")
+    void deleteOrderById(int orderId);
 }

@@ -1,15 +1,13 @@
 package com.example.nhom33.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -20,7 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.nhom33.controller.AdminEditFoodActivity;
+import com.example.nhom33.controller.Admin_Edit_Food;
 import com.example.nhom33.R;
 import com.example.nhom33.db.item_food;
 import com.example.nhom33.Database.FoodDB;
@@ -45,15 +43,24 @@ public class Admin_FoodList_Adapter extends RecyclerView.Adapter<Admin_FoodList_
     public void onBindViewHolder(@NonNull Admin_FoodList_Adapter.MyViewHolder holder, int position) {
         item_food item = itemList.get(position);
         
-        // Load ảnh từ assets/img_product/ bằng Glide
+        // Load ảnh linh hoạt từ assets/img_product/ hoặc URL
         String imgName = item.getImg_url();
-        String fullPath = "file:///android_asset/img_product/" + imgName;
-        
-        Glide.with(holder.itemView.getContext())
-                .load(fullPath)
-                .placeholder(R.drawable.fb)
-                .error(R.drawable.fb)
-                .into(holder.img_food);
+        if (!TextUtils.isEmpty(imgName)) {
+            Object loadTarget;
+            if (imgName.startsWith("http") || imgName.startsWith("https") || imgName.startsWith("file://")) {
+                loadTarget = imgName;
+            } else {
+                loadTarget = "file:///android_asset/img_product/" + imgName;
+            }
+
+            Glide.with(holder.itemView.getContext())
+                    .load(loadTarget)
+                    .placeholder(R.drawable.fb)
+                    .error(R.drawable.fb)
+                    .into(holder.img_food);
+        } else {
+            holder.img_food.setImageResource(R.drawable.fb);
+        }
 
         holder.txt_food.setText(item.getTxt_food());
         holder.txt_price.setText(item.getTxt_price());
@@ -68,7 +75,7 @@ public class Admin_FoodList_Adapter extends RecyclerView.Adapter<Admin_FoodList_
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 int id = menuItem.getItemId();
                 if (id == R.id.menu_edit) {
-                    Intent intent = new Intent(context, AdminEditFoodActivity.class);
+                    Intent intent = new Intent(context, Admin_Edit_Food.class);
                     intent.putExtra("FOOD_ID", item.getFood_id());
                     context.startActivity(intent);
                     return true;

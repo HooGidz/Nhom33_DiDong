@@ -25,6 +25,9 @@ public interface FoodsDAO {
     @Query("SELECT * FROM Foods WHERE price_sale IS NOT NULL AND price_sale > 0")
     List<FoodsEntity> getDiscountedFoods();
 
+    @Query("SELECT * FROM Foods WHERE is_best = 1 LIMIT 5")
+    List<FoodsEntity> getBestSellingFoods();
+
     @Query("SELECT * FROM Foods WHERE food_name LIKE '%' || :query || '%'")
     List<FoodsEntity> searchFoodsByName(String query);
 

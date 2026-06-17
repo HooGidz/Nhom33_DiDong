@@ -9,25 +9,29 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Avatar"
+        android:id="@+id/img_admin_avatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="Avatar Admin"
         android:paddingTop="8dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/fb" />
 
     <TextView
+        android:id="@+id/txt_admin_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Admin NHOM33"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txt_admin_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="admin@nhom33.com" />
+        android:text="admin@nhom33.com"
+        android:textSize="14sp" />
 
 </LinearLayout>

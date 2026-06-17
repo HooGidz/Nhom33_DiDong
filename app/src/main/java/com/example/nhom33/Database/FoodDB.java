@@ -46,7 +46,7 @@ import java.util.concurrent.Executors;
         ProductReviewEntity.class,
         NotificationEntity.class,
         SearchHistoryEntity.class
-}, version = 12) // Nâng lên version 12 để làm mới cấu trúc bảng
+}, version = 13) // Nâng lên version 12 để làm mới cấu trúc bảng
 public abstract class FoodDB extends RoomDatabase {
     private static final String DB_NAME = "ql_doan33.db";
     private static FoodDB instance;
@@ -82,11 +82,11 @@ public abstract class FoodDB extends RoomDatabase {
                 try {
                     // 1. Chèn Users (role: 0-Admin, 1-User | status: 0-Inactive, 1-Active)
                     db.execSQL("INSERT INTO Users (username, password, full_name, email, phone, address, role, avatar, status, created_at) VALUES " +
-                            "('admin', '123', 'Admin Hệ Thống', 'admin@nhom33.com', '0123456789', 'Hà Nội', 0, 'admin.png', 1, '2024-01-01'), " +
-                            "('hoanggiap', '123', 'Hoàng Giáp', 'giap@gmail.com', '0987654321', 'Vinh, Nghệ An', 1, 'giap.png', 1, '2024-02-01'), " +
-                            "('giang', '123', 'Giang Nguyễn', 'giang@gmail.com', '0111222333', 'Hà Nội', 1, 'giang.png', 1, '2024-02-10'), " +
-                            "('thangle', '123', 'Thắng Lê', 'tl@gmail.com', '0444555666', 'Hồ Chí Minh', 1, 'thang.png', 1, '2024-03-01'), " +
-                            "('user5', '123', 'Người Dùng 5', 'user5@gmail.com', '0999888777', 'Đà Nẵng', 1, 'user5.png', 1, '2024-03-05');");
+                            "('admin', '123', 'Admin Hệ Thống', 'admin@nhom33.com', '0123456789', 'Hà Nội', 0, 'a1.jpg', 1, '2024-01-01'), " +
+                            "('hoanggiap', '123', 'Hoàng Giáp', 'giap@gmail.com', '0987654321', 'Vinh, Nghệ An', 1, 'a2.jpg', 1, '2024-02-01'), " +
+                            "('giang', '123', 'Giang Nguyễn', 'giang@gmail.com', '0111222333', 'Hà Nội', 1, 'a3.jpg', 1, '2024-02-10'), " +
+                            "('thangle', '123', 'Thắng Lê', 'tl@gmail.com', '0444555666', 'Hồ Chí Minh', 1, 'a4.jpg', 1, '2024-03-01'), " +
+                            "('user5', '123', 'Người Dùng 5', 'user5@gmail.com', '0999888777', 'Đà Nẵng', 1, 'a15.jpg', 1, '2024-03-05');");
 
                     // 2. Chèn Categories
                     db.execSQL("INSERT INTO Categories (category_name, description, image_url) VALUES " +

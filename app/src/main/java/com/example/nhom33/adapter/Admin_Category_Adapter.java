@@ -44,14 +44,20 @@ public class Admin_Category_Adapter extends RecyclerView.Adapter<Admin_Category_
         holder.txtCategoryName.setText(category.getCategoryName());
         holder.txtDescription.setText(category.getDescription());
 
-        // Sử dụng Glide để load ảnh từ thư mục assets/imgg_product/
+        // Logic hiển thị ảnh linh hoạt
         String imageUrl = category.getImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            String fullPath = "file:///android_asset/img_cate/" + imageUrl;
+            Object loadTarget;
+            if (imageUrl.startsWith("http") || imageUrl.startsWith("https") || imageUrl.startsWith("file://")) {
+                loadTarget = imageUrl;
+            } else {
+                loadTarget = "file:///android_asset/img_cate/" + imageUrl;
+            }
+
             Glide.with(holder.itemView.getContext())
-                    .load(fullPath)
-                    .placeholder(R.drawable.fb) // Ảnh thay thế khi đang load
-                    .error(R.drawable.fb)       // Ảnh hiển thị nếu lỗi
+                    .load(loadTarget)
+                    .placeholder(R.drawable.fb)
+                    .error(R.drawable.fb)
                     .into(holder.imgCategory);
         } else {
             holder.imgCategory.setImageResource(R.drawable.fb);

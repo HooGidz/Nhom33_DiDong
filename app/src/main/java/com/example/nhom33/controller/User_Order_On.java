@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class User_Order_On extends AppCompatActivity {
+public class User_Order_On extends AppCompatActivity implements OnOrderAdapter.OnOrderActionListener {
     private RecyclerView recyclerView;
     private OnOrderAdapter orderAdapter;
     private List<OnOrder> orderList;
@@ -69,7 +71,7 @@ public class User_Order_On extends AppCompatActivity {
 
         loadOngoingOrdersFromDB();
 
-        OnOrderAdapter orderAdapter = new OnOrderAdapter(this, orderList);
+        orderAdapter = new OnOrderAdapter(this, orderList, this);
         recyclerView.setAdapter(orderAdapter);
     }
 
@@ -81,6 +83,7 @@ public class User_Order_On extends AppCompatActivity {
             return;
         }
 
+        // Lấy các đơn hàng có status 0 (Chuẩn bị) hoặc 1 (Đang giao)
         List<OrdersEntity> orders = db.ordersDAO().getOngoingOrdersByUserId(userId);
 
         for (OrdersEntity order : orders) {
@@ -101,7 +104,6 @@ public class User_Order_On extends AppCompatActivity {
                 }
             }
 
-            // Map int status to String description
             String statusText;
             switch (order.getStatus()) {
                 case 1:
@@ -125,8 +127,51 @@ public class User_Order_On extends AppCompatActivity {
                     totalQty + " món",
                     statusText,
                     order.getOrderDate(),
-                    R.mipmap.ic_launcher
+                    R.drawable.pizza_img
             ));
+        }
+    }
+
+    @Override
+    public void onTrack(OnOrder order) {
+        Intent intent = new Intent(this, User_track_order.class);
+        intent.putExtra("orderId", order.getOrderId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCancel(OnOrder order, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận huỷ")
+                .setMessage("Bạn có chắc chắn muốn huỷ đơn hàng này?")
+                .setPositiveButton("Huỷ đơn", (dialog, which) -> {
+                    deleteOrderFromDB(order, position);
+                })
+                .setNegativeButton("Quay lại", null)
+                .show();
+    }
+
+    private void deleteOrderFromDB(OnOrder order, int position) {
+        // Trích xuất numeric ID từ chuỗi "#123"
+        String orderIdStr = order.getOrderId().replace("#", "");
+        try {
+            int orderId = Integer.parseInt(orderIdStr);
+            
+            new Thread(() -> {
+                // Xoá đơn hàng khỏi database (Cascade sẽ xoá OrderDetails nếu đã cấu hình)
+                db.ordersDAO().deleteOrderById(orderId);
+                
+                runOnUiThread(() -> {
+                    if (position >= 0 && position < orderList.size()) {
+                        orderList.remove(position);
+                        orderAdapter.notifyItemRemoved(position);
+                        orderAdapter.notifyItemRangeChanged(position, orderList.size());
+                        Toast.makeText(this, "Đã huỷ và xoá đơn hàng thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).start();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Lỗi định dạng mã đơn hàng", Toast.LENGTH_SHORT).show();
         }
     }
 }

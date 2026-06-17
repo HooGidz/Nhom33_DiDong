@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -18,6 +19,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
+import com.example.nhom33.Database.FoodDB;
+import com.example.nhom33.DataEntity.UsersEntity;
 import com.example.nhom33.R;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
@@ -25,16 +29,19 @@ import com.google.android.material.navigation.NavigationView;
 public class Admin_Dashboard extends AppCompatActivity {
 
     View btn_MenuHome;
-    View btnXemTatCaReview;
+    View btnXemTatCaReview, tvSeeDetails;
     MaterialCardView card_running_orders, card_delivery_orders, card_review, card_revenue;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    private FoodDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.admin_dashboard);
+
+        db = FoodDB.getInstance(this);
 
         // Thiết lập padding cho system bars (Status bar, Navigation bar)
         View mainView = findViewById(R.id.drawer_layout);
@@ -54,8 +61,12 @@ public class Admin_Dashboard extends AppCompatActivity {
         card_running_orders = findViewById(R.id.card_running_orders);
         card_delivery_orders = findViewById(R.id.card_delivery_orders);
         card_revenue = findViewById(R.id.card_revenue);
+        tvSeeDetails = findViewById(R.id.tvSeeDetails);
         card_review = findViewById(R.id.card_review);
         btnXemTatCaReview = findViewById(R.id.btnXemTatCaReview);
+
+        // Load thông tin Admin vào Header của Sidebar
+        loadAdminInfo();
 
         // Xử lý nút Back thiết bị
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -95,7 +106,7 @@ public class Admin_Dashboard extends AppCompatActivity {
                 } else if (id == R.id.nav_all_productreview) {
                     startActivity(new Intent(Admin_Dashboard.this, Admin_All_Review.class));
                 } else if (id == R.id.nav_manage_users) {
-                    startActivity(new Intent(Admin_Dashboard.this, UserManagementActivity.class));
+                    startActivity(new Intent(Admin_Dashboard.this, Admin_All_User.class));
                 } else if (id == R.id.nav_notifications) {
                     startActivity(new Intent(Admin_Dashboard.this, Admin_Notification.class));
                 } else if (id == R.id.nav_profile) {
@@ -115,6 +126,52 @@ public class Admin_Dashboard extends AppCompatActivity {
         setupCardListeners();
     }
 
+    private void loadAdminInfo() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
+
+        if (userId != -1) {
+            new Thread(() -> {
+                UsersEntity admin = db.usersDAO().getUserById(userId);
+                if (admin != null) {
+                    runOnUiThread(() -> {
+                        View headerView = navigationView.getHeaderView(0);
+                        if (headerView != null) {
+                            ImageView imgAvatar = headerView.findViewById(R.id.img_admin_avatar);
+                            TextView tvName = headerView.findViewById(R.id.txt_admin_name);
+                            TextView tvEmail = headerView.findViewById(R.id.txt_admin_email);
+
+                            if (tvName != null) tvName.setText(admin.getFullName());
+                            if (tvEmail != null) tvEmail.setText(admin.getEmail());
+
+                            // Load avatar
+                            String avatar = admin.getAvatar();
+                            if (imgAvatar != null) {
+                                if (!TextUtils.isEmpty(avatar)) {
+                                    Object loadTarget;
+                                    if (avatar.startsWith("http") || avatar.startsWith("https") || avatar.startsWith("file://")) {
+                                        loadTarget = avatar;
+                                    } else {
+                                        loadTarget = "file:///android_asset/img_user/" + avatar;
+                                    }
+
+                                    Glide.with(Admin_Dashboard.this)
+                                            .load(loadTarget)
+                                            .placeholder(R.drawable.fb)
+                                            .error(R.drawable.fb)
+                                            .circleCrop()
+                                            .into(imgAvatar);
+                                } else {
+                                    imgAvatar.setImageResource(R.drawable.fb);
+                                }
+                            }
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
+
     private void setupCardListeners() {
         if (card_running_orders != null) {
             card_running_orders.setOnClickListener(v -> {
@@ -132,11 +189,13 @@ public class Admin_Dashboard extends AppCompatActivity {
             });
         }
 
-        if (card_revenue != null) {
-            card_revenue.setOnClickListener(v -> {
-                Toast.makeText(this, "Tính năng chi tiết doanh thu đang được cập nhật", Toast.LENGTH_SHORT).show();
-            });
-        }
+        View.OnClickListener revenueClick = v -> {
+            Intent intent = new Intent(Admin_Dashboard.this, Admin_Revenue.class);
+            startActivity(intent);
+        };
+
+        if (card_revenue != null) card_revenue.setOnClickListener(revenueClick);
+        if (tvSeeDetails != null) tvSeeDetails.setOnClickListener(revenueClick);
 
         View.OnClickListener reviewClick = v -> {
              Intent intent = new Intent(Admin_Dashboard.this, Admin_All_Review.class);

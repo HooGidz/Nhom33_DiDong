@@ -6,15 +6,15 @@ public class item_cart {
     private String quantity;
     private int price;
     private int originalPrice;
-    private int image;
+    private String imageUrl;
 
-    public item_cart(int foodId, String name, String quantity, int price, int originalPrice, int image) {
+    public item_cart(int foodId, String name, String quantity, int price, int originalPrice, String imageUrl) {
         this.foodId = foodId;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.originalPrice = originalPrice;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
     public int getFoodId() {
@@ -57,11 +57,11 @@ public class item_cart {
         this.originalPrice = originalPrice;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

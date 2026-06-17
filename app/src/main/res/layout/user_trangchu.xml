@@ -1,91 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#F8F9FB">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingBottom="40dp">
 
-        <RelativeLayout
+        <!-- Top Header Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
             <ImageButton
                 android:id="@+id/btn_Profile"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@android:color/white"
-                android:contentDescription="@null"
+                android:background="@drawable/search_bar_bg"
+                android:contentDescription="Menu"
+                android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/menu" />
-
+                android:src="@drawable/menu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/layout_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/btn_Profile"
+                app:layout_constraintEnd_toStartOf="@+id/btn_Cart"
+                app:layout_constraintStart_toEndOf="@id/btn_Profile"
+                app:layout_constraintTop_toTopOf="@id/btn_Profile">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="GIAO HÀNG ĐẾN"
-                    android:textColor="#FF7A30"
+                    android:textColor="#FF7622"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nghệ An ▼"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:text="Vinh ▼"
+                    android:textColor="#32343E"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/btn_Cart"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="@null"
-                android:src="@drawable/shoppingbag" />
-        </RelativeLayout>
+                android:background="@drawable/search_bar_bg"
+                android:contentDescription="Giỏ hàng"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/shoppingbag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Chào Hoang, Chúc buổi chiều tốt lành!"
-            android:textSize="18sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/edtSearchHome"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="20dp"
-            android:autofillHints="none"
-            android:background="@drawable/search_bar_bg"
-            android:drawablePadding="10dp"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:hint="Tìm kiếm món ăn, nhà hàng,..."
-            android:inputType="text"
-            android:paddingStart="15dp"
-            android:imeOptions="actionSearch" />
-
-        <RelativeLayout
+        <!-- Welcome Message -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TẤT CẢ DANH MỤC"
+                android:text="Chào Hoang,"
+                android:textColor="#181C2E"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chúc bạn một ngày tốt lành!"
+                android:textColor="#181C2E"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Search Bar Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/search_bar_bg"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_search"
+                app:tint="#676767" />
+
+            <EditText
+                android:id="@+id/edtSearchHome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Tìm món ăn"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Categories Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingHorizontal="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh mục"
                 android:textColor="#32343E"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -94,8 +143,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:text="Xem tất cả >"
-                android:textColor="#666666" />
+                android:textColor="#FF7622"
+                android:textSize="14sp" />
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -103,38 +154,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_food"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="15dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            app:cardCornerRadius="35dp"
-            app:cardElevation="4dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pizza_img" />
-        </androidx.cardview.widget.CardView>
-
-
+        <!-- Discounted Foods Section -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="30dp"
+            android:paddingHorizontal="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NHÀ HÀNG ĐANG MỞ CỬA"
+                android:text="Ưu đãi cực sốc"
                 android:textColor="#32343E"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -143,101 +176,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="Xem tất cả >"
-                android:textColor="#666666" />
+                android:layout_centerVertical="true"
+                android:text="Xem thêm >"
+                android:textColor="#FF7622"
+                android:textSize="14sp" />
         </RelativeLayout>
 
-        <androidx.cardview.widget.CardView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <!-- Best Sellers Section (Replaced Restaurant Section) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingHorizontal="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="Món ăn bán chạy"
+                android:textColor="#32343E"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rose_garden_bg"
-                    android:contentDescription="@null" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="Xem tất cả >"
+                android:textColor="#FF7622"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pizza Hut"
-                        android:textColor="#181C2E"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Burger - Gà - Riche - Wings"
-                        android:textColor="#A0A5BA"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_star"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="4.7"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="20dp"
-                            android:src="@drawable/ic_delivery"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="Miễn phí" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="20dp"
-                            android:src="@drawable/ic_clock"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="20 phút" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewBestSeller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingHorizontal="12dp"
+            android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

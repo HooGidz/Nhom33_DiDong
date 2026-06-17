@@ -73,6 +73,16 @@ public class User_His_Order extends AppCompatActivity {
         recyclerView.setAdapter(orderAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Làm mới dữ liệu khi quay lại từ màn hình đánh giá
+        loadHistoryDataFromDB();
+        if (orderAdapter != null) {
+            orderAdapter.notifyDataSetChanged();
+        }
+    }
+
     private void loadHistoryDataFromDB() {
         // Lấy userId thực tế từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
@@ -85,6 +95,7 @@ public class User_His_Order extends AppCompatActivity {
         // Lấy TẤT CẢ đơn hàng của user này (không phân biệt trạng thái)
         List<OrdersEntity> entities = db.ordersDAO().getOrdersByUserId(currentUserId);
         
+        orderList.clear(); // Xóa list cũ trước khi load lại
         for (OrdersEntity entity : entities) {
             // Lấy chi tiết liên kết để có Danh mục và Tên món
             List<OrderDetailsDAO.OrderDetailWithFood> details = db.orderDetailsDAO().getDetailsWithFoodByOrderId(entity.getOrderId());
@@ -103,6 +114,10 @@ public class User_His_Order extends AppCompatActivity {
                     totalItems += d.quantity;
                 }
             }
+
+            // Kiểm tra xem đơn hàng này đã được đánh giá chưa
+            int reviewCount = db.productReviewDAO().countReviewsByOrderId(entity.getOrderId());
+            boolean isReviewed = reviewCount > 0;
 
             // Chuyển status (kiểu int) thành chuỗi mô tả để phù hợp với constructor hisOrder
             String statusText;
@@ -128,7 +143,8 @@ public class User_His_Order extends AppCompatActivity {
                     String.format(Locale.getDefault(), "%,.0f VNĐ", entity.getTotalAmount()),
                     entity.getOrderDate(),
                     totalItems + " món",
-                    R.mipmap.ic_launcher
+                    R.drawable.pizza_img,
+                    isReviewed
             ));
         }
     }

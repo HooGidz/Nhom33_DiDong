@@ -1,5 +1,6 @@
 package com.example.nhom33.adapter;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nhom33.R;
 import com.example.nhom33.db.item_cart;
 
@@ -19,6 +21,7 @@ import java.util.Locale;
 
 public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.ViewHolder> {
 
+    private Context context;
     private List<item_cart> list;
     private OnCartActionListener listener;
 
@@ -28,7 +31,8 @@ public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.ViewHolder> 
         void onRemove(item_cart item, int position);
     }
 
-    public Cart_Adapter(List<item_cart> list, OnCartActionListener listener) {
+    public Cart_Adapter(Context context, List<item_cart> list, OnCartActionListener listener) {
+        this.context = context;
         this.list = list;
         this.listener = listener;
     }
@@ -74,7 +78,15 @@ public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.ViewHolder> 
             holder.originalPrice.setVisibility(View.GONE);
         }
 
-        holder.img.setImageResource(item.getImage());
+        // Load ảnh từ assets/img_product/ bằng Glide
+        String imgName = item.getImageUrl();
+        String fullPath = "file:///android_asset/img_product/" + imgName;
+
+        Glide.with(context)
+                .load(fullPath)
+                .placeholder(R.drawable.fb)
+                .error(R.drawable.fb)
+                .into(holder.img);
 
         holder.btnPlus.setOnClickListener(v -> {
             if (listener != null) listener.onPlus(item, position);

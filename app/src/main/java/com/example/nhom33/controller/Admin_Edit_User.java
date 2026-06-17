@@ -9,7 +9,7 @@ import com.example.nhom33.DataEntity.UsersEntity;
 import com.example.nhom33.R;
 import com.google.android.material.button.MaterialButton;
 
-public class AdminEditUserActivity extends AppCompatActivity {
+public class Admin_Edit_User extends AppCompatActivity {
 
     private EditText etFullName, etEmail, etPhone, etAddress;
     private MaterialButton btnSave;

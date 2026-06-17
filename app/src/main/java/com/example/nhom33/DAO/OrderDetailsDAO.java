@@ -13,7 +13,7 @@ public interface OrderDetailsDAO {
     @Insert
     void insertOrderDetail(OrderDetailsEntity detail);
 
-    @Query("SELECT od.order_id, f.food_name, c.category_name, od.quantity, od.price_at_time " +
+    @Query("SELECT od.order_id, od.food_id, f.food_name, f.image_url, c.category_name, od.quantity, od.price_at_time " +
            "FROM OrderDetails od " +
            "JOIN Foods f ON od.food_id = f.food_id " +
            "JOIN Categories c ON f.category_id = c.category_id " +
@@ -22,7 +22,9 @@ public interface OrderDetailsDAO {
 
     class OrderDetailWithFood {
         public int order_id;
+        public int food_id;
         public String food_name;
+        public String image_url;
         public String category_name;
         public int quantity;
         public double price_at_time;

@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey;
                         entity = CouponsEntity.class,
                         parentColumns = "coupon_id",
                         childColumns = "coupon_id",
-                        onDelete = ForeignKey.CASCADE
+                        onDelete = ForeignKey.SET_NULL // Đổi sang SET_NULL nếu coupon bị xóa
                 )
         }
 )
@@ -33,7 +33,7 @@ public class OrdersEntity {
     private int userId;
 
     @ColumnInfo(name = "coupon_id")
-    private int couponId; // Thiết kế ghi int - Not Null
+    private Integer couponId; // Đổi sang Integer để có thể null
 
     @ColumnInfo(name = "customer_name")
     private String customerName;
@@ -41,7 +41,7 @@ public class OrdersEntity {
     @ColumnInfo(name = "customer_phone")
     private String customerPhone;
 
-    @ColumnInfo(name = "custome_address") // Giữ nguyên typo "custome" theo thiết kế bảng 2.8
+    @ColumnInfo(name = "custome_address")
     private String customerAddress;
 
     @ColumnInfo(name = "order_date")
@@ -62,12 +62,10 @@ public class OrdersEntity {
     @ColumnInfo(name = "note")
     private String note;
 
-    // --- Constructor mặc định cho Room ---
     public OrdersEntity() {
     }
 
-    // --- Constructor đầy đủ ---
-    public OrdersEntity(int userId, int couponId, String customerName, String customerPhone, 
+    public OrdersEntity(int userId, Integer couponId, String customerName, String customerPhone, 
                         String customerAddress, String orderDate, double totalAmount, 
                         String deliveryAddress, int status, int methodPayment, String note) {
         this.userId = userId;
@@ -83,15 +81,14 @@ public class OrdersEntity {
         this.note = note;
     }
 
-    // --- Getter và Setter ---
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
 
-    public int getCouponId() { return couponId; }
-    public void setCouponId(int couponId) { this.couponId = couponId; }
+    public Integer getCouponId() { return couponId; }
+    public void setCouponId(Integer couponId) { this.couponId = couponId; }
 
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }

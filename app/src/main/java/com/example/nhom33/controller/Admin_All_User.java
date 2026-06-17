@@ -19,7 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserManagementActivity extends AppCompatActivity {
+public class Admin_All_User extends AppCompatActivity {
 
     private RecyclerView rvUsers;
     private UserAdapter userAdapter;
@@ -40,7 +40,7 @@ public class UserManagementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_user_list);
+        setContentView(R.layout.admin_all_user);
 
         rvUsers = findViewById(R.id.rvUsers);
         tabLayout = findViewById(R.id.tabLayout);
@@ -57,7 +57,7 @@ public class UserManagementActivity extends AppCompatActivity {
 
             @Override
             public void onEdit(UsersEntity user, int position) {
-                Intent intent = new Intent(UserManagementActivity.this, AdminEditUserActivity.class);
+                Intent intent = new Intent(Admin_All_User.this, Admin_Edit_User.class);
                 intent.putExtra("USER_ID", user.getUserId());
                 editUserLauncher.launch(intent);
             }

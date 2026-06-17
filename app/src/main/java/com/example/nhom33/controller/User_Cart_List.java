@@ -55,26 +55,28 @@ public class User_Cart_List extends AppCompatActivity implements Cart_Adapter.On
         }
 
         Button btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
-        btnPlaceOrder.setOnClickListener(v -> {
-            if (itemList.isEmpty()) {
-                Toast.makeText(this, "Giỏ hàng của bạn đang trống", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            int totalQty = 0;
-            for (item_cart item : itemList) {
-                totalQty += Integer.parseInt(item.getQuantity());
-            }
+        if (btnPlaceOrder != null) {
+            btnPlaceOrder.setOnClickListener(v -> {
+                if (itemList.isEmpty()) {
+                    Toast.makeText(this, "Giỏ hàng của bạn đang trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int totalQty = 0;
+                for (item_cart item : itemList) {
+                    totalQty += Integer.parseInt(item.getQuantity());
+                }
 
-            Intent intent = new Intent(User_Cart_List.this, User_edit_payment_infomation.class);
-            intent.putExtra("TOTAL_PRICE", currentTotal);
-            intent.putExtra("TOTAL_ITEMS", totalQty);
-            startActivity(intent);
-        });
+                Intent intent = new Intent(User_Cart_List.this, User_edit_payment_infomation.class);
+                intent.putExtra("TOTAL_PRICE", currentTotal);
+                intent.putExtra("TOTAL_ITEMS", totalQty);
+                startActivity(intent);
+            });
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new Cart_Adapter(itemList, this);
+        adapter = new Cart_Adapter(this, itemList, this);
         recyclerView.setAdapter(adapter);
 
         if (userId != -1) {
@@ -97,23 +99,13 @@ public class User_Cart_List extends AppCompatActivity implements Cart_Adapter.On
                             ? food.getPriceSale()
                             : food.getPrice();
 
-                    int resId = R.drawable.pizza_img;
-                    String imgName = food.getImageUrl();
-                    if (imgName != null && !imgName.isEmpty()) {
-                        if (imgName.contains(".")) {
-                            imgName = imgName.substring(0, imgName.lastIndexOf("."));
-                        }
-                        int checkResId = getResources().getIdentifier(imgName, "drawable", getPackageName());
-                        if (checkResId != 0) resId = checkResId;
-                    }
-
                     itemList.add(new item_cart(
                             food.getFoodId(),
                             food.getFoodName(),
                             String.valueOf(cart.getQuantity()),
                             (int) effectivePrice,
                             (int) food.getPrice(),
-                            resId
+                            food.getImageUrl()
                     ));
                     total += effectivePrice * cart.getQuantity();
                 }
@@ -192,11 +184,13 @@ public class User_Cart_List extends AppCompatActivity implements Cart_Adapter.On
                             db.cartDAO().delete(cartItem);
 
                             runOnUiThread(() -> {
-                                itemList.remove(position);
-                                adapter.notifyItemRemoved(position);
-                                adapter.notifyItemRangeChanged(position, itemList.size());
-                                updateTotalPrice();
-                                Toast.makeText(this, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+                                if (position >= 0 && position < itemList.size()) {
+                                    itemList.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                    adapter.notifyItemRangeChanged(position, itemList.size());
+                                    updateTotalPrice();
+                                    Toast.makeText(this, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+                                }
                             });
                         }
                     }).start();

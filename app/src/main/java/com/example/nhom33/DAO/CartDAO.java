@@ -29,4 +29,7 @@ public interface CartDAO {
 
     @Query("DELETE FROM Cart WHERE user_id = :userId")
     void clearCart(int userId);
+
+    @Query("DELETE FROM Cart WHERE user_id = :userId AND food_id = :foodId")
+    void deleteByFoodId(int userId, int foodId);
 }

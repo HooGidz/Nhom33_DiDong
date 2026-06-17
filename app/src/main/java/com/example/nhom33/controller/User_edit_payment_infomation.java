@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -11,16 +12,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nhom33.DataEntity.CartEntity;
+import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.DataEntity.OrderDetailsEntity;
 import com.example.nhom33.DataEntity.OrdersEntity;
 import com.example.nhom33.DataEntity.UsersEntity;
 import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.R;
+import com.example.nhom33.adapter.OrderConfirmAdapter;
+import com.example.nhom33.db.item_cart;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,12 +36,15 @@ import java.util.Locale;
 public class User_edit_payment_infomation extends AppCompatActivity {
     private ImageButton btnBack;
     private EditText edtFullName, edtAddress, edtPhone;
-    private TextView tvTotalItems, tvSubTotal, tvFinalTotal;
+    private TextView tvSubTotal, tvFinalTotal, tvDiscountAmount, tvDiscountDesc;
     private Button btnConfirmOrder;
+    private RecyclerView rvOrderItems;
+    private OrderConfirmAdapter adapter;
+    private List<item_cart> itemList = new ArrayList<>();
+    
     private FoodDB db;
     private int userId;
-    private double totalPrice;
-    private int totalItems;
+    private double finalTotalPrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,38 +54,61 @@ public class User_edit_payment_infomation extends AppCompatActivity {
 
         db = FoodDB.getInstance(this);
 
-        // Khởi tạo views
-        btnBack = findViewById(R.id.btn_back);
-        edtFullName = findViewById(R.id.edtFullName);
-        edtAddress = findViewById(R.id.edtAddress);
-        edtPhone = findViewById(R.id.edtPhone);
-        tvTotalItems = findViewById(R.id.tvTotalItems);
-        tvSubTotal = findViewById(R.id.tvSubTotal);
-        tvFinalTotal = findViewById(R.id.tvFinalTotal);
-        btnConfirmOrder = findViewById(R.id.btnConfirmOrder);
-
-        // Lấy dữ liệu từ Intent
-        Intent intent = getIntent();
-        totalPrice = intent.getDoubleExtra("TOTAL_PRICE", 0);
-        totalItems = intent.getIntExtra("TOTAL_ITEMS", 0);
-
-        // Hiển thị tóm tắt đơn hàng
-        tvTotalItems.setText(String.valueOf(totalItems));
-        String formattedPrice = String.format(Locale.getDefault(), "%,.0f VNĐ", totalPrice);
-        tvSubTotal.setText(formattedPrice);
-        tvFinalTotal.setText(formattedPrice);
-
-        // Lấy userId từ SharedPreferences
+        initViews();
+        setupRecyclerView();
+        
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", -1);
 
         if (userId != -1) {
             loadUserInfo();
+            loadCartData();
+        } else {
+            Toast.makeText(this, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
-        btnBack.setOnClickListener(v -> finish());
+        setupListeners();
+    }
 
-        btnConfirmOrder.setOnClickListener(v -> processOrder());
+    private void initViews() {
+        btnBack = findViewById(R.id.btn_back);
+        edtFullName = findViewById(R.id.edtFullName);
+        edtAddress = findViewById(R.id.edtAddress);
+        edtPhone = findViewById(R.id.edtPhone);
+        tvSubTotal = findViewById(R.id.tvSubTotal);
+        tvFinalTotal = findViewById(R.id.tvFinalTotal);
+        tvDiscountAmount = findViewById(R.id.tvDiscountAmount);
+        tvDiscountDesc = findViewById(R.id.tvDiscountDesc);
+        btnConfirmOrder = findViewById(R.id.btnConfirmOrder);
+        rvOrderItems = findViewById(R.id.rvOrderItems);
+    }
+
+    private void setupRecyclerView() {
+        rvOrderItems.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new OrderConfirmAdapter(this, itemList, position -> {
+            showRemoveDialog(position);
+        });
+        rvOrderItems.setAdapter(adapter);
+    }
+
+    private void setupListeners() {
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
+        
+        View btnAddMore = findViewById(R.id.btnAddMore);
+        if (btnAddMore != null) {
+            btnAddMore.setOnClickListener(v -> {
+                Intent intent = new Intent(this, User_TrangChu.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            });
+        }
+
+        if (btnConfirmOrder != null) {
+            btnConfirmOrder.setOnClickListener(v -> processOrder());
+        }
     }
 
     private void loadUserInfo() {
@@ -82,15 +116,98 @@ public class User_edit_payment_infomation extends AppCompatActivity {
             UsersEntity user = db.usersDAO().getUserById(userId);
             if (user != null) {
                 runOnUiThread(() -> {
-                    edtFullName.setText(user.getFullName());
-                    edtAddress.setText(user.getAddress());
-                    edtPhone.setText(user.getPhone());
+                    if (edtFullName != null) edtFullName.setText(user.getFullName());
+                    if (edtAddress != null) edtAddress.setText(user.getAddress());
+                    if (edtPhone != null) edtPhone.setText(user.getPhone());
                 });
             }
         }).start();
     }
 
+    private void loadCartData() {
+        new Thread(() -> {
+            List<CartEntity> cartEntities = db.cartDAO().getCartByUser(userId);
+            itemList.clear();
+            for (CartEntity cart : cartEntities) {
+                FoodsEntity food = db.foodsDAO().getFoodById(cart.getFoodId());
+                if (food != null) {
+                    double effectivePrice = (food.getPriceSale() != null && food.getPriceSale() > 0)
+                            ? food.getPriceSale()
+                            : food.getPrice();
+
+                    itemList.add(new item_cart(
+                            food.getFoodId(),
+                            food.getFoodName(),
+                            String.valueOf(cart.getQuantity()),
+                            (int) effectivePrice,
+                            (int) food.getPrice(),
+                            food.getImageUrl()
+                    ));
+                }
+            }
+            runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+                calculateTotals();
+            });
+        }).start();
+    }
+
+    private void calculateTotals() {
+        double subTotal = 0;
+        int totalQty = 0;
+        for (item_cart item : itemList) {
+            try {
+                int qty = Integer.parseInt(item.getQuantity());
+                subTotal += (double) item.getPrice() * qty;
+                totalQty += qty;
+            } catch (Exception ignored) {}
+        }
+
+        double discount = 0;
+        if (totalQty >= 3) {
+            discount = subTotal * 0.5;
+            if (tvDiscountDesc != null) tvDiscountDesc.setText("Giảm 50% cho đơn từ 3 ly");
+            if (tvDiscountAmount != null) tvDiscountAmount.setText(String.format(Locale.getDefault(), "-%,.0fđ", discount));
+        } else {
+            if (tvDiscountDesc != null) tvDiscountDesc.setText("Không có khuyến mãi");
+            if (tvDiscountAmount != null) tvDiscountAmount.setText("0đ");
+        }
+
+        finalTotalPrice = subTotal - discount;
+        
+        if (tvSubTotal != null) tvSubTotal.setText(String.format(Locale.getDefault(), "%,.0fđ", subTotal));
+        if (tvFinalTotal != null) tvFinalTotal.setText(String.format(Locale.getDefault(), "%,.0fđ", finalTotalPrice));
+    }
+
+    private void showRemoveDialog(int position) {
+        if (position < 0 || position >= itemList.size()) return;
+        item_cart itemToRemove = itemList.get(position);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Xóa sản phẩm này khỏi đơn hàng?")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    new Thread(() -> {
+                        db.cartDAO().deleteByFoodId(userId, itemToRemove.getFoodId());
+                        runOnUiThread(() -> {
+                            // Tìm lại vị trí hiện tại của item trong trường hợp danh sách đã đổi
+                            int currentIdx = itemList.indexOf(itemToRemove);
+                            if (currentIdx != -1) {
+                                itemList.remove(currentIdx);
+                                adapter.notifyItemRemoved(currentIdx);
+                                calculateTotals();
+                                if (itemList.isEmpty()) finish();
+                            }
+                        });
+                    }).start();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
     private void processOrder() {
+        if (edtFullName == null || edtAddress == null || edtPhone == null) return;
+
         String fullName = edtFullName.getText().toString().trim();
         String address = edtAddress.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
@@ -101,57 +218,40 @@ public class User_edit_payment_infomation extends AppCompatActivity {
         }
 
         new Thread(() -> {
-            // 1. Lấy danh sách sản phẩm trong giỏ hàng
-            List<CartEntity> cartList = db.cartDAO().getCartByUser(userId);
-            if (cartList == null || cartList.isEmpty()) {
-                runOnUiThread(() -> Toast.makeText(this, "Giỏ hàng của bạn đang trống", Toast.LENGTH_SHORT).show());
-                return;
-            }
+            if (itemList.isEmpty()) return;
 
-            // 2. Tạo đơn hàng mới (Orders)
             String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-
-            // Sửa lại constructor để khớp với OrdersEntity
-            // Tham số: userId, couponId, customerName, customerPhone, customerAddress, orderDate, totalAmount, deliveryAddress, status, methodPayment, note
+            
+            // FIX: Truyền null cho couponId thay vì 0 để tránh lỗi khóa ngoại (FOREIGN KEY constraint)
             OrdersEntity newOrder = new OrdersEntity(
-                    userId,
-                    0,           // couponId (mặc định 0 nếu không có)
-                    fullName,
-                    phone,
-                    address,
-                    currentDate,
-                    totalPrice,
-                    address,     // deliveryAddress
-                    0,           // status: 0 (Chờ xác nhận)
-                    0,           // methodPayment: 0 (Tiền mặt)
-                    ""           // note
+                    userId, null, fullName, phone, address, currentDate, finalTotalPrice, address, 0, 0, ""
             );
 
-            long orderId = db.ordersDAO().insertOrder(newOrder);
+            try {
+                long orderId = db.ordersDAO().insertOrder(newOrder);
 
-            // 3. Thêm chi tiết đơn hàng (OrderDetails)
-            for (CartEntity cartItem : cartList) {
-                OrderDetailsEntity detail = new OrderDetailsEntity(
-                        (int) orderId,
-                        cartItem.getFoodId(),
-                        cartItem.getQuantity(),
-                        cartItem.getPriceAtTime()
-                );
-                db.orderDetailsDAO().insertOrderDetail(detail);
+                for (item_cart item : itemList) {
+                    OrderDetailsEntity detail = new OrderDetailsEntity(
+                            (int) orderId, item.getFoodId(), Integer.parseInt(item.getQuantity()), (double) item.getPrice()
+                    );
+                    db.orderDetailsDAO().insertOrderDetail(detail);
+                }
+
+                db.cartDAO().clearCart(userId);
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, User_Payment_Success.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Lỗi khi lưu đơn hàng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+                e.printStackTrace();
             }
-
-            // 4. Xóa toàn bộ sản phẩm trong giỏ hàng của user này
-            db.cartDAO().clearCart(userId);
-
-            runOnUiThread(() -> {
-                Toast.makeText(this, "Đặt hàng thành công! Đơn hàng của bạn đang chờ xác nhận.", Toast.LENGTH_LONG).show();
-
-                // Chuyển sang trang đặt hàng thành công và xóa stack các màn hình trước đó
-                Intent intentSuccess = new Intent(User_edit_payment_infomation.this, User_Payment_Success.class);
-                intentSuccess.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intentSuccess);
-                finish();
-            });
         }).start();
     }
 }

@@ -22,7 +22,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminEditFoodActivity extends AppCompatActivity {
+public class Admin_Edit_Food extends AppCompatActivity {
 
     private ImageButton btnBack;
     private ImageView imgFoodPreview;
@@ -138,7 +138,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     new Thread(() -> {
                         db.foodsDAO().updateFood(currentFood);
                         runOnUiThread(() -> {
-                            Toast.makeText(AdminEditFoodActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Admin_Edit_Food.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                             finish();
                         });
                     }).start();
@@ -180,7 +180,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
 
     private void updateImagePreview(String imgName) {
         if (imgName != null && !imgName.isEmpty()) {
-            String fullPath = "file:///android_asset/imgg_product/" + imgName;
+            String fullPath = "file:///android_asset/img_product/" + imgName;
             Glide.with(this)
                     .load(fullPath)
                     .placeholder(R.drawable.fb)

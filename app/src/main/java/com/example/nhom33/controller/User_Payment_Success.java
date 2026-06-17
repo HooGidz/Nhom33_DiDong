@@ -21,10 +21,9 @@ public class User_Payment_Success extends AppCompatActivity {
         btnTrackOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạo Intent để chuyển sang Activity Lịch sử đơn hàng (hisorder_activity)
-                Intent intent = new Intent(User_Payment_Success.this, User_Order_On.class);
+                Intent intent = new Intent(User_Payment_Success.this, User_TrangChu.class);
                 startActivity(intent);
-                finish(); // Đóng màn hình thành công để không quay lại được khi bấm Back
+                finish();
             }
         });
     }

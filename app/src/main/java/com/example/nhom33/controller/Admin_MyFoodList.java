@@ -1,5 +1,6 @@
 package com.example.nhom33.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import com.example.nhom33.Database.FoodDB;
 import com.example.nhom33.DataEntity.FoodsEntity;
 import com.example.nhom33.R;
 import com.example.nhom33.db.item_food;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class Admin_MyFoodList extends AppCompatActivity {
     List<item_food> itemList;
     Admin_FoodList_Adapter myAdapter;
     ImageButton btn_back;
+    MaterialButton btn_add_new;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,12 @@ public class Admin_MyFoodList extends AppCompatActivity {
         btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(v -> finish());
 
+        btn_add_new = findViewById(R.id.btn_add_new);
+        btn_add_new.setOnClickListener(v -> {
+            Intent intent = new Intent(Admin_MyFoodList.this, Admin_Add_Food.class);
+            startActivity(intent);
+        });
+
         recyclerView = findViewById(R.id.recyclerView);
         itemList = new ArrayList<>();
 
@@ -51,6 +60,12 @@ public class Admin_MyFoodList extends AppCompatActivity {
         myAdapter = new Admin_FoodList_Adapter(itemList);
         recyclerView.setAdapter(myAdapter);
 
+        loadFoodsFromDatabase();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadFoodsFromDatabase();
     }
 

@@ -52,6 +52,25 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Xem trước ảnh -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#DDDDDD">
+
+                <ImageView
+                    android:id="@+id/img_category_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/fb"
+                    android:contentDescription="Xem trước ảnh danh mục" />
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Tên danh mục -->
             <TextView
                 android:layout_width="wrap_content"

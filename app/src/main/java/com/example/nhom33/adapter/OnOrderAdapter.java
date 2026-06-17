@@ -20,10 +20,17 @@ import java.util.List;
 public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderViewHolder> {
     private Context context;
     private List<OnOrder> OnOrderList;
+    private OnOrderActionListener listener;
 
-    public OnOrderAdapter(Context context, List<OnOrder> OnOrderList) {
+    public interface OnOrderActionListener {
+        void onTrack(OnOrder order);
+        void onCancel(OnOrder order, int position);
+    }
+
+    public OnOrderAdapter(Context context, List<OnOrder> OnOrderList, OnOrderActionListener listener) {
         this.context = context;
         this.OnOrderList = OnOrderList;
+        this.listener = listener;
     }
 
     @Override
@@ -47,10 +54,22 @@ public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderV
         holder.btnTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, User_track_order.class);
-                // Truyền dữ liệu đơn hàng nếu cần (ví dụ: orderId)
-                intent.putExtra("orderId", order.getOrderId());
-                context.startActivity(intent);
+                if (listener != null) {
+                    listener.onTrack(order);
+                } else {
+                    Intent intent = new Intent(context, User_track_order.class);
+                    intent.putExtra("orderId", order.getOrderId());
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onCancel(order, holder.getAdapterPosition());
+                }
             }
         });
     }
@@ -63,7 +82,7 @@ public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderV
     public static class OnOrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategory, tvStatus, tvStoreName, tvOrderID, tvPrice, tvDateTime, tvItemCount;
         ImageView imgStore;
-        Button btnTrack;
+        Button btnTrack, btnCancel;
 
         public OnOrderViewHolder(View itemView) {
             super(itemView);
@@ -76,6 +95,7 @@ public class OnOrderAdapter extends RecyclerView.Adapter<OnOrderAdapter.OnOrderV
             tvItemCount = itemView.findViewById(R.id.tvItemCount);
             imgStore = itemView.findViewById(R.id.imgStore);
             btnTrack = itemView.findViewById(R.id.btnTrack);
+            btnCancel = itemView.findViewById(R.id.btnCancel);
         }
     }
 }
